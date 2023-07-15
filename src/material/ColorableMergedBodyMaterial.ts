@@ -9,7 +9,7 @@ import {
   Vector4,
 } from "three";
 import { IColorableMergedMaterial } from "./";
-import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl";
+import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl.js";
 
 export interface ColorableMergedBodyMaterialParam {
   blending?: Blending;

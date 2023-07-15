@@ -5,13 +5,13 @@ import {
   LineSegments,
 } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { TweenableColorMap } from "./TweenableColorMap";
-import { ColorableMergedModel } from "./ColorableMergedModel";
-import { readGeometryCount } from "./MergedModelUtil";
 import {
+  TweenableColorMap,
+  ColorableMergedModel,
+  readGeometryCount,
   ColorableMergedEdgeMaterial,
   ColorableMergedEdgeMaterialParam,
-} from "./material";
+} from "./";
 
 export interface ColorableMergedEdgeParam {
   edgeDetail?: number;
@@ -30,12 +30,7 @@ export class ColorableMergedEdge extends LineSegments {
     this.option.edgeDetail = option.edgeDetail ?? 7;
   }
 
-  public addModel(
-    geometry: BufferGeometry,
-    id: number,
-    type?: string
-  ): void {
-
+  public addModel(geometry: BufferGeometry, id: number, type?: string): void {
     const uniqueID = TweenableColorMap.getColorMapKey(id, type);
     this.geometryIDSet.add(uniqueID);
     const index = [...this.geometryIDSet].indexOf(uniqueID);
@@ -44,7 +39,7 @@ export class ColorableMergedEdge extends LineSegments {
     const n = readGeometryCount(edge);
     edge.setAttribute(
       ColorableMergedModel.MODEL_INDEX,
-      new BufferAttribute(new Uint16Array(n).fill(index), 1)
+      new BufferAttribute(new Uint16Array(n).fill(index), 1),
     );
     this.geometries.push(edge);
 
@@ -52,13 +47,12 @@ export class ColorableMergedEdge extends LineSegments {
   }
 
   async generate(): Promise<void> {
-
     if (this.geometries.length === 0) return;
 
     this.geometry = BufferGeometryUtils.mergeGeometries(this.geometries);
     this.material = new ColorableMergedEdgeMaterial(
       this.geometryIDSet.size,
-      this.option.materialSetting
+      this.option.materialSetting,
     );
 
     this.colorMap.forceUpdateColorAttribute();

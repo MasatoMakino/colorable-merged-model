@@ -1,12 +1,12 @@
 import { BufferAttribute, BufferGeometry, Mesh } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { ColorableMergedModel } from "./ColorableMergedModel";
-import { readGeometryCount } from "./MergedModelUtil";
-import { TweenableColorMap } from "./TweenableColorMap";
 import {
+  ColorableMergedModel,
+  readGeometryCount,
+  TweenableColorMap,
   ColorableMergedBodyMaterial,
   ColorableMergedBodyMaterialParam,
-} from "./material";
+} from "./";
 
 export interface ColorableMergedBodyParam {
   color: [number, number, number, number];
@@ -24,11 +24,7 @@ export class ColorableMergedBody extends Mesh {
     this.option = option;
   }
 
-  public addModel(
-    geometry: BufferGeometry,
-    id: number,
-    type?: string
-  ): void {
+  public addModel(geometry: BufferGeometry, id: number, type?: string): void {
     const n = readGeometryCount(geometry);
 
     const uniqueID = TweenableColorMap.getColorMapKey(id, type);
@@ -37,10 +33,7 @@ export class ColorableMergedBody extends Mesh {
 
     geometry.setAttribute(
       ColorableMergedModel.MODEL_INDEX,
-      new BufferAttribute(
-        new Uint16Array(new Array(n).fill(index)),
-        1
-      )
+      new BufferAttribute(new Uint16Array(new Array(n).fill(index)), 1),
     );
     geometry.deleteAttribute("uv");
     this.geometries.push(geometry);
@@ -49,13 +42,12 @@ export class ColorableMergedBody extends Mesh {
   }
 
   async generate(): Promise<void> {
-
-    if( this.geometries.length === 0 )  return;
+    if (this.geometries.length === 0) return;
 
     this.geometry = BufferGeometryUtils.mergeGeometries(this.geometries);
     this.material = new ColorableMergedBodyMaterial(
       this.geometryIDSet.size,
-      this.option.materialSetting
+      this.option.materialSetting,
     );
     this.colorMap.forceUpdateColorAttribute();
   }

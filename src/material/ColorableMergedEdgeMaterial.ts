@@ -1,6 +1,6 @@
 import { ShaderMaterial, UniformsLib, UniformsUtils, Vector4 } from "three";
 import { IColorableMergedMaterial } from "./";
-import { fragment, vertex } from "./ColorableMergedEdgeMaterial.glsl";
+import { fragment, vertex } from "./ColorableMergedEdgeMaterial.glsl.js";
 
 export interface ColorableMergedEdgeMaterialParam {
   depthWrite?: boolean;

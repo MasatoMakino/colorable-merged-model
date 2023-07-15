@@ -2,11 +2,9 @@ import { BufferGeometry, Group } from "three";
 import {
   ColorableMergedBody,
   ColorableMergedBodyParam,
-} from "./ColorableMergedBody";
-import {
   ColorableMergedEdge,
   ColorableMergedEdgeParam,
-} from "./ColorableMergedEdge";
+} from "./";
 
 export class ColorableMergedModel extends Group {
   static readonly MODEL_INDEX = "MODEL_INDEX";
@@ -21,9 +19,9 @@ export class ColorableMergedModel extends Group {
    * @param name
    */
   public getGeometryID = (name: string): number => {
-    const match = name.match(/.*_.*_(\d*)/)
-    if( match == null ) throw new Error(`Invalid name: ${name}`);
-    return Number( match[1] );
+    const match = name.match(/.*_.*_(\d*)/);
+    if (match == null) throw new Error(`Invalid name: ${name}`);
+    return Number(match[1]);
   };
 
   constructor(option: {

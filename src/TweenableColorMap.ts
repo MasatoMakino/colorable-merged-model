@@ -5,9 +5,11 @@ import {
 import { Easing } from "@tweenjs/tween.js";
 import { EventEmitter } from "eventemitter3";
 import { Material } from "three";
-import { ColorableMergedBody } from "./ColorableMergedBody";
-import { ColorableMergedEdge } from "./ColorableMergedEdge";
-import { IColorableMergedMaterial } from "./material";
+import {
+  ColorableMergedBody,
+  ColorableMergedEdge,
+  IColorableMergedMaterial,
+} from "./";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
@@ -24,14 +26,14 @@ export class TweenableColorMap extends EventEmitter {
   addColor(
     defaultColor: [number, number, number, number],
     id: number,
-    type?: string
+    type?: string,
   ): void {
     const color = defaultColor;
     const tweenableColor = new TweenableColor(
       color[0] * 255,
       color[1] * 255,
       color[2] * 255,
-      color[3]
+      color[3],
     );
     this.set(tweenableColor, id, type);
   }
@@ -53,7 +55,7 @@ export class TweenableColorMap extends EventEmitter {
   changeColor(
     color: [number, number, number, number],
     id: number,
-    type?: string
+    type?: string,
   ): void {
     const now = performance.now();
     const tweenableColor = this.get(id, type);
@@ -63,7 +65,7 @@ export class TweenableColorMap extends EventEmitter {
       color[2] * 255,
       color[3],
       1000,
-      { easing: Easing.Cubic.Out, startTime: now }
+      { easing: Easing.Cubic.Out, startTime: now },
     );
   }
 
