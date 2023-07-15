@@ -6,7 +6,7 @@ import {
   TweenableColorMap,
   ColorableMergedBodyMaterial,
   ColorableMergedBodyMaterialParam,
-} from "./";
+} from "./index.js";
 
 export interface ColorableMergedBodyParam {
   color: [number, number, number, number];

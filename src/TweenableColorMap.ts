@@ -9,7 +9,7 @@ import {
   ColorableMergedBody,
   ColorableMergedEdge,
   IColorableMergedMaterial,
-} from "./";
+} from "./index.js";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();

@@ -11,7 +11,7 @@ import {
   readGeometryCount,
   ColorableMergedEdgeMaterial,
   ColorableMergedEdgeMaterialParam,
-} from "./";
+} from "./index.js";
 
 export interface ColorableMergedEdgeParam {
   edgeDetail?: number;

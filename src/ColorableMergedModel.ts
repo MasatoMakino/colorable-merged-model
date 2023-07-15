@@ -4,7 +4,7 @@ import {
   ColorableMergedBodyParam,
   ColorableMergedEdge,
   ColorableMergedEdgeParam,
-} from "./";
+} from "./index.js";
 
 export class ColorableMergedModel extends Group {
   static readonly MODEL_INDEX = "MODEL_INDEX";

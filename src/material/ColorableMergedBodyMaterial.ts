@@ -8,7 +8,7 @@ import {
   UniformsUtils,
   Vector4,
 } from "three";
-import { IColorableMergedMaterial } from "./";
+import { IColorableMergedMaterial } from "./index.js";
 import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl.js";
 
 export interface ColorableMergedBodyMaterialParam {
