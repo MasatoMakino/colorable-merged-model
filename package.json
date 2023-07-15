@@ -1,0 +1,36 @@
+{
+  "name": "@masatomakino/colorable-merged-model",
+  "version": "0.1.0",
+  "description": "Mesh and Edge lines in three.js that can change color after geometry is merged",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasatoMakino/colorable-merged-model.git"
+  },
+  "author": "MasatoMakino <makino.masato.g@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MasatoMakino/colorable-merged-model/issues"
+  },
+  "homepage": "https://github.com/MasatoMakino/colorable-merged-model#readme",
+  "dependencies": {
+    "@masatomakino/tweenable-color": "^0.0.4",
+    "@tweenjs/tween.js": "^21.0.0",
+    "eventemitter3": "^5.0.1",
+    "three": "^0.154.0"
+  },
+  "devDependencies": {
+    "@masatomakino/gulptask-demo-page": "^0.6.7",
+    "@types/three": "^0.154.0",
+    "browser-sync": "^2.29.3",
+    "husky": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typedoc": "^0.24.8",
+    "typescript": "^5.1.6"
+  },
+  "scripts": {
+    "test": "",
+    "prepare": "husky install",
+    "buildTS": "tsc"
+  }
+}
