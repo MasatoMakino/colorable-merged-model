@@ -56,12 +56,14 @@ export class ColorableMergedModel extends Group {
     type?: string;
     easing?: (t: number) => number;
     duration?: number;
+    now?: number;
   }): void {
     if (param.bodyColor) {
       this.body?.colorMap.changeColor(param.bodyColor, param.id, {
         type: param.type,
         duration: param.duration,
         easing: param.easing,
+        now: param.now,
       });
     }
     if (param.edgeColor) {
@@ -69,6 +71,7 @@ export class ColorableMergedModel extends Group {
         type: param.type,
         duration: param.duration,
         easing: param.easing,
+        now: param.now,
       });
     }
   }
