@@ -1,4 +1,5 @@
 import { ColorableMergedModel } from "../src";
+import { BoxGeometry } from "three";
 
 describe("ColorableMergedModel", () => {
   const generateModel = () => {
@@ -38,5 +39,31 @@ describe("ColorableMergedModel", () => {
       return Number(match?.[1]);
     };
     expect(model.getGeometryID("test_1")).toStrictEqual(1);
+  });
+
+  test("add model", async () => {
+    const model = generateModel();
+    model.addModel(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+    await model.generate();
+    expect(model.body?.colorMap.colors.size).toStrictEqual(1);
+    expect(model.edge?.colorMap.colors.size).toStrictEqual(1);
+  });
+
+  test("add model with type", async () => {
+    const model = generateModel();
+    model.addModel(new BoxGeometry(1, 1, 1, 1, 1, 1), 1, "test");
+    await model.generate();
+    expect(model.body?.colorMap.colors.size).toStrictEqual(1);
+    expect(model.edge?.colorMap.colors.size).toStrictEqual(1);
+    expect(model.body?.colorMap.get(1, "test")).toBeTruthy();
+    expect(model.edge?.colorMap.get(1, "test")).toBeTruthy();
+  });
+
+  test("add empty model", async () => {
+    const model = new ColorableMergedModel({});
+    model.addModel(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+    await model.generate();
+    expect(model.body).toBeUndefined();
+    expect(model.edge).toBeUndefined();
   });
 });
