@@ -7,7 +7,7 @@ describe("ColorableMergedBody", () => {
     expect(body).toBeTruthy();
   });
 
-  test("skip generate", async () => {
+  test("generate empty body", async () => {
     const body = new ColorableMergedBody({ color: [1, 1, 1, 1] });
     await body.generate();
     expect(body.colorMap.colors.size).toStrictEqual(0);
