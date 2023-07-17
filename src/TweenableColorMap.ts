@@ -50,22 +50,31 @@ export class TweenableColorMap extends EventEmitter {
    * 指定されたジオメトリの色を変更する
    * @param id
    * @param color
-   * @param type
+   * @param option
    */
   changeColor(
     color: [number, number, number, number],
     id: number,
-    type?: string,
+    option?: {
+      type?: string;
+      duration?: number;
+      easing?: (t: number) => number;
+      now?: number;
+    },
   ): void {
-    const now = performance.now();
-    const tweenableColor = this.get(id, type);
+    option = option ?? {};
+    option.now ??= performance.now();
+    option.duration ??= 1000;
+    option.easing ??= Easing.Cubic.Out;
+
+    const tweenableColor = this.get(id, option?.type);
     tweenableColor?.change(
       color[0] * 255,
       color[1] * 255,
       color[2] * 255,
       color[3],
-      1000,
-      { easing: Easing.Cubic.Out, startTime: now },
+      option.duration,
+      { easing: option.easing, startTime: option.now },
     );
   }
 

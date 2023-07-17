@@ -54,12 +54,22 @@ export class ColorableMergedModel extends Group {
     edgeColor?: [number, number, number, number];
     id: number;
     type?: string;
+    easing?: (t: number) => number;
+    duration?: number;
   }): void {
     if (param.bodyColor) {
-      this.body?.colorMap.changeColor(param.bodyColor, param.id, param.type);
+      this.body?.colorMap.changeColor(param.bodyColor, param.id, {
+        type: param.type,
+        duration: param.duration,
+        easing: param.easing,
+      });
     }
     if (param.edgeColor) {
-      this.edge?.colorMap.changeColor(param.edgeColor, param.id, param.type);
+      this.edge?.colorMap.changeColor(param.edgeColor, param.id, {
+        type: param.type,
+        duration: param.duration,
+        easing: param.easing,
+      });
     }
   }
 }
