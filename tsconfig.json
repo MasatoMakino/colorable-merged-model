@@ -9,7 +9,8 @@
     "strict": true,                                      /* Enable all strict type-checking options. */
     "declaration": true,
     "declarationMap": true,
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "allowJs": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

@@ -10,9 +10,19 @@ export default {
         useESM: true,
       },
     ],
+    "node_modules/(three/examples/|@masatomakino/tweenable-color/esm/).+.(j|t)sx?$":
+      [
+        "ts-jest",
+        {
+          useESM: true,
+        },
+      ],
   },
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
   extensionsToTreatAsEsm: [".ts"],
+  transformIgnorePatterns: [
+    "/node_modules/(?!three/examples/|@masatomakino/tweenable-color/esm/)",
+  ],
 };

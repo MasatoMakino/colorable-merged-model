@@ -27,6 +27,9 @@ export declare class ColorableMergedModel extends Group {
     edgeColor?: [number, number, number, number];
     id: number;
     type?: string;
+    easing?: (t: number) => number;
+    duration?: number;
+    now?: number;
   }): void;
 }
 //# sourceMappingURL=ColorableMergedModel.d.ts.map
