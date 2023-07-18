@@ -47,7 +47,9 @@
     "test": "jest",
     "coverage": "npm run test -- --coverage",
     "prepare": "husky install",
-    "buildTS": "tsc"
+    "buildTS": "tsc",
+    "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page",
+    "watch:demo": "npm run demo -- -W"
   },
   "lint-staged": {
     "*.{js,ts,css,md}": "prettier --write"
