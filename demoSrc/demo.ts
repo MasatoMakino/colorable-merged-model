@@ -1,5 +1,6 @@
 import { BoxGeometry, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Stats from "three/examples/jsm/libs/stats.module";
 import { ColorableMergedModel } from "../";
 
 const onDomContentsLoaded = () => {
@@ -12,16 +13,24 @@ const onDomContentsLoaded = () => {
   const renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(w, h);
   document.body.appendChild(renderer.domElement);
+  const rendererInfo = document.createElement("div");
+  document.body.appendChild(rendererInfo);
 
   const controls = new OrbitControls(camera, renderer.domElement);
 
+  const stats = new Stats();
   const rendering = () => {
+    stats.begin();
+    renderer.render(scene, camera);
+    stats.end();
+
+    rendererInfo.innerText = JSON.stringify(renderer.info.render);
     renderer.render(scene, camera);
     requestAnimationFrame(rendering);
   };
   rendering();
 
-  const model = new ColorableMergedModel({
+  const model: ColorableMergedModel = new ColorableMergedModel({
     bodyOption: { color: [1, 1, 1, 0.2] },
     edgeOption: { color: [1, 1, 1, 0.8] },
   });
