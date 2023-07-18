@@ -17,12 +17,17 @@ export declare class TweenableColorMap extends EventEmitter {
    * 指定されたジオメトリの色を変更する
    * @param id
    * @param color
-   * @param type
+   * @param option
    */
   changeColor(
     color: [number, number, number, number],
     id: number,
-    type?: string,
+    option?: {
+      type?: string;
+      duration?: number;
+      easing?: (t: number) => number;
+      now?: number;
+    },
   ): void;
   private needUpdateColors;
   private onChangedColor;
