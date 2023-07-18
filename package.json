@@ -47,6 +47,8 @@
     "test": "jest",
     "coverage": "npm run test -- --coverage",
     "prepare": "husky install",
+    "preversion": "git checkout main && git pull && npm ci && npm run test && npm run build",
+    "postversion": "git add package.json package-lock.json && git checkout -b version/$(git describe --tags --abbrev=0)",
     "buildTS": "tsc",
     "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
     "build": "npm run buildTS & npm run typedocs & npm run demo",
