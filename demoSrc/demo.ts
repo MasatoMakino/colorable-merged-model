@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 import { ColorableMergedModel } from "../";
 
-const onDomContentsLoaded = () => {
+const generateScene = () => {
   const w = 1280;
   const h = 720;
   const scene = new Scene();
@@ -15,8 +15,7 @@ const onDomContentsLoaded = () => {
   document.body.appendChild(renderer.domElement);
   const rendererInfo = document.createElement("div");
   document.body.appendChild(rendererInfo);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
+  new OrbitControls(camera, renderer.domElement);
 
   const stats = new Stats();
   const rendering = () => {
@@ -30,33 +29,47 @@ const onDomContentsLoaded = () => {
   };
   rendering();
 
+  return scene;
+};
+
+const generateModel = () => {
   const model: ColorableMergedModel = new ColorableMergedModel({
     bodyOption: { color: [1, 1, 1, 0.2] },
     edgeOption: { color: [1, 1, 1, 0.8] },
   });
-  scene.add(model);
 
   const n = 20;
+  const addModel = (x: number, y: number, z: number) => {
+    const size = 0.1;
+    const geo = new BoxGeometry(size, size, size);
+
+    const getQuadrant = (i: number): number => {
+      return i < n / 2 ? -1 : 1;
+    };
+    const index = getQuadrant(x) * getQuadrant(y) * getQuadrant(z);
+    const calcPos = (i: number) => {
+      return (i - n / 2) * (size * 3);
+    };
+    geo.translate(calcPos(x), calcPos(y), calcPos(z));
+    model.addModel(geo, index);
+  };
+
   for (let x = 0; x < n; x++) {
     for (let y = 0; y < n; y++) {
       for (let z = 0; z < n; z++) {
-        const size = 0.1;
-        const geo = new BoxGeometry(size, size, size);
-
-        const getQuadrant = (i: number): number => {
-          return i < n / 2 ? -1 : 1;
-        };
-        const index = getQuadrant(x) * getQuadrant(y) * getQuadrant(z);
-        const calcPos = (i: number) => {
-          return (i - n / 2) * (size * 3);
-        };
-        geo.translate(calcPos(x), calcPos(y), calcPos(z));
-        model.addModel(geo, index);
+        addModel(x, y, z);
       }
     }
   }
 
   model.generate();
+  return model;
+};
+
+const onDomContentsLoaded = () => {
+  const scene = generateScene();
+  const model: ColorableMergedModel = generateModel();
+  scene.add(model);
 
   let isOn = true;
 
