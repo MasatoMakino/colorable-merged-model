@@ -1,17 +1,5 @@
-import {
-  BufferAttribute,
-  BufferGeometry,
-  EdgesGeometry,
-  LineSegments,
-} from "three";
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import {
-  TweenableColorMap,
-  ColorableMergedModel,
-  readGeometryCount,
-  ColorableMergedEdgeMaterial,
-  ColorableMergedEdgeMaterialParam,
-} from "./index.js";
+import { LineSegments } from "three";
+import { ColorableMergedEdgeMaterialParam, MergedEdge } from "./index.js";
 
 export interface ColorableMergedEdgeParam {
   edgeDetail?: number;
@@ -19,42 +7,11 @@ export interface ColorableMergedEdgeParam {
   materialSetting?: ColorableMergedEdgeMaterialParam;
 }
 export class ColorableMergedEdge extends LineSegments {
-  readonly option: ColorableMergedEdgeParam;
-  readonly geometries: BufferGeometry[] = [];
-  readonly geometryIDSet: Set<string> = new Set();
-  readonly colorMap = new TweenableColorMap(this);
+  readonly model: MergedEdge;
 
   constructor(option: ColorableMergedEdgeParam) {
     super();
-    this.option = option;
-    this.option.edgeDetail = option.edgeDetail ?? 7;
-  }
-
-  public addModel(geometry: BufferGeometry, id: number, type?: string): void {
-    const uniqueID = TweenableColorMap.getColorMapKey(id, type);
-    this.geometryIDSet.add(uniqueID);
-    const index = [...this.geometryIDSet].indexOf(uniqueID);
-
-    const edge = new EdgesGeometry(geometry, this.option.edgeDetail);
-    const n = readGeometryCount(edge);
-    edge.setAttribute(
-      ColorableMergedModel.MODEL_INDEX,
-      new BufferAttribute(new Uint16Array(n).fill(index), 1),
-    );
-    this.geometries.push(edge);
-
-    this.colorMap.addColor(this.option.color, id, type);
-  }
-
-  async generate(): Promise<void> {
-    if (this.geometries.length === 0) return;
-
-    this.geometry = BufferGeometryUtils.mergeGeometries(this.geometries);
-    this.material = new ColorableMergedEdgeMaterial(
-      this.geometryIDSet.size,
-      this.option.materialSetting,
-    );
-
-    this.colorMap.forceUpdateColorAttribute();
+    option.edgeDetail = option.edgeDetail ?? 7;
+    this.model = new MergedEdge(this, option);
   }
 }
