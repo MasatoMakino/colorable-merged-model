@@ -6,6 +6,15 @@ import {
   ColorableMergedEdgeParam,
 } from "./index.js";
 
+export interface ChangeColorParam {
+  bodyColor?: [number, number, number, number];
+  edgeColor?: [number, number, number, number];
+  id: number;
+  type?: string;
+  easing?: (t: number) => number;
+  duration?: number;
+  now?: number;
+}
 export class ColorableMergedModel extends Group {
   static readonly MODEL_INDEX = "MODEL_INDEX";
 
@@ -49,30 +58,23 @@ export class ColorableMergedModel extends Group {
     await Promise.all([this.body?.generate(), this.edge?.generate()]);
   }
 
-  changeColor(param: {
-    bodyColor?: [number, number, number, number];
-    edgeColor?: [number, number, number, number];
-    id: number;
-    type?: string;
-    easing?: (t: number) => number;
-    duration?: number;
-    now?: number;
-  }): void {
-    if (param.bodyColor) {
-      this.body?.colorMap.changeColor(param.bodyColor, param.id, {
-        type: param.type,
-        duration: param.duration,
-        easing: param.easing,
-        now: param.now,
-      });
-    }
-    if (param.edgeColor) {
-      this.edge?.colorMap.changeColor(param.edgeColor, param.id, {
-        type: param.type,
-        duration: param.duration,
-        easing: param.easing,
-        now: param.now,
-      });
-    }
+  changeColor(param: ChangeColorParam): void {
+    this.changeColorBodyOrEdge(this.body, param.bodyColor, param);
+    this.changeColorBodyOrEdge(this.edge, param.edgeColor, param);
+  }
+
+  private changeColorBodyOrEdge(
+    target: ColorableMergedBody | ColorableMergedEdge | undefined,
+    color: [number, number, number, number] | undefined,
+    param: ChangeColorParam,
+  ) {
+    if (color == undefined || target == undefined) return;
+
+    target.colorMap.changeColor(color, param.id, {
+      type: param.type,
+      duration: param.duration,
+      easing: param.easing,
+      now: param.now,
+    });
   }
 }
