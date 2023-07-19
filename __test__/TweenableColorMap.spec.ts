@@ -22,7 +22,7 @@ describe("TweenableColorMap", () => {
     expect(map.get(id)?.getAttribute()).toStrictEqual([0, 0, 0, 0]);
   });
 
-  test("add grouped", () => {
+  test("add group type", () => {
     const id = 4;
     const group = "group";
     const map = generateNewColorMap();
