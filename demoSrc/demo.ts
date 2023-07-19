@@ -1,7 +1,7 @@
 import { BoxGeometry, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
-import { ColorableMergedModel } from "../";
+import { ColorableMergedView } from "../";
 
 const generateScene = () => {
   const w = 1280;
@@ -33,7 +33,7 @@ const generateScene = () => {
 };
 
 const generateModel = () => {
-  const model: ColorableMergedModel = new ColorableMergedModel({
+  const view: ColorableMergedView = new ColorableMergedView({
     bodyOption: { color: [1, 1, 1, 0.2] },
     edgeOption: { color: [1, 1, 1, 0.8] },
   });
@@ -51,7 +51,7 @@ const generateModel = () => {
       return (i - n / 2) * (size * 3);
     };
     geo.translate(calcPos(x), calcPos(y), calcPos(z));
-    model.addModel(geo, index);
+    view.addGeometry(geo, index);
   };
 
   for (let x = 0; x < n; x++) {
@@ -62,13 +62,13 @@ const generateModel = () => {
     }
   }
 
-  model.generate();
-  return model;
+  view.merge();
+  return view;
 };
 
 const onDomContentsLoaded = () => {
   const scene = generateScene();
-  const model: ColorableMergedModel = generateModel();
+  const model: ColorableMergedView = generateModel();
   scene.add(model);
 
   let isOn = true;

@@ -15,7 +15,7 @@ export interface ChangeColorParam {
   duration?: number;
   now?: number;
 }
-export class ColorableMergedModel extends Group {
+export class ColorableMergedView extends Group {
   static readonly MODEL_INDEX = "MODEL_INDEX";
 
   readonly body?: ColorableMergedBody;
@@ -49,13 +49,17 @@ export class ColorableMergedModel extends Group {
     }
   }
 
-  public addModel(geometry: BufferGeometry, id: number, type?: string): void {
-    this.body?.addModel(geometry, id, type);
-    this.edge?.addModel(geometry, id, type);
+  public addGeometry(
+    geometry: BufferGeometry,
+    id: number,
+    type?: string,
+  ): void {
+    this.body?.model.addGeometry(geometry, id, type);
+    this.edge?.model.addGeometry(geometry, id, type);
   }
 
-  public async generate() {
-    await Promise.all([this.body?.generate(), this.edge?.generate()]);
+  public async merge() {
+    await Promise.all([this.body?.model.merge(), this.edge?.model.merge()]);
   }
 
   changeColor(param: ChangeColorParam): void {
@@ -70,7 +74,7 @@ export class ColorableMergedModel extends Group {
   ) {
     if (color == undefined || target == undefined) return;
 
-    target.colorMap.changeColor(color, param.id, {
+    target.model.colorMap.changeColor(color, param.id, {
       type: param.type,
       duration: param.duration,
       easing: param.easing,

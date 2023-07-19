@@ -11,14 +11,14 @@ export const testColorableMergedObjects = (
     });
 
     test("generate empty body or edge", async () => {
-      await target.generate();
-      expect(target.colorMap.colors.size).toStrictEqual(0);
+      await target.model.merge();
+      expect(target.model.colorMap.colors.size).toStrictEqual(0);
     });
 
     test("generate", async () => {
-      target.addModel(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
-      await target.generate();
-      expect(target.colorMap.colors.size).toStrictEqual(1);
+      target.model.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+      await target.model.merge();
+      expect(target.model.colorMap.colors.size).toStrictEqual(1);
     });
   });
 };
