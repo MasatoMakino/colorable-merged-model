@@ -2,34 +2,29 @@ import {
   Blending,
   FrontSide,
   NormalBlending,
-  ShaderMaterial,
   Side,
   UniformsLib,
   UniformsUtils,
-  Vector4,
 } from "three";
-import { IColorableMergedMaterial } from "./index.js";
+import { ColorableMergedMaterial } from "./index.js";
 import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl.js";
 
 export interface ColorableMergedBodyMaterialParam {
   blending?: Blending;
   side?: Side;
 }
-export class ColorableMergedBodyMaterial
-  extends ShaderMaterial
-  implements IColorableMergedMaterial
-{
+export class ColorableMergedBodyMaterial extends ColorableMergedMaterial {
   constructor(colorsLength: number, param?: ColorableMergedBodyMaterialParam) {
-    super({
-      vertexShader: vertex,
-      fragmentShader: fragment,
-    });
-    this.defines = {
-      INDEX: colorsLength,
-    };
+    super(
+      {
+        vertexShader: vertex,
+        fragmentShader: fragment,
+      },
+      colorsLength,
+    );
+
     this.uniforms = ColorableMergedBodyMaterial.getBasicUniforms(colorsLength);
     this.transparent = true;
-
     this.blending = param?.blending ?? NormalBlending;
     this.side = param?.side ?? FrontSide;
   }
@@ -40,9 +35,6 @@ export class ColorableMergedBodyMaterial
    * @see https://github.com/mrdoob/three.js/blob/0c26bb4bb8220126447c8373154ac045588441de/src/renderers/shaders/ShaderLib.js#L11
    */
   public static getBasicUniforms(colorsCount: number): any {
-    const colors = new Array(colorsCount)
-      .fill(0)
-      .map(() => new Vector4(1, 1, 1, 0.5));
     return UniformsUtils.merge([
       UniformsLib.common,
       UniformsLib.specularmap,
@@ -50,14 +42,7 @@ export class ColorableMergedBodyMaterial
       UniformsLib.aomap,
       UniformsLib.lightmap,
       UniformsLib.fog,
-      {
-        colors: { value: colors },
-      },
+      ColorableMergedMaterial.getColorUniform(colorsCount),
     ]);
-  }
-
-  setColor(index: number, color: [number, number, number, number]) {
-    const colors = this.uniforms.colors.value as Vector4[];
-    colors[index].set(color[0], color[1], color[2], color[3]);
   }
 }

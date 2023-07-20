@@ -1,3 +1,4 @@
+export * from "./IColorableMergedMaterial.js";
 export {
   ColorableMergedBodyMaterial,
   ColorableMergedBodyMaterialParam,
@@ -6,4 +7,3 @@ export {
   ColorableMergedEdgeMaterial,
   ColorableMergedEdgeMaterialParam,
 } from "./ColorableMergedEdgeMaterial.js";
-export * from "./IColorableMergedMaterial.js";
