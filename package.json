@@ -19,10 +19,11 @@
     "url": "https://github.com/MasatoMakino/colorable-merged-model/issues"
   },
   "homepage": "https://github.com/MasatoMakino/colorable-merged-model#readme",
-  "dependencies": {
+  "peerDependencies": {
     "@masatomakino/tweenable-color": "^0.1.0",
-    "@tweenjs/tween.js": "^21.0.0",
-    "eventemitter3": "^5.0.1"
+    "@tweenjs/tween.js": "^18.6.4 || ^19.0.0 || ^20.0.3 || ^21.0.0",
+    "eventemitter3": "^5.0.1",
+    "three": ">=0.152.2 <1.0.0"
   },
   "devDependencies": {
     "@masatomakino/gulptask-demo-page": "^0.7.0",
@@ -35,13 +36,9 @@
     "lint-staged": "^13.2.3",
     "prettier": "^3.0.0",
     "prettier-plugin-organize-imports": "^3.2.3",
-    "three": "^0.155.0",
     "ts-jest": "^29.1.1",
     "typedoc": "^0.24.8",
     "typescript": "^5.1.6"
-  },
-  "peerDependencies": {
-    "three": ">=0.152.2 <1.0.0"
   },
   "scripts": {
     "test": "npm run buildTS && jest",
