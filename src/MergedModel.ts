@@ -30,15 +30,18 @@ export class MergedModel<
     this.colorMap = new TweenableColorMap(object3D);
   }
 
-  public addGeometry(
+  public async addGeometry(
     geometry: BufferGeometry,
     id: number,
     type?: string,
-  ): void {
+  ) {
     const uniqueID = TweenableColorMap.getColorMapKey(id, type);
     this.geometryIDSet.add(uniqueID);
     const colorMapIndex = [...this.geometryIDSet].indexOf(uniqueID);
-    const convertedGeometry = this.convertGeometry(geometry, colorMapIndex);
+    const convertedGeometry = await this.convertGeometry(
+      geometry,
+      colorMapIndex,
+    );
     const n = readGeometryCount(convertedGeometry);
     convertedGeometry.setAttribute(
       ColorableMergedView.MODEL_INDEX,
@@ -49,10 +52,10 @@ export class MergedModel<
     this.colorMap.addColor(this.option.color, id, type);
   }
 
-  protected convertGeometry(
+  protected async convertGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,
-  ): BufferGeometry {
+  ) {
     //Override this method in child class
     return geometry;
   }
@@ -79,10 +82,10 @@ export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
       this.option.materialSetting,
     );
   }
-  protected override convertGeometry(
+  protected override async convertGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,
-  ): BufferGeometry {
+  ) {
     geometry.deleteAttribute("uv");
     return geometry;
   }
@@ -96,10 +99,10 @@ export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
     );
   }
 
-  protected override convertGeometry(
+  protected override async convertGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,
-  ): BufferGeometry {
+  ) {
     return new EdgesGeometry(geometry, this.option.edgeDetail);
   }
 }

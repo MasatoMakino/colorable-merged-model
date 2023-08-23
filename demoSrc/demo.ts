@@ -32,7 +32,7 @@ const generateScene = () => {
   return scene;
 };
 
-const generateModel = () => {
+const generateModel = async () => {
   const view: ColorableMergedView = new ColorableMergedView({
     bodyOption: { color: [1, 1, 1, 0.2] },
     edgeOption: { color: [1, 1, 1, 0.8] },
@@ -51,24 +51,26 @@ const generateModel = () => {
       return (i - n / 2) * (size * 3);
     };
     geo.translate(calcPos(x), calcPos(y), calcPos(z));
-    view.addGeometry(geo, index);
+    return view.addGeometry(geo, index);
   };
 
+  const promises: Promise<void>[] = [];
   for (let x = 0; x < n; x++) {
     for (let y = 0; y < n; y++) {
       for (let z = 0; z < n; z++) {
-        addModel(x, y, z);
+        promises.push(addModel(x, y, z));
       }
     }
   }
+  await Promise.all(promises);
 
   view.merge();
   return view;
 };
 
-const onDomContentsLoaded = () => {
+const onDomContentsLoaded = async () => {
   const scene = generateScene();
-  const model: ColorableMergedView = generateModel();
+  const model: ColorableMergedView = await generateModel();
   scene.add(model);
 
   let isOn = true;
