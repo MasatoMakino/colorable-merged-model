@@ -13,9 +13,11 @@ export class EdgeWorkerManager {
     }
   }
 
-  static getWorker(): Worker {
+  static getWorker(): Worker | undefined {
+    if (this.#workers.length === 0) return undefined;
+
     const worker = this.#workers[this.#workerIndex];
-    this.#workerIndex = (this.#workerIndex + 1) % this.#workers.length;
+    this.#workerIndex = this.#workerIndex++ % this.#workers.length;
     return worker;
   }
 }
