@@ -40,6 +40,7 @@ export class EdgeWorkerManager {
     return worker;
   }
 
+  //TODO requestを即時実行ではなく、キューに積んで、workerが空いたら実行するようにする
   static request(geometry: BufferGeometry, detail: number): void {
     const worker = this.getWorker();
     if (!worker) return;

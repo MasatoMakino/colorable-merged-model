@@ -54,7 +54,7 @@
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
     "server": "browser-sync ./docs/demo -w",
     "watch:demo": "npm run demo -- -W",
-    "watch:tsc": "tsc -W --incremental"
+    "watch:tsc": "tsc --project tsconfig.lib.json -W --incremental"
   },
   "lint-staged": {
     "*.{js,ts,css,md}": "prettier --write"
