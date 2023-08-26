@@ -2,13 +2,17 @@ import EventEmitter from "eventemitter3";
 import { BufferGeometry } from "three";
 import { EdgeGenerationResponse } from "./EdgeWorkerMessage";
 
+interface EdgeWorkerInstance {
+  worker: Worker;
+  isRunning: boolean;
+}
+
 export class EdgeWorkerManager {
   static get workerURL(): string | URL {
     return EdgeWorkerManager.#workerURL;
   }
   static #workerURL: string | URL;
-  static #workers: Worker[] = [];
-  static #workerIndex = 0;
+  static #workers: EdgeWorkerInstance[] = [];
   static emitter = new EventEmitter();
 
   static requestStack: { geometry: BufferGeometry; detail: number }[] = [];
@@ -17,45 +21,61 @@ export class EdgeWorkerManager {
     if (this.#workerURL) throw new Error("Worker URL is already set.");
 
     this.#workerURL = url;
-    const nativeProcess = window.navigator.hardwareConcurrency ?? 4;
+    const nativeProcess = window.navigator.hardwareConcurrency ?? 2;
 
     for (let i = 0; i < nativeProcess; i++) {
       const urlString = typeof url === "string" ? url : url.toString();
       const worker = new Worker(urlString, { name: `edge_${i}` });
-      this.#workers.push(worker);
+      const workerInstance = {
+        worker,
+        isRunning: false,
+      };
+      this.#workers.push(workerInstance);
       worker.addEventListener(
         "message",
         (e: MessageEvent<EdgeGenerationResponse>) => {
           this.emitter.emit("response", e.data);
+          workerInstance.isRunning = false;
+
+          this.shiftRequest();
         },
       );
     }
   }
 
-  private static getWorker(): Worker | undefined {
-    if (this.#workers.length === 0) return undefined;
-
-    const worker = this.#workers[this.#workerIndex];
-    this.#workerIndex = this.#workerIndex++ % this.#workers.length;
-    return worker;
-  }
-
   //TODO requestを即時実行ではなく、キューに積んで、workerが空いたら実行するようにする
   static request(geometry: BufferGeometry, detail: number): void {
-    const worker = this.getWorker();
-    if (!worker) return;
+    if (!this.workerURL) return;
+    this.requestStack.push({ geometry, detail });
+    this.shiftRequest();
+  }
 
-    const copyAttribute = (name: string) => {
-      const attr = geometry.getAttribute(name);
-      return attr.array as Float32Array;
-    };
-    const message = {
-      position: copyAttribute("position"),
-      normal: copyAttribute("normal"),
-      index: (geometry.getIndex()!.array as Uint16Array | Uint32Array).slice(),
-      detail,
-      geometryID: geometry.id,
-    };
-    worker.postMessage(message);
+  private static shiftRequest(): void {
+    const suspendedWorkers = this.#workers.filter(
+      (worker) => !worker.isRunning,
+    );
+    if (suspendedWorkers.length === 0) return;
+
+    suspendedWorkers.forEach((worker) => {
+      const request = this.requestStack.shift();
+      if (!request) return;
+
+      const { geometry, detail } = request;
+      const copyAttribute = (name: string) => {
+        const attr = geometry.getAttribute(name);
+        return attr.array as Float32Array;
+      };
+      const message = {
+        position: copyAttribute("position"),
+        normal: copyAttribute("normal"),
+        index: (
+          geometry.getIndex()!.array as Uint16Array | Uint32Array
+        ).slice(),
+        detail,
+        geometryID: geometry.id,
+      };
+      worker.worker.postMessage(message);
+      worker.isRunning = true;
+    });
   }
 }
