@@ -5,3 +5,5 @@ export * from "./MergedModelUtil.js";
 export * from "./TweenableColorMap.js";
 export * from "./material/index.js";
 export * from "./MergedModel.js";
+export * from "./EdgeWorkerManager.js";
+export * from "./EdgeWorkerMessage.js";
