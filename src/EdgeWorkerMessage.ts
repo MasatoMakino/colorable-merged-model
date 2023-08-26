@@ -3,7 +3,7 @@ export type EdgeGenerationRequest = {
   normal: Float32Array;
   index: Uint16Array | Uint32Array;
   geometryID: number;
-  detail: number;
+  detail?: number;
 };
 
 export type EdgeGenerationResponse = {
