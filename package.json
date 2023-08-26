@@ -48,13 +48,14 @@
     "preversion": "git checkout main && git pull && npm ci && npm test && npm run build",
     "postversion": "git add package.json package-lock.json && git checkout -b version/$(git describe --tags --abbrev=0)",
     "buildTS": "tsc --project tsconfig.lib.json && npx webpack",
-    "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
+    "start:dev": "npm run server & npm run watch:tsc & npm run watch:workerBundle & npm run watch:demo",
     "build": "npm run buildTS & npm run typedocs & npm run demo",
     "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page",
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
     "server": "browser-sync ./docs/demo -w",
     "watch:demo": "npm run demo -- -W",
-    "watch:tsc": "tsc --project tsconfig.lib.json -W --incremental"
+    "watch:tsc": "tsc --project tsconfig.lib.json -W --incremental",
+    "watch:workerBundle": "webpack --watch --config webpack.config.js"
   },
   "lint-staged": {
     "*.{js,ts,css,md}": "prettier --write"
