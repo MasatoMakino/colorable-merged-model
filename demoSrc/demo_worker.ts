@@ -6,6 +6,7 @@ import { ColorSwitcher } from "./ColorSwitcher";
 const onDomContentsLoaded = async () => {
   const scene = generateScene();
   const model: ColorableMergedView = await generateModel(
+    1,
     new URL("../dist/EdgeWorker.js", import.meta.url),
   );
   scene.add(model);

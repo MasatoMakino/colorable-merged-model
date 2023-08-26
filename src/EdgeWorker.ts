@@ -2,13 +2,13 @@ import { BufferAttribute, BufferGeometry, EdgesGeometry } from "three";
 import {
   EdgeGenerationRequest,
   EdgeGenerationResponse,
-} from "./EdgeWorkerMessage";
+} from "./EdgeWorkerMessage.js";
 
 type MessageEvent = {
   data: EdgeGenerationRequest;
 };
 
-export function onMessageProcess(e: MessageEvent) {
+self.onmessage = (e: MessageEvent) => {
   const bufferGeometry = new BufferGeometry();
   bufferGeometry.setAttribute(
     "position",
@@ -20,10 +20,9 @@ export function onMessageProcess(e: MessageEvent) {
   const buffer = (edgesGeometry.getAttribute("position") as BufferAttribute)
     .array as Float32Array;
 
-  postMessage({
+  const message: EdgeGenerationResponse = {
     buffer,
     geometryID: e.data.geometryID,
-  } as EdgeGenerationResponse);
-}
-
-onmessage = onMessageProcess;
+  };
+  self.postMessage(message);
+};

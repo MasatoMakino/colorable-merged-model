@@ -2,6 +2,7 @@ import { BoxGeometry } from "three";
 import { ColorableMergedView, EdgeWorkerManager } from "../";
 
 export async function generateModel(
+  n: number = 20,
   url?: string | URL,
 ): Promise<ColorableMergedView> {
   if (url) {
@@ -13,7 +14,6 @@ export async function generateModel(
     edgeOption: { color: [1, 1, 1, 0.8] },
   });
 
-  const n = 20;
   const addModel = (x: number, y: number, z: number) => {
     const size = 0.1;
     const geo = new BoxGeometry(size, size, size);

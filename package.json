@@ -38,7 +38,8 @@
     "prettier-plugin-organize-imports": "^3.2.3",
     "ts-jest": "^29.1.1",
     "typedoc": "^0.24.8",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "test": "npm run buildTS && jest",
@@ -46,7 +47,7 @@
     "prepare": "husky install",
     "preversion": "git checkout main && git pull && npm ci && npm test && npm run build",
     "postversion": "git add package.json package-lock.json && git checkout -b version/$(git describe --tags --abbrev=0)",
-    "buildTS": "tsc",
+    "buildTS": "tsc --project tsconfig.lib.json && npx webpack",
     "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
     "build": "npm run buildTS & npm run typedocs & npm run demo",
     "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page",
