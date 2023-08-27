@@ -43,7 +43,6 @@ export class EdgeWorkerManager {
     }
   }
 
-  //TODO requestを即時実行ではなく、キューに積んで、workerが空いたら実行するようにする
   static request(geometry: BufferGeometry, detail: number): void {
     if (!this.workerURL) return;
     this.requestStack.push({ geometry, detail });
@@ -72,7 +71,7 @@ export class EdgeWorkerManager {
           geometry.getIndex()!.array as Uint16Array | Uint32Array
         ).slice(),
         detail,
-        geometryID: geometry.id,
+        geometryID: geometry.uuid,
       };
       worker.worker.postMessage(message);
       worker.isRunning = true;

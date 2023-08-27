@@ -43,6 +43,8 @@ export class MergedModel<
     const uniqueID = TweenableColorMap.getColorMapKey(id, type);
     this.geometryIDSet.add(uniqueID);
     const colorMapIndex = [...this.geometryIDSet].indexOf(uniqueID);
+    this.colorMap.addColor(this.option.color, id, type);
+
     const convertedGeometry = await this.convertGeometry(
       geometry,
       colorMapIndex,
@@ -50,11 +52,12 @@ export class MergedModel<
     const n = readGeometryCount(convertedGeometry);
     convertedGeometry.setAttribute(
       ColorableMergedView.MODEL_INDEX,
-      new BufferAttribute(new Uint16Array(new Array(n).fill(colorMapIndex)), 1),
+      new BufferAttribute(
+        new Float32Array(new Array(n).fill(colorMapIndex)),
+        1,
+      ),
     );
     this.geometries.push(convertedGeometry);
-
-    this.colorMap.addColor(this.option.color, id, type);
   }
 
   protected async convertGeometry(
@@ -108,14 +111,15 @@ export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
     geometry: BufferGeometry,
     colorMapIndex: number,
   ) {
-    if (EdgeWorkerManager.workerURL) {
-      return await MergedEdge.generateEdgeGeometryOnWorker(
-        geometry,
-        this.option.edgeDetail!,
-      );
-    } else {
+    if (!EdgeWorkerManager.workerURL) {
       return new EdgesGeometry(geometry, this.option.edgeDetail);
     }
+
+    const edge = await MergedEdge.generateEdgeGeometryOnWorker(
+      geometry,
+      this.option.edgeDetail!,
+    );
+    return edge;
   }
 
   static generateEdgeGeometryOnWorker(
@@ -125,7 +129,7 @@ export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
     return new Promise((resolve) => {
       EdgeWorkerManager.request(geometry, edgeDetail);
       const onResponse = (e: EdgeGenerationResponse) => {
-        if (e.geometryID === geometry.id) {
+        if (e.geometryID === geometry.uuid) {
           const geometry = new EdgesGeometry();
           const attr = e.buffer as Float32Array;
           geometry.setAttribute("position", new BufferAttribute(attr, 3));
