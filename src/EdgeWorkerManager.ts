@@ -36,7 +36,6 @@ export class EdgeWorkerManager {
         (e: MessageEvent<EdgeGenerationResponse>) => {
           this.emitter.emit("response", e.data);
           workerInstance.isRunning = false;
-
           this.shiftRequest();
         },
       );

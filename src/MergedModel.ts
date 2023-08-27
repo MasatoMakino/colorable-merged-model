@@ -1,21 +1,18 @@
 import {
   ColorableMergedBody,
+  ColorableMergedBodyMaterial,
   ColorableMergedBodyParam,
   ColorableMergedEdge,
-  ColorableMergedEdgeParam,
-  ColorableMergedBodyMaterial,
   ColorableMergedEdgeMaterial,
-  TweenableColorMap,
-  readGeometryCount,
+  ColorableMergedEdgeParam,
   ColorableMergedView,
+  readGeometryCount,
+  TweenableColorMap,
 } from "./index.js";
 import { BufferAttribute, BufferGeometry, EdgesGeometry } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { EdgeWorkerManager } from "./EdgeWorkerManager.js";
-import {
-  EdgeGenerationRequest,
-  EdgeGenerationResponse,
-} from "./EdgeWorkerMessage.js";
+import { EdgeGenerationResponse } from "./EdgeWorkerMessage.js";
 
 export class MergedModel<
   Option extends ColorableMergedBodyParam | ColorableMergedEdgeParam,
@@ -49,13 +46,11 @@ export class MergedModel<
       geometry,
       colorMapIndex,
     );
+
     const n = readGeometryCount(convertedGeometry);
     convertedGeometry.setAttribute(
       ColorableMergedView.MODEL_INDEX,
-      new BufferAttribute(
-        new Float32Array(new Array(n).fill(colorMapIndex)),
-        1,
-      ),
+      new BufferAttribute(new Uint16Array(new Array(n).fill(colorMapIndex)), 1),
     );
     this.geometries.push(convertedGeometry);
   }
@@ -115,11 +110,10 @@ export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
       return new EdgesGeometry(geometry, this.option.edgeDetail);
     }
 
-    const edge = await MergedEdge.generateEdgeGeometryOnWorker(
+    return await MergedEdge.generateEdgeGeometryOnWorker(
       geometry,
       this.option.edgeDetail!,
     );
-    return edge;
   }
 
   static generateEdgeGeometryOnWorker(
