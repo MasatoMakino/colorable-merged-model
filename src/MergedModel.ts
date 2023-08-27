@@ -125,8 +125,7 @@ export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
       const onResponse = (e: EdgeGenerationResponse) => {
         if (e.geometryID === geometry.uuid) {
           const geometry = new EdgesGeometry();
-          const attr = e.buffer as Float32Array;
-          geometry.setAttribute("position", new BufferAttribute(attr, 3));
+          geometry.setAttribute("position", new BufferAttribute(e.buffer, 3));
           EdgeWorkerManager.emitter.off("response", onResponse);
           resolve(geometry);
         }
