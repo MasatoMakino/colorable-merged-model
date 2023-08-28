@@ -34,9 +34,9 @@ export class EdgeWorkerManager {
       worker.addEventListener(
         "message",
         (e: MessageEvent<EdgeGenerationResponse>) => {
-          this.emitter.emit("response", e.data);
           workerInstance.isRunning = false;
           this.shiftRequest();
+          this.emitter.emit("response", e.data);
         },
       );
     }
@@ -61,7 +61,7 @@ export class EdgeWorkerManager {
       const { geometry, detail } = request;
       const copyAttribute = (name: string) => {
         const attr = geometry.getAttribute(name);
-        return attr.array as Float32Array;
+        return attr.array.slice() as Float32Array;
       };
       const message = {
         position: copyAttribute("position"),
@@ -72,7 +72,11 @@ export class EdgeWorkerManager {
         detail,
         geometryID: geometry.uuid,
       };
-      worker.worker.postMessage(message);
+      worker.worker.postMessage(message, [
+        message.position.buffer,
+        message.normal.buffer,
+        message.index.buffer,
+      ]);
       worker.isRunning = true;
     });
   }

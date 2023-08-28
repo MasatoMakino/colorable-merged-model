@@ -24,5 +24,6 @@ self.onmessage = (e: MessageEvent) => {
     buffer,
     geometryID: e.data.geometryID,
   };
-  self.postMessage(message);
+  // @ts-ignore
+  self.postMessage(message, [message.buffer.buffer]);
 };
