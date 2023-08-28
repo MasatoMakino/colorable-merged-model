@@ -20,7 +20,6 @@ export class MergedModel<
   readonly object3D: ColorableMergedBody | ColorableMergedEdge;
   readonly option: Option;
   readonly geometries: BufferGeometry[] = [];
-  readonly geometryIDSet: Set<string> = new Set();
   readonly colorMap: TweenableColorMap;
 
   constructor(
@@ -37,10 +36,8 @@ export class MergedModel<
     id: number,
     type?: string,
   ) {
-    const uniqueID = TweenableColorMap.getColorMapKey(id, type);
-    this.geometryIDSet.add(uniqueID);
-    const colorMapIndex = [...this.geometryIDSet].indexOf(uniqueID);
     this.colorMap.addColor(this.option.color, id, type);
+    const colorMapIndex = this.colorMap.getIndex(id, type)!;
 
     const convertedGeometry = await this.convertGeometry(
       geometry,
@@ -81,7 +78,7 @@ export class MergedModel<
 export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
   protected override createMaterial() {
     this.object3D.material = new ColorableMergedBodyMaterial(
-      this.geometryIDSet.size,
+      this.colorMap.getSize(),
       this.option.materialSetting,
     );
   }
@@ -97,7 +94,7 @@ export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
 export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
   protected override createMaterial() {
     this.object3D.material = new ColorableMergedEdgeMaterial(
-      this.geometryIDSet.size,
+      this.colorMap.getSize(),
       this.option.materialSetting,
     );
   }

@@ -46,6 +46,16 @@ export class TweenableColorMap extends EventEmitter {
     return this.colors.get(TweenableColorMap.getColorMapKey(id, type));
   }
 
+  getIndex(id: number, type?: string): number | undefined {
+    return [...this.colors.keys()].indexOf(
+      TweenableColorMap.getColorMapKey(id, type),
+    );
+  }
+
+  getSize(): number {
+    return this.colors.size;
+  }
+
   /**
    * 指定されたジオメトリの色を変更する
    * @param id
