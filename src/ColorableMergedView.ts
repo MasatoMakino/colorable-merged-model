@@ -49,13 +49,15 @@ export class ColorableMergedView extends Group {
     }
   }
 
-  public addGeometry(
+  public async addGeometry(
     geometry: BufferGeometry,
     id: number,
     type?: string,
-  ): void {
-    this.body?.model.addGeometry(geometry, id, type);
-    this.edge?.model.addGeometry(geometry, id, type);
+  ) {
+    await Promise.all([
+      this.body?.model.addGeometry(geometry, id, type),
+      this.edge?.model.addGeometry(geometry, id, type),
+    ]);
   }
 
   public async merge() {

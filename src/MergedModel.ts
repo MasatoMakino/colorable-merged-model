@@ -1,16 +1,18 @@
 import {
   ColorableMergedBody,
+  ColorableMergedBodyMaterial,
   ColorableMergedBodyParam,
   ColorableMergedEdge,
-  ColorableMergedEdgeParam,
-  ColorableMergedBodyMaterial,
   ColorableMergedEdgeMaterial,
-  TweenableColorMap,
-  readGeometryCount,
+  ColorableMergedEdgeParam,
   ColorableMergedView,
+  readGeometryCount,
+  TweenableColorMap,
 } from "./index.js";
 import { BufferAttribute, BufferGeometry, EdgesGeometry } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { EdgeWorkerManager } from "./EdgeWorkerManager.js";
+import { EdgeGenerationResponse } from "./EdgeWorkerMessage.js";
 
 export class MergedModel<
   Option extends ColorableMergedBodyParam | ColorableMergedEdgeParam,
@@ -18,7 +20,6 @@ export class MergedModel<
   readonly object3D: ColorableMergedBody | ColorableMergedEdge;
   readonly option: Option;
   readonly geometries: BufferGeometry[] = [];
-  readonly geometryIDSet: Set<string> = new Set();
   readonly colorMap: TweenableColorMap;
 
   constructor(
@@ -30,29 +31,31 @@ export class MergedModel<
     this.colorMap = new TweenableColorMap(object3D);
   }
 
-  public addGeometry(
+  public async addGeometry(
     geometry: BufferGeometry,
     id: number,
     type?: string,
-  ): void {
-    const uniqueID = TweenableColorMap.getColorMapKey(id, type);
-    this.geometryIDSet.add(uniqueID);
-    const colorMapIndex = [...this.geometryIDSet].indexOf(uniqueID);
-    const convertedGeometry = this.convertGeometry(geometry, colorMapIndex);
+  ) {
+    this.colorMap.addColor(this.option.color, id, type);
+    const colorMapIndex = this.colorMap.getIndex(id, type)!;
+
+    const convertedGeometry = await this.convertGeometry(
+      geometry,
+      colorMapIndex,
+    );
+
     const n = readGeometryCount(convertedGeometry);
     convertedGeometry.setAttribute(
       ColorableMergedView.MODEL_INDEX,
       new BufferAttribute(new Uint16Array(new Array(n).fill(colorMapIndex)), 1),
     );
     this.geometries.push(convertedGeometry);
-
-    this.colorMap.addColor(this.option.color, id, type);
   }
 
-  protected convertGeometry(
+  protected async convertGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,
-  ): BufferGeometry {
+  ) {
     //Override this method in child class
     return geometry;
   }
@@ -75,14 +78,14 @@ export class MergedModel<
 export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
   protected override createMaterial() {
     this.object3D.material = new ColorableMergedBodyMaterial(
-      this.geometryIDSet.size,
+      this.colorMap.getSize(),
       this.option.materialSetting,
     );
   }
-  protected override convertGeometry(
+  protected override async convertGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,
-  ): BufferGeometry {
+  ) {
     geometry.deleteAttribute("uv");
     return geometry;
   }
@@ -91,15 +94,40 @@ export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
 export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
   protected override createMaterial() {
     this.object3D.material = new ColorableMergedEdgeMaterial(
-      this.geometryIDSet.size,
+      this.colorMap.getSize(),
       this.option.materialSetting,
     );
   }
 
-  protected override convertGeometry(
+  protected override async convertGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,
-  ): BufferGeometry {
-    return new EdgesGeometry(geometry, this.option.edgeDetail);
+  ) {
+    if (!EdgeWorkerManager.workerURL) {
+      return new EdgesGeometry(geometry, this.option.edgeDetail);
+    }
+
+    return await MergedEdge.generateEdgeGeometryOnWorker(
+      geometry,
+      this.option.edgeDetail!,
+    );
+  }
+
+  static generateEdgeGeometryOnWorker(
+    geometry: BufferGeometry,
+    edgeDetail: number,
+  ): Promise<EdgesGeometry> {
+    return new Promise((resolve) => {
+      EdgeWorkerManager.request(geometry, edgeDetail);
+      const onResponse = (e: EdgeGenerationResponse) => {
+        if (e.geometryID === geometry.uuid) {
+          const geometry = new EdgesGeometry();
+          geometry.setAttribute("position", new BufferAttribute(e.buffer, 3));
+          EdgeWorkerManager.emitter.off("response", onResponse);
+          resolve(geometry);
+        }
+      };
+      EdgeWorkerManager.emitter.on("response", onResponse);
+    });
   }
 }
