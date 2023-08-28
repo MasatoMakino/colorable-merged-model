@@ -71,7 +71,7 @@ describe("ColorableMergedView", () => {
 
   test("change color", async () => {
     const view = generateView();
-    view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+    await view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
     await view.merge();
     view.changeColor({
       bodyColor: [0, 1, 1, 1],
