@@ -1,10 +1,18 @@
 import EventEmitter from "eventemitter3";
 import { BufferGeometry } from "three";
-import { EdgeGenerationResponse } from "./EdgeWorkerMessage";
+import {
+  EdgeGenerationRequest,
+  EdgeGenerationResponse,
+} from "./EdgeWorkerMessage";
 
 interface EdgeWorkerInstance {
   worker: Worker;
   isRunning: boolean;
+}
+
+interface EdgeRequest {
+  geometry: BufferGeometry;
+  detail: number;
 }
 
 export class EdgeWorkerManager {
@@ -15,7 +23,7 @@ export class EdgeWorkerManager {
   static #workers: EdgeWorkerInstance[] = [];
   static emitter = new EventEmitter();
 
-  static requestStack: { geometry: BufferGeometry; detail: number }[] = [];
+  static requestStack: EdgeRequest[] = [];
 
   public static setWorkerURL(url: string | URL): void {
     if (this.#workerURL) throw new Error("Worker URL is already set.");
@@ -58,20 +66,7 @@ export class EdgeWorkerManager {
       const request = this.requestStack.shift();
       if (!request) return;
 
-      const { geometry, detail } = request;
-      const copyAttribute = (name: string) => {
-        const attr = geometry.getAttribute(name);
-        return attr.array.slice() as Float32Array;
-      };
-      const message = {
-        position: copyAttribute("position"),
-        normal: copyAttribute("normal"),
-        index: (
-          geometry.getIndex()!.array as Uint16Array | Uint32Array
-        ).slice(),
-        detail,
-        geometryID: geometry.uuid,
-      };
+      const message = EdgeWorkerManager.convertRequestToMessage(request);
       worker.worker.postMessage(message, [
         message.position.buffer,
         message.normal.buffer,
@@ -79,5 +74,20 @@ export class EdgeWorkerManager {
       ]);
       worker.isRunning = true;
     });
+  }
+
+  static convertRequestToMessage(request: EdgeRequest): EdgeGenerationRequest {
+    const { geometry, detail } = request;
+    const copyAttribute = (name: string) => {
+      const attr = geometry.getAttribute(name);
+      return attr.array.slice() as Float32Array;
+    };
+    return {
+      position: copyAttribute("position"),
+      normal: copyAttribute("normal"),
+      index: (geometry.getIndex()!.array as Uint16Array | Uint32Array).slice(),
+      detail,
+      geometryID: geometry.uuid,
+    };
   }
 }

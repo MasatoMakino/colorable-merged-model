@@ -8,7 +8,7 @@ type MessageEvent = {
   data: EdgeGenerationRequest;
 };
 
-self.onmessage = (e: MessageEvent) => {
+export function onMessageHandler(e: MessageEvent) {
   const bufferGeometry = new BufferGeometry();
   bufferGeometry.setAttribute(
     "position",
@@ -26,4 +26,6 @@ self.onmessage = (e: MessageEvent) => {
   };
   // @ts-ignore
   self.postMessage(message, [message.buffer.buffer]);
-};
+}
+
+onmessage = onMessageHandler;
