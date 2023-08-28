@@ -1,6 +1,6 @@
 {
   "name": "@masatomakino/colorable-merged-model",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Mesh and Edge lines in three.js that can change color after geometry is merged",
   "type": "module",
   "main": "dist/index.js",
