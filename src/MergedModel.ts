@@ -11,9 +11,6 @@ import {
 } from "./index.js";
 import { BufferAttribute, BufferGeometry, EdgesGeometry } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { EdgeWorkerManager } from "./EdgeWorkerManager.js";
-import { EdgeGenerationResponse } from "./EdgeWorkerMessage.js";
-
 export class MergedModel<
   Option extends ColorableMergedBodyParam | ColorableMergedEdgeParam,
 > {
@@ -103,31 +100,6 @@ export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
     geometry: BufferGeometry,
     colorMapIndex: number,
   ) {
-    if (!EdgeWorkerManager.workerURL) {
-      return new EdgesGeometry(geometry, this.option.edgeDetail);
-    }
-
-    return await MergedEdge.generateEdgeGeometryOnWorker(
-      geometry,
-      this.option.edgeDetail!,
-    );
-  }
-
-  static generateEdgeGeometryOnWorker(
-    geometry: BufferGeometry,
-    edgeDetail: number,
-  ): Promise<EdgesGeometry> {
-    return new Promise((resolve) => {
-      EdgeWorkerManager.request(geometry, edgeDetail);
-      const onResponse = (e: EdgeGenerationResponse) => {
-        if (e.geometryID === geometry.uuid) {
-          const geometry = new EdgesGeometry();
-          geometry.setAttribute("position", new BufferAttribute(e.buffer, 3));
-          EdgeWorkerManager.emitter.off("response", onResponse);
-          resolve(geometry);
-        }
-      };
-      EdgeWorkerManager.emitter.on("response", onResponse);
-    });
+    return new EdgesGeometry(geometry, this.option.edgeDetail);
   }
 }
