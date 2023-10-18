@@ -1,1 +1,0 @@
-/*! For license information please see EdgeWorker.js.LICENSE.txt */
