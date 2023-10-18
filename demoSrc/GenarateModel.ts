@@ -1,5 +1,5 @@
 import { BoxGeometry } from "three";
-import { ColorableMergedView, EdgeWorkerManager } from "../";
+import { ColorableMergedView, EdgeWorkerManager } from "../src/index.js";
 
 export async function generateModel(
   n: number = 20,

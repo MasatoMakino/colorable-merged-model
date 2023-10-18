@@ -56,7 +56,7 @@
     "buildTS": "tsc --project tsconfig.lib.json && npx webpack",
     "start:dev": "npm run server & npm run watch:tsc & npm run watch:workerBundle & npm run watch:demo",
     "build": "npm run buildTS & npm run typedocs & npm run demo",
-    "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page --compileModule es2020",
+    "demo": "npm run buildTS && npx @masatomakino/gulptask-demo-page --compileTarget ES2021 --compileModule es2020",
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
     "server": "browser-sync ./docs/demo -w",
     "watch:demo": "npm run demo -- -W",

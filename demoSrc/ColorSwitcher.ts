@@ -1,4 +1,4 @@
-import { ColorableMergedView } from "../";
+import { ColorableMergedView } from "../src/index.js";
 
 export class ColorSwitcher {
   private isOn: boolean = true;
