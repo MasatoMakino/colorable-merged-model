@@ -3,9 +3,15 @@
   "version": "0.3.0",
   "description": "Mesh and Edge lines in three.js that can change color after geometry is merged",
   "type": "module",
-  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "types": "dist/index.d.ts",
-  "module": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MasatoMakino/colorable-merged-model.git"
