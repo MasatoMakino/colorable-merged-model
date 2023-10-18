@@ -1,14 +1,9 @@
 import { BoxGeometry } from "three";
-import { ColorableMergedView, EdgeWorkerManager } from "../src/index.js";
+import { ColorableMergedView } from "../src/index.js";
 
 export async function generateModel(
   n: number = 20,
-  url?: string | URL,
 ): Promise<ColorableMergedView> {
-  if (url) {
-    EdgeWorkerManager.setWorkerURL(url);
-  }
-
   const view: ColorableMergedView = new ColorableMergedView({
     bodyOption: { color: [1, 1, 1, 0.2] },
     edgeOption: { color: [1, 1, 1, 0.8] },
