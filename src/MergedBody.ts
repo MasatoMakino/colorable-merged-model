@@ -4,10 +4,7 @@ import { BufferGeometry } from "three";
 import { MergedModel } from "./MergedModel";
 
 export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
-  protected override async convertGeometry(
-    geometry: BufferGeometry,
-    colorMapIndex: number,
-  ) {
+  protected override async convertGeometry(geometry: BufferGeometry) {
     geometry.deleteAttribute("uv");
     return geometry;
   }

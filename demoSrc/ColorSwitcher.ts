@@ -1,4 +1,8 @@
-import { ColorableMergedView } from "../src/index.js";
+import {
+  ColorableMergedBodyMaterial,
+  ColorableMergedView,
+  ColorableMergedEdgeMaterial,
+} from "../src/index.js";
 
 export class ColorSwitcher {
   private isOn: boolean = true;
@@ -19,16 +23,26 @@ export class ColorSwitcher {
     const OffEdgeColor01: [number, number, number, number] = [1, 0, 0, 0.8];
     const OffEdgeColor02: [number, number, number, number] = [0, 1, 0, 0.8];
 
-    this.model.changeColor({
-      bodyColor: this.isOn ? OnBodyColor : OffBodyColor01,
-      edgeColor: this.isOn ? OnEdgeColor : OffEdgeColor01,
-      id: 1,
-    });
+    const bodyMaterial = this.model.body
+      ?.material as ColorableMergedBodyMaterial;
+    bodyMaterial.colors.changeColor(
+      this.isOn ? OnBodyColor : OffBodyColor01,
+      1,
+    );
+    bodyMaterial.colors.changeColor(
+      this.isOn ? OnBodyColor : OffBodyColor02,
+      -1,
+    );
 
-    this.model.changeColor({
-      bodyColor: this.isOn ? OnBodyColor : OffBodyColor02,
-      edgeColor: this.isOn ? OnEdgeColor : OffEdgeColor02,
-      id: -1,
-    });
+    const edgeMaterial = this.model.edge
+      ?.material as ColorableMergedEdgeMaterial;
+    edgeMaterial.colors.changeColor(
+      this.isOn ? OnEdgeColor : OffEdgeColor01,
+      1,
+    );
+    edgeMaterial.colors.changeColor(
+      this.isOn ? OnEdgeColor : OffEdgeColor02,
+      -1,
+    );
   };
 }

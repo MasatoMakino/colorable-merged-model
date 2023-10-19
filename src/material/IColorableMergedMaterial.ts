@@ -15,7 +15,7 @@ export class ColorableMergedMaterial
 
   initDefine = (colorsLength: number) => {
     this.defines = {
-      INDEX: colorsLength,
+      INDEX: colorsLength, // TODO rename to COLORS_LENGTH
     };
   };
   static getColorUniform(colorLength: number) {

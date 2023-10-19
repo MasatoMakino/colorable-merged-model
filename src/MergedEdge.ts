@@ -3,10 +3,7 @@ import { BufferGeometry, EdgesGeometry } from "three";
 import { MergedModel } from "./MergedModel";
 
 export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
-  protected override async convertGeometry(
-    geometry: BufferGeometry,
-    colorMapIndex: number,
-  ) {
+  protected override async convertGeometry(geometry: BufferGeometry) {
     return new EdgesGeometry(geometry, this.option.edgeDetail);
   }
 }

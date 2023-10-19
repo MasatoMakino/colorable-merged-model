@@ -13,12 +13,18 @@ import {
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
+  private model?: ColorableMergedEdge | ColorableMergedBody;
 
-  constructor(private model: ColorableMergedEdge | ColorableMergedBody) {
+  constructor() {
     super();
+  }
+
+  setMergedModel(model: ColorableMergedEdge | ColorableMergedBody) {
+    this.model = model;
     this.model.onBeforeRender = this.updateColorAttribute;
     TweenableColorTicker.start();
   }
+
   static getColorMapKey(id: number, type: string = "default"): string {
     return `${type}__${id}`;
   }
@@ -46,7 +52,7 @@ export class TweenableColorMap extends EventEmitter {
     return this.colors.get(TweenableColorMap.getColorMapKey(id, type));
   }
 
-  getIndex(id: number, type?: string): number | undefined {
+  getIndex(id: number, type?: string): number {
     return [...this.colors.keys()].indexOf(
       TweenableColorMap.getColorMapKey(id, type),
     );
@@ -78,6 +84,7 @@ export class TweenableColorMap extends EventEmitter {
     option.easing ??= Easing.Cubic.Out;
 
     const tweenableColor = this.get(id, option?.type);
+
     tweenableColor?.change(
       color[0] * 255,
       color[1] * 255,
@@ -100,7 +107,7 @@ export class TweenableColorMap extends EventEmitter {
   };
 
   public forceUpdateColorAttribute = () => {
-    const mat = this.model.material as unknown as IColorableMergedMaterial;
+    const mat = this.model?.material as unknown as IColorableMergedMaterial;
     if (mat?.setColor == null) return;
 
     let count = 0;
@@ -109,6 +116,6 @@ export class TweenableColorMap extends EventEmitter {
       mat.setColor(count, colorArray);
       count++;
     });
-    (this.model.material as Material).needsUpdate = true;
+    (this.model?.material as Material).needsUpdate = true;
   };
 }

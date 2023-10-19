@@ -1,21 +1,27 @@
 import { UniformsLib, UniformsUtils } from "three";
 import { ColorableMergedMaterial } from "./index.js";
 import { fragment, vertex } from "./ColorableMergedEdgeMaterial.glsl.js";
+import { TweenableColorMap } from "../TweenableColorMap";
 
 export interface ColorableMergedEdgeMaterialParam {
   depthWrite?: boolean;
 }
 export class ColorableMergedEdgeMaterial extends ColorableMergedMaterial {
-  constructor(colorLength: number, param?: ColorableMergedEdgeMaterialParam) {
+  constructor(
+    readonly colors: TweenableColorMap,
+    param?: ColorableMergedEdgeMaterialParam,
+  ) {
     super(
       {
         vertexShader: vertex,
         fragmentShader: fragment,
       },
-      colorLength,
+      colors.getSize(),
     );
 
-    this.uniforms = ColorableMergedEdgeMaterial.getBasicUniforms(colorLength);
+    this.uniforms = ColorableMergedEdgeMaterial.getBasicUniforms(
+      colors.getSize(),
+    );
     this.depthWrite = param?.depthWrite ?? true;
     this.transparent = true;
   }
