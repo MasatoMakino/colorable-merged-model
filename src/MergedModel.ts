@@ -1,15 +1,13 @@
 import {
   ColorableMergedBody,
-  ColorableMergedBodyMaterial,
   ColorableMergedBodyParam,
   ColorableMergedEdge,
-  ColorableMergedEdgeMaterial,
   ColorableMergedEdgeParam,
   ColorableMergedView,
   readGeometryCount,
   TweenableColorMap,
 } from "./index.js";
-import { BufferAttribute, BufferGeometry, EdgesGeometry } from "three";
+import { BufferAttribute, BufferGeometry } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 export class MergedModel<
   Option extends ColorableMergedBodyParam | ColorableMergedEdgeParam,
@@ -69,37 +67,5 @@ export class MergedModel<
 
   protected createMaterial() {
     //Override this method in child class
-  }
-}
-
-export class MergedBody extends MergedModel<ColorableMergedBodyParam> {
-  protected override createMaterial() {
-    this.object3D.material = new ColorableMergedBodyMaterial(
-      this.colorMap.getSize(),
-      this.option.materialSetting,
-    );
-  }
-  protected override async convertGeometry(
-    geometry: BufferGeometry,
-    colorMapIndex: number,
-  ) {
-    geometry.deleteAttribute("uv");
-    return geometry;
-  }
-}
-
-export class MergedEdge extends MergedModel<ColorableMergedEdgeParam> {
-  protected override createMaterial() {
-    this.object3D.material = new ColorableMergedEdgeMaterial(
-      this.colorMap.getSize(),
-      this.option.materialSetting,
-    );
-  }
-
-  protected override async convertGeometry(
-    geometry: BufferGeometry,
-    colorMapIndex: number,
-  ) {
-    return new EdgesGeometry(geometry, this.option.edgeDetail);
   }
 }

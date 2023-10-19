@@ -8,7 +8,6 @@ export interface ColorableMergedEdgeParam {
 }
 export class ColorableMergedEdge extends LineSegments {
   readonly model: MergedEdge;
-
   constructor(option: ColorableMergedEdgeParam) {
     super();
     option.edgeDetail = option.edgeDetail ?? 7;
