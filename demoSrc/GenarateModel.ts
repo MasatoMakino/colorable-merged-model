@@ -1,13 +1,21 @@
 import { BoxGeometry } from "three";
-import { ColorableMergedView } from "../src/index.js";
+import {
+  ColorableMergedBody,
+  ColorableMergedBodyMaterial,
+  ColorableMergedEdge,
+  ColorableMergedEdgeMaterial,
+  ColorableMergedView,
+} from "../src/index.js";
 
 export async function generateModel(
   n: number = 20,
 ): Promise<ColorableMergedView> {
-  const view: ColorableMergedView = new ColorableMergedView({
-    bodyOption: { color: [1, 1, 1, 0.2] },
-    edgeOption: { color: [1, 1, 1, 0.8] },
-  });
+  const option = {
+    bodyOption: { color: [1, 1, 1, 0.2] as [number, number, number, number] },
+    edgeOption: { color: [1, 1, 1, 0.8] as [number, number, number, number] },
+  };
+
+  const view: ColorableMergedView = new ColorableMergedView(option);
 
   const addModel = async (x: number, y: number, z: number) => {
     const size = 0.1;
@@ -34,6 +42,17 @@ export async function generateModel(
   }
   await Promise.all(promises);
 
-  view.merge();
+  await view.merge();
+
+  const body = view.body as ColorableMergedBody;
+  body.material = new ColorableMergedBodyMaterial(
+    body.model.colorMap.getSize(),
+  );
+
+  const edge = view.edge as ColorableMergedEdge;
+  edge.material = new ColorableMergedEdgeMaterial(
+    edge.model.colorMap.getSize(),
+  );
+
   return view;
 }

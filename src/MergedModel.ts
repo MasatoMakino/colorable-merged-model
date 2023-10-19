@@ -61,11 +61,6 @@ export class MergedModel<
     this.object3D.geometry = BufferGeometryUtils.mergeGeometries(
       this.geometries,
     );
-    this.createMaterial();
     this.colorMap.forceUpdateColorAttribute();
-  }
-
-  protected createMaterial() {
-    //Override this method in child class
   }
 }

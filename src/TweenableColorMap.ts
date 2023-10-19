@@ -101,6 +101,8 @@ export class TweenableColorMap extends EventEmitter {
 
   public forceUpdateColorAttribute = () => {
     const mat = this.model.material as unknown as IColorableMergedMaterial;
+    if (mat?.setColor == null) return;
+
     let count = 0;
     this.colors.forEach((value) => {
       const colorArray = value.getAttribute();

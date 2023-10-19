@@ -3,7 +3,6 @@ import { ColorableMergedBodyMaterialParam, MergedBody } from "./index.js";
 
 export interface ColorableMergedBodyParam {
   color: [number, number, number, number];
-  materialSetting?: ColorableMergedBodyMaterialParam;
 }
 export class ColorableMergedBody extends Mesh {
   readonly model: MergedBody;
