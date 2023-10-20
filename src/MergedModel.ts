@@ -28,6 +28,7 @@ export class MergedModel<
     this.option = option;
   }
 
+  // TODO colorMapIndexを渡すのではなく、Mapとindexを渡して関数内でcolorMapIndexを計算する。
   public async addGeometry(
     geometry: BufferGeometry,
     colorMapIndex: number,

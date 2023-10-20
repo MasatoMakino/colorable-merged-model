@@ -113,7 +113,7 @@ export class TweenableColorMap extends EventEmitter {
     let count = 0;
     this.colors.forEach((value) => {
       const colorArray = value.getAttribute();
-      mat.setColor(count, colorArray);
+      mat.setColor(count, colorArray); //TODO 現状ではattribute名が決め打ちされている。対象となるattributeを変更できるようコードを修正する。
       count++;
     });
     (this.model?.material as Material).needsUpdate = true;

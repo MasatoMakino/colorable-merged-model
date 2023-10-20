@@ -47,18 +47,8 @@ describe("ColorableMergedView", () => {
     const view = generateView();
     view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
     await view.merge();
-    expect(view.body?.model.colorMap.colors.size).toStrictEqual(1);
-    expect(view.edge?.model.colorMap.colors.size).toStrictEqual(1);
-  });
-
-  test("add geometry with type", async () => {
-    const view = generateView();
-    view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1, "test");
-    await view.merge();
-    expect(view.body?.model.colorMap.colors.size).toStrictEqual(1);
-    expect(view.edge?.model.colorMap.colors.size).toStrictEqual(1);
-    expect(view.body?.model.colorMap.get(1, "test")).toBeTruthy();
-    expect(view.edge?.model.colorMap.get(1, "test")).toBeTruthy();
+    expect(view.body?.model.object3D).not.toBeUndefined();
+    expect(view.edge?.model.object3D).not.toBeUndefined();
   });
 
   test("add geometry with no options", async () => {
@@ -67,38 +57,5 @@ describe("ColorableMergedView", () => {
     await view.merge();
     expect(view.body).toBeUndefined();
     expect(view.edge).toBeUndefined();
-  });
-
-  test("change color", async () => {
-    const view = generateView();
-    await view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
-    await view.merge();
-    view.changeColor({
-      bodyColor: [0, 1, 1, 1],
-      edgeColor: [1, 0, 1, 1],
-      id: 1,
-      duration: 1,
-      easing: Easing.Linear.None,
-      now: 0,
-    });
-
-    const update = (
-      now: number,
-      bodyColor: [number, number, number, number],
-      edgeColor: [number, number, number, number],
-    ) => {
-      TweenableColorTicker.update(now);
-      view.body?.model.colorMap.forceUpdateColorAttribute();
-      view.edge?.model.colorMap.forceUpdateColorAttribute();
-      expect(view.body?.model.colorMap.get(1)?.getAttribute()).toStrictEqual(
-        bodyColor,
-      );
-      expect(view.edge?.model.colorMap.get(1)?.getAttribute()).toStrictEqual(
-        edgeColor,
-      );
-    };
-    update(0, [1, 1, 1, 1], [1, 1, 1, 1]);
-    update(0.5, [0.5, 1, 1, 1], [1, 0.5, 1, 1]);
-    update(1, [0, 1, 1, 1], [1, 0, 1, 1]);
   });
 });

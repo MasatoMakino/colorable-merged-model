@@ -49,6 +49,7 @@ export class ColorableMergedView extends Group {
     }
   }
 
+  // TODO 廃止 bodyとedgeに直接マージする。
   public async addGeometry(
     geometry: BufferGeometry,
     id: number,
