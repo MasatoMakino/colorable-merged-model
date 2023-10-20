@@ -24,16 +24,6 @@ describe("TweenableColorMap", () => {
     expect(map.get(id)?.getAttribute()).toStrictEqual([0, 0, 0, 0]);
   });
 
-  test("add group type", () => {
-    const id = 4;
-    const group = "group";
-    const map = generateNewColorMap();
-    map.addColor([0, 0, 0, 0], id, group);
-    expect(map.get(id)).toBeUndefined();
-    expect(map.get(id, group)).not.toBeUndefined();
-    expect(map.get(id, group)?.getAttribute()).toStrictEqual([0, 0, 0, 0]);
-  });
-
   test("change color", async () => {
     const id = 1;
     const body = new ColorableMergedBody({ color: [0, 0, 0, 0] });

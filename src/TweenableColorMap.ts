@@ -25,15 +25,11 @@ export class TweenableColorMap extends EventEmitter {
     TweenableColorTicker.start();
   }
 
-  static getColorMapKey(id: number, type: string = "default"): string {
-    return `${type}__${id}`;
+  static getColorMapKey(id: number): string {
+    return `${id}`;
   }
 
-  addColor(
-    defaultColor: [number, number, number, number],
-    id: number,
-    type?: string,
-  ): void {
+  addColor(defaultColor: [number, number, number, number], id: number): void {
     const color = defaultColor;
     const tweenableColor = new TweenableColor(
       color[0] * 255,
@@ -41,20 +37,20 @@ export class TweenableColorMap extends EventEmitter {
       color[2] * 255,
       color[3],
     );
-    this.set(tweenableColor, id, type);
+    this.set(tweenableColor, id);
   }
-  protected set(color: TweenableColor, id: number, type?: string) {
-    this.colors.set(TweenableColorMap.getColorMapKey(id, type), color);
+  protected set(color: TweenableColor, id: number) {
+    this.colors.set(TweenableColorMap.getColorMapKey(id), color);
     color.on("onUpdate", this.onChangedColor);
   }
 
-  get(id: number, type?: string): TweenableColor | undefined {
-    return this.colors.get(TweenableColorMap.getColorMapKey(id, type));
+  get(id: number): TweenableColor | undefined {
+    return this.colors.get(TweenableColorMap.getColorMapKey(id));
   }
 
-  getIndex(id: number, type?: string): number {
+  getIndex(id: number): number {
     return [...this.colors.keys()].indexOf(
-      TweenableColorMap.getColorMapKey(id, type),
+      TweenableColorMap.getColorMapKey(id),
     );
   }
 
@@ -72,7 +68,6 @@ export class TweenableColorMap extends EventEmitter {
     color: [number, number, number, number],
     id: number,
     option?: {
-      type?: string;
       duration?: number;
       easing?: (t: number) => number;
       now?: number;
@@ -83,7 +78,7 @@ export class TweenableColorMap extends EventEmitter {
     option.duration ??= 1000;
     option.easing ??= Easing.Cubic.Out;
 
-    const tweenableColor = this.get(id, option?.type);
+    const tweenableColor = this.get(id);
 
     tweenableColor?.change(
       color[0] * 255,
