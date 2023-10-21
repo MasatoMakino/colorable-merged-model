@@ -45,8 +45,19 @@ describe("ColorableMergedView", () => {
 
   test("add geometry", async () => {
     const view = generateView();
-    const map = new TweenableColorMap("colors");
-    await view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), map, 1);
+    const bodyMap = new TweenableColorMap("colors");
+    const edgeMap = new TweenableColorMap("colors");
+    await view.body?.model.addGeometry(
+      new BoxGeometry(1, 1, 1, 1, 1, 1),
+      bodyMap,
+      1,
+    );
+    await view.edge?.model.addGeometry(
+      new BoxGeometry(1, 1, 1, 1, 1, 1),
+      edgeMap,
+      1,
+    );
+
     await view.merge();
     expect(view.body?.model.object3D).not.toBeUndefined();
     expect(view.edge?.model.object3D).not.toBeUndefined();
@@ -54,8 +65,19 @@ describe("ColorableMergedView", () => {
 
   test("add geometry with no options", async () => {
     const view = new ColorableMergedView({});
-    const map = new TweenableColorMap("colors");
-    await view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), map, 1);
+    const bodyMap = new TweenableColorMap("colors");
+    const edgeMap = new TweenableColorMap("colors");
+    await view.body?.model.addGeometry(
+      new BoxGeometry(1, 1, 1, 1, 1, 1),
+      bodyMap,
+      1,
+    );
+    await view.edge?.model.addGeometry(
+      new BoxGeometry(1, 1, 1, 1, 1, 1),
+      edgeMap,
+      1,
+    );
+
     await view.merge();
     expect(view.body).toBeUndefined();
     expect(view.edge).toBeUndefined();

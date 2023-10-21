@@ -50,18 +50,6 @@ export class ColorableMergedView extends Group {
     }
   }
 
-  // TODO 廃止 bodyとedgeに直接マージする。
-  public async addGeometry(
-    geometry: BufferGeometry,
-    colorMap: TweenableColorMap,
-    id: number,
-  ) {
-    await Promise.all([
-      this.body?.model.addGeometry(geometry, colorMap, id),
-      this.edge?.model.addGeometry(geometry, colorMap, id),
-    ]);
-  }
-
   public async merge() {
     await Promise.all([this.body?.model.merge(), this.edge?.model.merge()]);
   }

@@ -36,7 +36,8 @@ export async function generateModel(
     bodyColors.addColor([1, 1, 1, 0.2], index);
     edgeColors.addColor([1, 1, 1, 0.8], index);
 
-    return await view.addGeometry(geo, bodyColors, index);
+    await view.body?.model.addGeometry(geo, bodyColors, index);
+    await view.edge?.model.addGeometry(geo, edgeColors, index);
   };
 
   const promises: Promise<void>[] = [];
