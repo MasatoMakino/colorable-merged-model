@@ -4,25 +4,25 @@ import {
 } from "@masatomakino/tweenable-color";
 import { Easing } from "@tweenjs/tween.js";
 import { EventEmitter } from "eventemitter3";
-import { Material } from "three";
+import { Material, Vector4 } from "three";
 import {
   ColorableMergedBody,
   ColorableMergedEdge,
-  IColorableMergedMaterial,
+  ColorableMergedMaterial,
 } from "./index.js";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
   private model?: ColorableMergedEdge | ColorableMergedBody;
 
-  constructor() {
+  constructor(readonly uniformName: string) {
     super();
+    TweenableColorTicker.start();
   }
 
   setMergedModel(model: ColorableMergedEdge | ColorableMergedBody) {
     this.model = model;
     this.model.onBeforeRender = this.updateColorAttribute;
-    TweenableColorTicker.start();
   }
 
   static getColorMapKey(id: number): string {
@@ -37,11 +37,9 @@ export class TweenableColorMap extends EventEmitter {
       color[2] * 255,
       color[3],
     );
-    this.set(tweenableColor, id);
-  }
-  protected set(color: TweenableColor, id: number) {
-    this.colors.set(TweenableColorMap.getColorMapKey(id), color);
-    color.on("onUpdate", this.onChangedColor);
+
+    this.colors.set(TweenableColorMap.getColorMapKey(id), tweenableColor);
+    tweenableColor.on("onUpdate", this.onChangedColor); // TODO ここをアップデートトリガーからuniformの直接上書きに変更する。スロットリングは必要ない。
   }
 
   get(id: number): TweenableColor | undefined {
@@ -102,13 +100,21 @@ export class TweenableColorMap extends EventEmitter {
   };
 
   public forceUpdateColorAttribute = () => {
-    const mat = this.model?.material as unknown as IColorableMergedMaterial;
-    if (mat?.setColor == null) return;
+    const mat = this.model?.material as unknown as ColorableMergedMaterial;
+    if (mat?.isColorableMergedMaterial !== true) return;
 
     let count = 0;
     this.colors.forEach((value) => {
       const colorArray = value.getAttribute();
-      mat.setColor(count, colorArray); //TODO 現状ではattribute名が決め打ちされている。対象となるattributeを変更できるようコードを修正する。
+
+      const colors = mat.uniforms[this.uniformName].value as Vector4[];
+      colors[count].set(
+        colorArray[0],
+        colorArray[1],
+        colorArray[2],
+        colorArray[3],
+      );
+
       count++;
     });
     (this.model?.material as Material).needsUpdate = true;

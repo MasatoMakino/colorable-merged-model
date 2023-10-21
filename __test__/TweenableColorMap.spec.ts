@@ -6,7 +6,7 @@ import { TweenableColorTicker } from "@masatomakino/tweenable-color";
 describe("TweenableColorMap", () => {
   const generateNewColorMap = () => {
     const body = new ColorableMergedBody({ color: [1, 1, 1, 1] });
-    const map = new TweenableColorMap();
+    const map = new TweenableColorMap("colors");
     map.setMergedModel(body);
     return map;
   };
@@ -27,7 +27,7 @@ describe("TweenableColorMap", () => {
   test("change color", async () => {
     const id = 1;
     const body = new ColorableMergedBody({ color: [0, 0, 0, 0] });
-    const map = new TweenableColorMap();
+    const map = new TweenableColorMap("colors");
     map.setMergedModel(body);
 
     map.addColor([0, 0, 0, 0], id);

@@ -1,15 +1,18 @@
 import { ShaderMaterial, ShaderMaterialParameters, Vector4 } from "three";
 
 export interface IColorableMergedMaterial {
-  setColor(index: number, color: [number, number, number, number]): void;
+  readonly isColorableMergedMaterial: boolean;
 }
 
 export class ColorableMergedMaterial
   extends ShaderMaterial
   implements IColorableMergedMaterial
 {
+  readonly isColorableMergedMaterial: boolean = true;
+
   constructor(param: ShaderMaterialParameters, colorsLength: number) {
     super(param);
+    this.isColorableMergedMaterial = true;
     this.initDefine(colorsLength);
   }
 
@@ -25,9 +28,5 @@ export class ColorableMergedMaterial
     return {
       colors: { value: colors },
     };
-  }
-  setColor(index: number, color: [number, number, number, number]) {
-    const colors = this.uniforms.colors.value as Vector4[];
-    colors[index].set(color[0], color[1], color[2], color[3]);
   }
 }

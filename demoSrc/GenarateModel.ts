@@ -17,8 +17,8 @@ export async function generateModel(
   };
 
   const view: ColorableMergedView = new ColorableMergedView(option);
-  const bodyColors = new TweenableColorMap();
-  const edgeColors = new TweenableColorMap();
+  const bodyColors = new TweenableColorMap("colors");
+  const edgeColors = new TweenableColorMap("colors");
 
   const addModel = async (x: number, y: number, z: number) => {
     const size = 0.1;
