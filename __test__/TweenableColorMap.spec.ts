@@ -1,14 +1,15 @@
-import { ColorableMergedBody, TweenableColorMap } from "../src";
+import {
+  ColorableMergedBody,
+  ColorableMergedBodyMaterial,
+  TweenableColorMap,
+} from "../src";
 import * as TWEEN from "@tweenjs/tween.js";
-import { BoxGeometry } from "three";
+import { BoxGeometry, ShaderMaterial } from "three";
 import { TweenableColorTicker } from "@masatomakino/tweenable-color";
 
 describe("TweenableColorMap", () => {
   const generateNewColorMap = () => {
-    const body = new ColorableMergedBody({ color: [1, 1, 1, 1] });
-    const map = new TweenableColorMap("colors");
-    map.setMergedModel(body);
-    return map;
+    return new TweenableColorMap("colors");
   };
 
   test("constructor", () => {
@@ -28,11 +29,14 @@ describe("TweenableColorMap", () => {
     const id = 1;
     const body = new ColorableMergedBody({ color: [0, 0, 0, 0] });
     const map = new TweenableColorMap("colors");
-    map.setMergedModel(body);
 
     map.addColor([0, 0, 0, 0], id);
     await body.model.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), id);
     await body.model.merge();
+
+    const material = new ColorableMergedBodyMaterial(map);
+    map.setMaterial(material as ShaderMaterial);
+    body.material = material;
 
     expect(map).not.toBeUndefined();
     expect(map.get(id)?.getAttribute()).toStrictEqual([0, 0, 0, 0]);

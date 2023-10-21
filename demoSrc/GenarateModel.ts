@@ -1,4 +1,4 @@
-import { BoxGeometry } from "three";
+import { BoxGeometry, ShaderMaterial } from "three";
 import {
   ColorableMergedBody,
   ColorableMergedBodyMaterial,
@@ -36,7 +36,7 @@ export async function generateModel(
     bodyColors.addColor([1, 1, 1, 0.2], index);
     edgeColors.addColor([1, 1, 1, 0.8], index);
 
-    const colorMapIndex = bodyColors.getIndex(index);
+    const colorMapIndex = bodyColors.getUniformIndex(index);
 
     return await view.addGeometry(geo, colorMapIndex);
   };
@@ -55,11 +55,11 @@ export async function generateModel(
 
   const body = view.body as ColorableMergedBody;
   body.material = new ColorableMergedBodyMaterial(bodyColors);
-  bodyColors.setMergedModel(body);
+  bodyColors.setMaterial(body.material as ShaderMaterial);
 
   const edge = view.edge as ColorableMergedEdge;
   edge.material = new ColorableMergedEdgeMaterial(edgeColors);
-  edgeColors.setMergedModel(edge);
+  edgeColors.setMaterial(edge.material as ShaderMaterial);
 
   return view;
 }

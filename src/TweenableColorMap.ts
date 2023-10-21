@@ -4,25 +4,19 @@ import {
 } from "@masatomakino/tweenable-color";
 import { Easing } from "@tweenjs/tween.js";
 import { EventEmitter } from "eventemitter3";
-import { Material, Vector4 } from "three";
-import {
-  ColorableMergedBody,
-  ColorableMergedEdge,
-  ColorableMergedMaterial,
-} from "./index.js";
+import { ShaderMaterial, Vector4 } from "three";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
-  private model?: ColorableMergedEdge | ColorableMergedBody; //TODO 参照先をmodelではなくmaterialにする。
+  private material?: ShaderMaterial;
 
   constructor(readonly uniformName: string) {
     super();
     TweenableColorTicker.start();
   }
 
-  //TODO : 削除 arrtibuteの更新が頻繁に発生しないため。
-  setMergedModel(model: ColorableMergedEdge | ColorableMergedBody) {
-    this.model = model;
+  setMaterial(material: ShaderMaterial) {
+    this.material = material;
   }
 
   static getColorMapKey(id: number): string {
@@ -48,13 +42,13 @@ export class TweenableColorMap extends EventEmitter {
     return this.colors.get(TweenableColorMap.getColorMapKey(id));
   }
 
-  getIndex(id: number): number {
+  getUniformIndex(id: number): number {
     return [...this.colors.keys()].indexOf(
       TweenableColorMap.getColorMapKey(id),
     );
   }
 
-  getIndexFromColor(color: TweenableColor): number {
+  getUniformIndexFromColor(color: TweenableColor): number {
     return [...this.colors.values()].indexOf(color);
   }
 
@@ -95,11 +89,11 @@ export class TweenableColorMap extends EventEmitter {
   }
 
   private updateUniform(tweenableColor: TweenableColor): void {
-    const mat = this.model?.material as unknown as ColorableMergedMaterial;
-    if (mat?.isColorableMergedMaterial !== true) return;
+    if (this.material == null) return;
 
-    const colorUniform = mat.uniforms[this.uniformName].value as Vector4[];
-    const index = this.getIndexFromColor(tweenableColor);
+    const colorUniform = this.material.uniforms[this.uniformName]
+      .value as Vector4[];
+    const index = this.getUniformIndexFromColor(tweenableColor);
     const attribute = tweenableColor.getAttribute();
 
     colorUniform[index].set(
