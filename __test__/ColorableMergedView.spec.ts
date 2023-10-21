@@ -1,4 +1,4 @@
-import { ColorableMergedView } from "../src";
+import { ColorableMergedView, TweenableColorMap } from "../src";
 import { BoxGeometry } from "three";
 import { TweenableColorTicker } from "@masatomakino/tweenable-color";
 import { Easing } from "@tweenjs/tween.js";
@@ -45,7 +45,8 @@ describe("ColorableMergedView", () => {
 
   test("add geometry", async () => {
     const view = generateView();
-    view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+    const map = new TweenableColorMap("colors");
+    await view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), map, 1);
     await view.merge();
     expect(view.body?.model.object3D).not.toBeUndefined();
     expect(view.edge?.model.object3D).not.toBeUndefined();
@@ -53,7 +54,8 @@ describe("ColorableMergedView", () => {
 
   test("add geometry with no options", async () => {
     const view = new ColorableMergedView({});
-    view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+    const map = new TweenableColorMap("colors");
+    await view.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), map, 1);
     await view.merge();
     expect(view.body).toBeUndefined();
     expect(view.edge).toBeUndefined();

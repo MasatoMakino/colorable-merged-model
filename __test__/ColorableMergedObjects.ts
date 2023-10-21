@@ -1,4 +1,8 @@
-import { ColorableMergedBody, ColorableMergedEdge } from "../src";
+import {
+  ColorableMergedBody,
+  ColorableMergedEdge,
+  TweenableColorMap,
+} from "../src";
 import { BoxGeometry } from "three";
 
 export const testColorableMergedObjects = (
@@ -16,7 +20,12 @@ export const testColorableMergedObjects = (
     });
 
     test("generate", async () => {
-      target.model.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), 1);
+      const colorMap = new TweenableColorMap("colors");
+      await target.model.addGeometry(
+        new BoxGeometry(1, 1, 1, 1, 1, 1),
+        colorMap,
+        1,
+      );
       await target.model.merge();
       expect(target.model.geometries.length).toStrictEqual(1);
       expect(target.geometry).not.toBeUndefined();

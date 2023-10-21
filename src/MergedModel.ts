@@ -5,6 +5,7 @@ import {
   ColorableMergedEdgeParam,
   ColorableMergedView,
   readGeometryCount,
+  TweenableColorMap,
 } from "./index.js";
 import { BufferAttribute, BufferGeometry } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
@@ -28,14 +29,18 @@ export class MergedModel<
     this.option = option;
   }
 
-  // TODO colorMapIndexを渡すのではなく、Mapとindexを渡して関数内でcolorMapIndexを計算する。
-  public async addGeometry(geometry: BufferGeometry, colorMapIndex: number) {
+  public async addGeometry(
+    geometry: BufferGeometry,
+    colorMap: TweenableColorMap,
+    index: number,
+  ) {
     const convertedGeometry = await this.convertGeometry(geometry);
+    const uniformIndex = colorMap.getUniformIndex(index);
 
     const n = readGeometryCount(convertedGeometry);
     convertedGeometry.setAttribute(
       ColorableMergedView.MODEL_INDEX,
-      new BufferAttribute(new Uint16Array(new Array(n).fill(colorMapIndex)), 1),
+      new BufferAttribute(new Uint16Array(new Array(n).fill(uniformIndex)), 1),
     );
     this.geometries.push(convertedGeometry);
   }

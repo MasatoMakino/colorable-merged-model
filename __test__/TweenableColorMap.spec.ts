@@ -31,7 +31,7 @@ describe("TweenableColorMap", () => {
     const map = new TweenableColorMap("colors");
 
     map.addColor([0, 0, 0, 0], id);
-    await body.model.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), id);
+    await body.model.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), map, id);
     await body.model.merge();
 
     const material = new ColorableMergedBodyMaterial(map);

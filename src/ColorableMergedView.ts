@@ -4,6 +4,7 @@ import {
   ColorableMergedBodyParam,
   ColorableMergedEdge,
   ColorableMergedEdgeParam,
+  TweenableColorMap,
 } from "./index.js";
 
 export interface ChangeColorParam {
@@ -50,10 +51,14 @@ export class ColorableMergedView extends Group {
   }
 
   // TODO 廃止 bodyとedgeに直接マージする。
-  public async addGeometry(geometry: BufferGeometry, id: number) {
+  public async addGeometry(
+    geometry: BufferGeometry,
+    colorMap: TweenableColorMap,
+    id: number,
+  ) {
     await Promise.all([
-      this.body?.model.addGeometry(geometry, id),
-      this.edge?.model.addGeometry(geometry, id),
+      this.body?.model.addGeometry(geometry, colorMap, id),
+      this.edge?.model.addGeometry(geometry, colorMap, id),
     ]);
   }
 
