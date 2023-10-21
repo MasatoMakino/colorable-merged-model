@@ -13,16 +13,16 @@ import {
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
-  private model?: ColorableMergedEdge | ColorableMergedBody;
+  private model?: ColorableMergedEdge | ColorableMergedBody; //TODO 参照先をmodelではなくmaterialにする。
 
   constructor(readonly uniformName: string) {
     super();
     TweenableColorTicker.start();
   }
 
+  //TODO : 削除 arrtibuteの更新が頻繁に発生しないため。
   setMergedModel(model: ColorableMergedEdge | ColorableMergedBody) {
     this.model = model;
-    this.model.onBeforeRender = this.updateColorAttribute;
   }
 
   static getColorMapKey(id: number): string {
@@ -39,7 +39,9 @@ export class TweenableColorMap extends EventEmitter {
     );
 
     this.colors.set(TweenableColorMap.getColorMapKey(id), tweenableColor);
-    tweenableColor.on("onUpdate", this.onChangedColor); // TODO ここをアップデートトリガーからuniformの直接上書きに変更する。スロットリングは必要ない。
+    tweenableColor.on("onUpdate", () => {
+      this.updateUniform(tweenableColor);
+    });
   }
 
   get(id: number): TweenableColor | undefined {
@@ -50,6 +52,10 @@ export class TweenableColorMap extends EventEmitter {
     return [...this.colors.keys()].indexOf(
       TweenableColorMap.getColorMapKey(id),
     );
+  }
+
+  getIndexFromColor(color: TweenableColor): number {
+    return [...this.colors.values()].indexOf(color);
   }
 
   getSize(): number {
@@ -88,35 +94,19 @@ export class TweenableColorMap extends EventEmitter {
     );
   }
 
-  private needUpdateColors = false;
-  private onChangedColor = () => {
-    this.needUpdateColors = true;
-  };
-
-  private updateColorAttribute = () => {
-    if (!this.needUpdateColors) return;
-    this.needUpdateColors = false;
-    this.forceUpdateColorAttribute();
-  };
-
-  public forceUpdateColorAttribute = () => {
+  private updateUniform(tweenableColor: TweenableColor): void {
     const mat = this.model?.material as unknown as ColorableMergedMaterial;
     if (mat?.isColorableMergedMaterial !== true) return;
 
-    let count = 0;
-    this.colors.forEach((value) => {
-      const colorArray = value.getAttribute();
+    const colorUniform = mat.uniforms[this.uniformName].value as Vector4[];
+    const index = this.getIndexFromColor(tweenableColor);
+    const attribute = tweenableColor.getAttribute();
 
-      const colors = mat.uniforms[this.uniformName].value as Vector4[];
-      colors[count].set(
-        colorArray[0],
-        colorArray[1],
-        colorArray[2],
-        colorArray[3],
-      );
-
-      count++;
-    });
-    (this.model?.material as Material).needsUpdate = true;
-  };
+    colorUniform[index].set(
+      attribute[0],
+      attribute[1],
+      attribute[2],
+      attribute[3],
+    );
+  }
 }

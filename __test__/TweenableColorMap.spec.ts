@@ -43,15 +43,12 @@ describe("TweenableColorMap", () => {
       easing: TWEEN.Easing.Linear.None,
     });
     TweenableColorTicker.update(0);
-    map.forceUpdateColorAttribute();
     expect(map.get(id)?.getAttribute()).toStrictEqual([0, 0, 0, 0]);
 
     TweenableColorTicker.update(0.5);
-    map.forceUpdateColorAttribute();
     expect(map.get(id)?.getAttribute()).toStrictEqual([0.5, 0.5, 0.5, 0.5]);
 
     TweenableColorTicker.update(1);
-    map.forceUpdateColorAttribute();
     expect(map.get(id)?.getAttribute()).toStrictEqual([1, 1, 1, 1]);
   });
 });
