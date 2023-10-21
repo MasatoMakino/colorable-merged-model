@@ -29,11 +29,7 @@ export class MergedModel<
   }
 
   // TODO colorMapIndexを渡すのではなく、Mapとindexを渡して関数内でcolorMapIndexを計算する。
-  public async addGeometry(
-    geometry: BufferGeometry,
-    colorMapIndex: number,
-    type?: string,
-  ) {
+  public async addGeometry(geometry: BufferGeometry, colorMapIndex: number) {
     const convertedGeometry = await this.convertGeometry(geometry);
 
     const n = readGeometryCount(convertedGeometry);
