@@ -24,6 +24,8 @@ export class ColorableMergedEdgeMaterial extends ColorableMergedMaterial {
     );
     this.depthWrite = param?.depthWrite ?? true;
     this.transparent = true;
+
+    colors.setMaterial(this);
   }
 
   /**

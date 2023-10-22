@@ -33,6 +33,8 @@ export class ColorableMergedBodyMaterial extends ColorableMergedMaterial {
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
     this.side = param?.side ?? FrontSide;
+
+    colors.setMaterial(this);
   }
 
   /**

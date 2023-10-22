@@ -49,16 +49,14 @@ export async function generateModel(
     }
   }
   await Promise.all(promises);
-
   await view.merge();
 
-  const body = view.body as ColorableMergedBody;
-  body.material = new ColorableMergedBodyMaterial(bodyColors);
-  bodyColors.setMaterial(body.material as ShaderMaterial);
-
-  const edge = view.edge as ColorableMergedEdge;
-  edge.material = new ColorableMergedEdgeMaterial(edgeColors);
-  edgeColors.setMaterial(edge.material as ShaderMaterial);
+  if (view.body) {
+    view.body.material = new ColorableMergedBodyMaterial(bodyColors);
+  }
+  if (view.edge) {
+    view.edge.material = new ColorableMergedEdgeMaterial(edgeColors);
+  }
 
   return view;
 }
