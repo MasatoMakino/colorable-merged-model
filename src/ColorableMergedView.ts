@@ -1,10 +1,9 @@
-import { BufferGeometry, Group } from "three";
+import { Group } from "three";
 import {
   ColorableMergedBody,
   ColorableMergedBodyParam,
   ColorableMergedEdge,
   ColorableMergedEdgeParam,
-  TweenableColorMap,
 } from "./index.js";
 
 export interface ChangeColorParam {
@@ -51,6 +50,9 @@ export class ColorableMergedView extends Group {
   }
 
   public async merge() {
-    await Promise.all([this.body?.model.merge(), this.edge?.model.merge()]);
+    await Promise.all([
+      this.body?.geometryMerger.merge(),
+      this.edge?.geometryMerger.merge(),
+    ]);
   }
 }

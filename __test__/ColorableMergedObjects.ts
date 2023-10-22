@@ -15,19 +15,19 @@ export const testColorableMergedObjects = (
     });
 
     test("generate empty body or edge", async () => {
-      await target.model.merge();
-      expect(target.model.geometries.length).toStrictEqual(0);
+      await target.geometryMerger.merge();
+      expect(target.geometryMerger.geometries.length).toStrictEqual(0);
     });
 
     test("generate", async () => {
       const colorMap = new TweenableColorMap("colors");
-      await target.model.addGeometry(
+      await target.geometryMerger.add(
         new BoxGeometry(1, 1, 1, 1, 1, 1),
         colorMap,
         1,
       );
-      await target.model.merge();
-      expect(target.model.geometries.length).toStrictEqual(1);
+      await target.geometryMerger.merge();
+      expect(target.geometryMerger.geometries.length).toStrictEqual(1);
       expect(target.geometry).not.toBeUndefined();
     });
   });

@@ -33,11 +33,11 @@ export async function generateModel(
     };
     geo.translate(calcPos(x), calcPos(y), calcPos(z));
 
-    bodyColors.addColor([1, 1, 1, 0.2], index);
-    edgeColors.addColor([1, 1, 1, 0.8], index);
+    bodyColors.add([1, 1, 1, 0.2], index);
+    edgeColors.add([1, 1, 1, 0.8], index);
 
-    await view.body?.model.addGeometry(geo, bodyColors, index);
-    await view.edge?.model.addGeometry(geo, edgeColors, index);
+    await view.body?.geometryMerger.add(geo, bodyColors, index);
+    await view.edge?.geometryMerger.add(geo, edgeColors, index);
   };
 
   const promises: Promise<void>[] = [];

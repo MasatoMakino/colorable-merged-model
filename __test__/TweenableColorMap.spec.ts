@@ -20,7 +20,7 @@ describe("TweenableColorMap", () => {
   test("add default", () => {
     const id = 3;
     const map = generateNewColorMap();
-    map.addColor([0, 0, 0, 0], id);
+    map.add([0, 0, 0, 0], id);
     expect(map.get(id)).not.toBeUndefined();
     expect(map.get(id)?.getAttribute()).toStrictEqual([0, 0, 0, 0]);
   });
@@ -30,9 +30,9 @@ describe("TweenableColorMap", () => {
     const body = new ColorableMergedBody({ color: [0, 0, 0, 0] });
     const map = new TweenableColorMap("colors");
 
-    map.addColor([0, 0, 0, 0], id);
-    await body.model.addGeometry(new BoxGeometry(1, 1, 1, 1, 1, 1), map, id);
-    await body.model.merge();
+    map.add([0, 0, 0, 0], id);
+    await body.geometryMerger.add(new BoxGeometry(1, 1, 1, 1, 1, 1), map, id);
+    await body.geometryMerger.merge();
 
     const material = new ColorableMergedBodyMaterial(map);
     map.setMaterial(material as ShaderMaterial);

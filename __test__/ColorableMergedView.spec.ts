@@ -47,32 +47,32 @@ describe("ColorableMergedView", () => {
     const view = generateView();
     const bodyMap = new TweenableColorMap("colors");
     const edgeMap = new TweenableColorMap("colors");
-    await view.body?.model.addGeometry(
+    await view.body?.geometryMerger.add(
       new BoxGeometry(1, 1, 1, 1, 1, 1),
       bodyMap,
       1,
     );
-    await view.edge?.model.addGeometry(
+    await view.edge?.geometryMerger.add(
       new BoxGeometry(1, 1, 1, 1, 1, 1),
       edgeMap,
       1,
     );
 
     await view.merge();
-    expect(view.body?.model.object3D).not.toBeUndefined();
-    expect(view.edge?.model.object3D).not.toBeUndefined();
+    expect(view.body?.geometryMerger.object3D).not.toBeUndefined();
+    expect(view.edge?.geometryMerger.object3D).not.toBeUndefined();
   });
 
   test("add geometry with no options", async () => {
     const view = new ColorableMergedView({});
     const bodyMap = new TweenableColorMap("colors");
     const edgeMap = new TweenableColorMap("colors");
-    await view.body?.model.addGeometry(
+    await view.body?.geometryMerger.add(
       new BoxGeometry(1, 1, 1, 1, 1, 1),
       bodyMap,
       1,
     );
-    await view.edge?.model.addGeometry(
+    await view.edge?.geometryMerger.add(
       new BoxGeometry(1, 1, 1, 1, 1, 1),
       edgeMap,
       1,

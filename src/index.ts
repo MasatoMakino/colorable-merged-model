@@ -4,6 +4,4 @@ export * from "./ColorableMergedEdge.js";
 export * from "./MergedModelUtil.js";
 export * from "./TweenableColorMap.js";
 export * from "./material/index.js";
-export * from "./MergedModel.js";
-export * from "./MergedBody.js";
-export * from "./MergedEdge.js";
+export * from "./merger/index.js";

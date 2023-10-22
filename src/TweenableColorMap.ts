@@ -10,6 +10,10 @@ export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
   private material?: ShaderMaterial;
 
+  /**
+   * コンストラクタ
+   * @param uniformName このColorMapが操作するuniform名。マテリアル側に同名のuniformが必要。
+   */
   constructor(readonly uniformName: string) {
     super();
     TweenableColorTicker.start();
@@ -23,13 +27,12 @@ export class TweenableColorMap extends EventEmitter {
     return `${id}`;
   }
 
-  addColor(defaultColor: [number, number, number, number], id: number): void {
-    const color = defaultColor;
+  add(defaultColor: [number, number, number, number], id: number): void {
     const tweenableColor = new TweenableColor(
-      color[0] * 255,
-      color[1] * 255,
-      color[2] * 255,
-      color[3],
+      defaultColor[0] * 255,
+      defaultColor[1] * 255,
+      defaultColor[2] * 255,
+      defaultColor[3],
     );
 
     this.colors.set(TweenableColorMap.getColorMapKey(id), tweenableColor);
@@ -57,9 +60,9 @@ export class TweenableColorMap extends EventEmitter {
   }
 
   /**
-   * 指定されたジオメトリの色を変更する
+   * 指定されたidの色を変更する。
    * @param id
-   * @param color
+   * @param color max 1.0 ~ min 0.0 [r, g, b, a]
    * @param option
    */
   changeColor(
@@ -88,19 +91,29 @@ export class TweenableColorMap extends EventEmitter {
     );
   }
 
+  /**
+   * このカラーマップに紐づけられたマテリアルのuniformを更新する。
+   * 対象となるuniformは、uniformNameで指定されたもの。
+   *
+   * @param tweenableColor
+   * @private
+   */
   private updateUniform(tweenableColor: TweenableColor): void {
     if (this.material == null) return;
 
     const colorUniform = this.material.uniforms[this.uniformName]
       .value as Vector4[];
-    const index = this.getUniformIndexFromColor(tweenableColor);
-    const attribute = tweenableColor.getAttribute();
 
-    colorUniform[index].set(
-      attribute[0],
-      attribute[1],
-      attribute[2],
-      attribute[3],
-    );
+    if (colorUniform == null) {
+      console.error(
+        `対象のマテリアルに、${this.uniformName}という名前のuniformが存在しません。${this.material.name}のuniform生成処理にこの名前のuniformを追加してください。`,
+      );
+      return;
+    }
+
+    const index = this.getUniformIndexFromColor(tweenableColor);
+    const colorAttribute = tweenableColor.getAttribute();
+
+    colorUniform[index].set(...colorAttribute);
   }
 }

@@ -6,15 +6,16 @@ import {
   ColorableMergedView,
   readGeometryCount,
   TweenableColorMap,
-} from "./index.js";
+} from "../index.js";
 import { BufferAttribute, BufferGeometry } from "three";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 /**
- * ColorableMergedBodyとColorableMergedEdgeの共通部分を抽出したクラス。
- * ジオメトリのマージを担当する。
+ * ジオメトリのマージを担当するクラス。
+ * add, convert, merge の3つの手順でジオメトリをマージする。
+ * マージされたジオメトリは、コンストラクタで渡されたObject3Dに返される。
  */
-export class MergedModel<
+export class GeometryMerger<
   Option extends ColorableMergedBodyParam | ColorableMergedEdgeParam,
 > {
   readonly object3D: ColorableMergedBody | ColorableMergedEdge;
@@ -29,12 +30,12 @@ export class MergedModel<
     this.option = option;
   }
 
-  public async addGeometry(
+  public async add(
     geometry: BufferGeometry,
     colorMap: TweenableColorMap,
     index: number,
   ) {
-    const convertedGeometry = await this.convertGeometry(geometry);
+    const convertedGeometry = await this.convert(geometry);
     const uniformIndex = colorMap.getUniformIndex(index);
 
     const n = readGeometryCount(convertedGeometry);
@@ -45,7 +46,7 @@ export class MergedModel<
     this.geometries.push(convertedGeometry);
   }
 
-  protected async convertGeometry(geometry: BufferGeometry) {
+  protected async convert(geometry: BufferGeometry) {
     //Override this method in child class
     return geometry;
   }
