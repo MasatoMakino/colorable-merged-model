@@ -22,7 +22,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">ColorableMergedEdge</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/MasatoMakino/colorable-merged-model/blob/52f04a9/src/ColorableMergedEdge.ts#L9">src/ColorableMergedEdge.ts:9</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/MasatoMakino/colorable-merged-model/blob/017ed3b/src/ColorableMergedEdge.ts#L11">src/ColorableMergedEdge.ts:11</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -41,6 +41,7 @@
 <a href="ColorableMergedEdge.html#customDistanceMaterial" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>custom<wbr/>Distance<wbr/>Material?</span></a>
 <a href="ColorableMergedEdge.html#frustumCulled" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>frustum<wbr/>Culled</span></a>
 <a href="ColorableMergedEdge.html#geometry" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>geometry</span></a>
+<a href="ColorableMergedEdge.html#geometryMerger" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>geometry<wbr/>Merger</span></a>
 <a href="ColorableMergedEdge.html#id" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>id</span></a>
 <a href="ColorableMergedEdge.html#isLine" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>is<wbr/>Line</span></a>
 <a href="ColorableMergedEdge.html#isLineSegments" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>is<wbr/>Line<wbr/>Segments</span></a>
@@ -52,7 +53,6 @@
 <a href="ColorableMergedEdge.html#matrixWorld" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>matrix<wbr/>World</span></a>
 <a href="ColorableMergedEdge.html#matrixWorldAutoUpdate" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>matrix<wbr/>World<wbr/>Auto<wbr/>Update</span></a>
 <a href="ColorableMergedEdge.html#matrixWorldNeedsUpdate" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>matrix<wbr/>World<wbr/>Needs<wbr/>Update</span></a>
-<a href="ColorableMergedEdge.html#model" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>model</span></a>
 <a href="ColorableMergedEdge.html#modelViewMatrix" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>model<wbr/>View<wbr/>Matrix</span></a>
 <a href="ColorableMergedEdge.html#morphTargetDictionary" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>morph<wbr/>Target<wbr/>Dictionary?</span></a>
 <a href="ColorableMergedEdge.html#morphTargetInfluences" class="tsd-index-link tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>morph<wbr/>Target<wbr/>Influences?</span></a>
@@ -141,7 +141,7 @@
 <h4 class="tsd-returns-title">Returns <a href="ColorableMergedEdge.html" class="tsd-signature-type tsd-kind-class">ColorableMergedEdge</a></h4><aside class="tsd-sources">
 <p>Overrides LineSegments.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/MasatoMakino/colorable-merged-model/blob/52f04a9/src/ColorableMergedEdge.ts#L12">src/ColorableMergedEdge.ts:12</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/MasatoMakino/colorable-merged-model/blob/017ed3b/src/ColorableMergedEdge.ts#L13">src/ColorableMergedEdge.ts:13</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="animations" class="tsd-anchor"></a>
@@ -224,6 +224,11 @@ If set to <code>false</code> the object gets rendered every frame even if it is 
 <p>Inherited from LineSegments.geometry</p>
 <ul>
 <li>Defined in node_modules/@types/three/src/objects/Line.d.ts:56</li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="geometryMerger" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>geometry<wbr/>Merger</span><a href="#geometryMerger" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">geometry<wbr/>Merger</span><span class="tsd-signature-symbol">:</span> <a href="EdgeGeometryMerger.html" class="tsd-signature-type tsd-kind-class">EdgeGeometryMerger</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/MasatoMakino/colorable-merged-model/blob/017ed3b/src/ColorableMergedEdge.ts#L12">src/ColorableMergedEdge.ts:12</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="id" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>id</span><a href="#id" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">id</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
@@ -355,11 +360,6 @@ When it isn&#39;t, then you have to maintain all matrices in the object and its 
 <p>Inherited from LineSegments.matrixWorldNeedsUpdate</p>
 <ul>
 <li>Defined in node_modules/@types/three/src/core/Object3D.d.ts:156</li></ul></aside></section>
-<section class="tsd-panel tsd-member"><a id="model" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>model</span><a href="#model" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">model</span><span class="tsd-signature-symbol">:</span> <a href="MergedEdge.html" class="tsd-signature-type tsd-kind-class">MergedEdge</a></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/MasatoMakino/colorable-merged-model/blob/52f04a9/src/ColorableMergedEdge.ts#L10">src/ColorableMergedEdge.ts:10</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited tsd-is-external"><a id="modelViewMatrix" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>model<wbr/>View<wbr/>Matrix</span><a href="#modelViewMatrix" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">model<wbr/>View<wbr/>Matrix</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Matrix4</span></div>
@@ -1832,6 +1832,7 @@ Useful if you cannot wait for the renderer to update it on the next frame, assum
 <li><a href="#customDistanceMaterial" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>custom<wbr/>Distance<wbr/>Material</span></a></li>
 <li><a href="#frustumCulled" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>frustum<wbr/>Culled</span></a></li>
 <li><a href="#geometry" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>geometry</span></a></li>
+<li><a href="#geometryMerger" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>geometry<wbr/>Merger</span></a></li>
 <li><a href="#id" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>id</span></a></li>
 <li><a href="#isLine" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>is<wbr/>Line</span></a></li>
 <li><a href="#isLineSegments" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>is<wbr/>Line<wbr/>Segments</span></a></li>
@@ -1843,7 +1844,6 @@ Useful if you cannot wait for the renderer to update it on the next frame, assum
 <li><a href="#matrixWorld" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>matrix<wbr/>World</span></a></li>
 <li><a href="#matrixWorldAutoUpdate" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>matrix<wbr/>World<wbr/>Auto<wbr/>Update</span></a></li>
 <li><a href="#matrixWorldNeedsUpdate" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>matrix<wbr/>World<wbr/>Needs<wbr/>Update</span></a></li>
-<li><a href="#model" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>model</span></a></li>
 <li><a href="#modelViewMatrix" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>model<wbr/>View<wbr/>Matrix</span></a></li>
 <li><a href="#morphTargetDictionary" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>morph<wbr/>Target<wbr/>Dictionary</span></a></li>
 <li><a href="#morphTargetInfluences" class="tsd-is-inherited tsd-is-external"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>morph<wbr/>Target<wbr/>Influences</span></a></li>
@@ -1916,15 +1916,15 @@ Useful if you cannot wait for the renderer to update it on the next frame, assum
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>@masatomakino/colorable-merged-model</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
+<li><a href="BodyGeometryMerger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>BodyGeometryMerger</a></li>
 <li><a href="ColorableMergedBody.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>ColorableMergedBody</a></li>
 <li><a href="ColorableMergedBodyMaterial.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>ColorableMergedBodyMaterial</a></li>
 <li><a href="ColorableMergedEdge.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>ColorableMergedEdge</a></li>
 <li><a href="ColorableMergedEdgeMaterial.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>ColorableMergedEdgeMaterial</a></li>
 <li><a href="ColorableMergedMaterial.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>ColorableMergedMaterial</a></li>
 <li><a href="ColorableMergedView.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>ColorableMergedView</a></li>
-<li><a href="MergedBody.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>MergedBody</a></li>
-<li><a href="MergedEdge.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>MergedEdge</a></li>
-<li><a href="MergedModel.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>MergedModel</a></li>
+<li><a href="EdgeGeometryMerger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>EdgeGeometryMerger</a></li>
+<li><a href="GeometryMerger.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>GeometryMerger</a></li>
 <li><a href="TweenableColorMap.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-128"></use></svg>TweenableColorMap</a></li>
 <li><a href="../interfaces/ChangeColorParam.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg>ChangeColorParam</a></li>
 <li><a href="../interfaces/ColorableMergedBodyMaterialParam.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg>ColorableMergedBodyMaterialParam</a></li>
