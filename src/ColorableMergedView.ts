@@ -1,4 +1,4 @@
-import { BufferGeometry, Group } from "three";
+import { Group } from "three";
 import {
   ColorableMergedBody,
   ColorableMergedBodyParam,
@@ -49,38 +49,10 @@ export class ColorableMergedView extends Group {
     }
   }
 
-  public async addGeometry(
-    geometry: BufferGeometry,
-    id: number,
-    type?: string,
-  ) {
-    await Promise.all([
-      this.body?.model.addGeometry(geometry, id, type),
-      this.edge?.model.addGeometry(geometry, id, type),
-    ]);
-  }
-
   public async merge() {
-    await Promise.all([this.body?.model.merge(), this.edge?.model.merge()]);
-  }
-
-  changeColor(param: ChangeColorParam): void {
-    this.changeColorBodyOrEdge(this.body, param.bodyColor, param);
-    this.changeColorBodyOrEdge(this.edge, param.edgeColor, param);
-  }
-
-  private changeColorBodyOrEdge(
-    target: ColorableMergedBody | ColorableMergedEdge | undefined,
-    color: [number, number, number, number] | undefined,
-    param: ChangeColorParam,
-  ) {
-    if (color == undefined || target == undefined) return;
-
-    target.model.colorMap.changeColor(color, param.id, {
-      type: param.type,
-      duration: param.duration,
-      easing: param.easing,
-      now: param.now,
-    });
+    await Promise.all([
+      this.body?.geometryMerger.merge(),
+      this.edge?.geometryMerger.merge(),
+    ]);
   }
 }

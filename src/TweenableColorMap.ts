@@ -4,52 +4,55 @@ import {
 } from "@masatomakino/tweenable-color";
 import { Easing } from "@tweenjs/tween.js";
 import { EventEmitter } from "eventemitter3";
-import { Material } from "three";
-import {
-  ColorableMergedBody,
-  ColorableMergedEdge,
-  IColorableMergedMaterial,
-} from "./index.js";
+import { ShaderMaterial, Vector4 } from "three";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
+  private material?: ShaderMaterial;
 
-  constructor(private model: ColorableMergedEdge | ColorableMergedBody) {
+  /**
+   * コンストラクタ
+   * @param uniformName このColorMapが操作するuniform名。マテリアル側に同名のuniformが必要。
+   */
+  constructor(readonly uniformName: string) {
     super();
-    this.model.onBeforeRender = this.updateColorAttribute;
     TweenableColorTicker.start();
   }
-  static getColorMapKey(id: number, type: string = "default"): string {
-    return `${type}__${id}`;
+
+  setMaterial(material: ShaderMaterial) {
+    this.material = material;
   }
 
-  addColor(
-    defaultColor: [number, number, number, number],
-    id: number,
-    type?: string,
-  ): void {
-    const color = defaultColor;
+  static getColorMapKey(id: number): string {
+    return `${id}`;
+  }
+
+  add(defaultColor: [number, number, number, number], id: number): void {
     const tweenableColor = new TweenableColor(
-      color[0] * 255,
-      color[1] * 255,
-      color[2] * 255,
-      color[3],
+      defaultColor[0] * 255,
+      defaultColor[1] * 255,
+      defaultColor[2] * 255,
+      defaultColor[3],
     );
-    this.set(tweenableColor, id, type);
-  }
-  protected set(color: TweenableColor, id: number, type?: string) {
-    this.colors.set(TweenableColorMap.getColorMapKey(id, type), color);
-    color.on("onUpdate", this.onChangedColor);
+
+    this.colors.set(TweenableColorMap.getColorMapKey(id), tweenableColor);
+    tweenableColor.on("onUpdate", () => {
+      this.updateUniform(tweenableColor);
+    });
   }
 
-  get(id: number, type?: string): TweenableColor | undefined {
-    return this.colors.get(TweenableColorMap.getColorMapKey(id, type));
+  get(id: number): TweenableColor | undefined {
+    return this.colors.get(TweenableColorMap.getColorMapKey(id));
   }
 
-  getIndex(id: number, type?: string): number | undefined {
+  getUniformIndex(id: number): number {
     return [...this.colors.keys()].indexOf(
-      TweenableColorMap.getColorMapKey(id, type),
+      TweenableColorMap.getColorMapKey(id),
     );
+  }
+
+  getUniformIndexFromColor(color: TweenableColor): number {
+    return [...this.colors.values()].indexOf(color);
   }
 
   getSize(): number {
@@ -57,16 +60,15 @@ export class TweenableColorMap extends EventEmitter {
   }
 
   /**
-   * 指定されたジオメトリの色を変更する
+   * 指定されたidの色を変更する。
    * @param id
-   * @param color
+   * @param color max 1.0 ~ min 0.0 [r, g, b, a]
    * @param option
    */
   changeColor(
     color: [number, number, number, number],
     id: number,
     option?: {
-      type?: string;
       duration?: number;
       easing?: (t: number) => number;
       now?: number;
@@ -77,7 +79,8 @@ export class TweenableColorMap extends EventEmitter {
     option.duration ??= 1000;
     option.easing ??= Easing.Cubic.Out;
 
-    const tweenableColor = this.get(id, option?.type);
+    const tweenableColor = this.get(id);
+
     tweenableColor?.change(
       color[0] * 255,
       color[1] * 255,
@@ -88,25 +91,29 @@ export class TweenableColorMap extends EventEmitter {
     );
   }
 
-  private needUpdateColors = false;
-  private onChangedColor = () => {
-    this.needUpdateColors = true;
-  };
+  /**
+   * このカラーマップに紐づけられたマテリアルのuniformを更新する。
+   * 対象となるuniformは、uniformNameで指定されたもの。
+   *
+   * @param tweenableColor
+   * @private
+   */
+  private updateUniform(tweenableColor: TweenableColor): void {
+    if (this.material == null) return;
 
-  private updateColorAttribute = () => {
-    if (!this.needUpdateColors) return;
-    this.needUpdateColors = false;
-    this.forceUpdateColorAttribute();
-  };
+    const colorUniform = this.material.uniforms[this.uniformName]
+      .value as Vector4[];
 
-  public forceUpdateColorAttribute = () => {
-    const mat = this.model.material as unknown as IColorableMergedMaterial;
-    let count = 0;
-    this.colors.forEach((value) => {
-      const colorArray = value.getAttribute();
-      mat.setColor(count, colorArray);
-      count++;
-    });
-    (this.model.material as Material).needsUpdate = true;
-  };
+    if (colorUniform == null) {
+      console.error(
+        `対象のマテリアルに、${this.uniformName}という名前のuniformが存在しません。${this.material.name}のuniform生成処理にこの名前のuniformを追加してください。`,
+      );
+      return;
+    }
+
+    const index = this.getUniformIndexFromColor(tweenableColor);
+    const colorAttribute = tweenableColor.getAttribute();
+
+    colorUniform[index].set(...colorAttribute);
+  }
 }

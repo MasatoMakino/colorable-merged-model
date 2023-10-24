@@ -8,25 +8,33 @@ import {
 } from "three";
 import { ColorableMergedMaterial } from "./index.js";
 import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl.js";
+import { TweenableColorMap } from "../TweenableColorMap";
 
 export interface ColorableMergedBodyMaterialParam {
   blending?: Blending;
   side?: Side;
 }
 export class ColorableMergedBodyMaterial extends ColorableMergedMaterial {
-  constructor(colorsLength: number, param?: ColorableMergedBodyMaterialParam) {
+  constructor(
+    readonly colors: TweenableColorMap,
+    param?: ColorableMergedBodyMaterialParam,
+  ) {
     super(
       {
         vertexShader: vertex,
         fragmentShader: fragment,
       },
-      colorsLength,
+      colors.getSize(),
     );
 
-    this.uniforms = ColorableMergedBodyMaterial.getBasicUniforms(colorsLength);
+    this.uniforms = ColorableMergedBodyMaterial.getBasicUniforms(
+      colors.getSize(),
+    );
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
     this.side = param?.side ?? FrontSide;
+
+    colors.setMaterial(this);
   }
 
   /**
