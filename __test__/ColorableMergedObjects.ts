@@ -4,6 +4,7 @@ import {
   TweenableColorMap,
 } from "../src";
 import { BoxGeometry } from "three";
+import { describe, expect, test } from "vitest";
 
 export const testColorableMergedObjects = (
   target: ColorableMergedBody | ColorableMergedEdge,
