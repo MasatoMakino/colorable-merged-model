@@ -6,6 +6,7 @@ import {
 import * as TWEEN from "@tweenjs/tween.js";
 import { BoxGeometry, ShaderMaterial } from "three";
 import { TweenableColorTicker } from "@masatomakino/tweenable-color";
+import { describe, expect, test } from "vitest";
 
 describe("TweenableColorMap", () => {
   const generateNewColorMap = () => {

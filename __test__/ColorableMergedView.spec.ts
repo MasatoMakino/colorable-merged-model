@@ -1,7 +1,6 @@
 import { ColorableMergedView, TweenableColorMap } from "../src";
 import { BoxGeometry } from "three";
-import { TweenableColorTicker } from "@masatomakino/tweenable-color";
-import { Easing } from "@tweenjs/tween.js";
+import { describe, expect, test } from "vitest";
 
 describe("ColorableMergedView", () => {
   const generateView = () => {
