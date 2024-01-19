@@ -1,7 +1,7 @@
 import { UniformsLib, UniformsUtils } from "three";
 import { ColorableMergedMaterial } from "./index.js";
 import { fragment, vertex } from "./ColorableMergedEdgeMaterial.glsl.js";
-import { TweenableColorMap } from "../TweenableColorMap";
+import { TweenableColorMap } from "../TweenableColorMap.js";
 
 export interface ColorableMergedEdgeMaterialParam {
   depthWrite?: boolean;
