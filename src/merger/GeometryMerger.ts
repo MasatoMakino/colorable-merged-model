@@ -52,7 +52,10 @@ export class GeometryMerger<
   }
 
   async merge(): Promise<void> {
-    if (this.geometries.length === 0) return;
+    if (this.geometries.length === 0) {
+      this.object3D.parent?.remove(this.object3D);
+      return;
+    }
 
     this.object3D.geometry = BufferGeometryUtils.mergeGeometries(
       this.geometries,
