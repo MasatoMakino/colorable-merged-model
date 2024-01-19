@@ -26,6 +26,7 @@ export class ColorableMergedEdgeMaterial extends ColorableMergedMaterial {
     this.transparent = true;
 
     colors.setMaterial(this);
+    colors.updateUniformsAll();
   }
 
   /**
