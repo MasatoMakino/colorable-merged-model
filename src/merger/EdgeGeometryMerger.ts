@@ -1,6 +1,6 @@
 import { ColorableMergedEdgeParam } from "../index.js";
 import { BufferGeometry, EdgesGeometry } from "three";
-import { GeometryMerger } from "./GeometryMerger";
+import { GeometryMerger } from "./GeometryMerger.js";
 
 export class EdgeGeometryMerger extends GeometryMerger<ColorableMergedEdgeParam> {
   protected override async convert(geometry: BufferGeometry) {

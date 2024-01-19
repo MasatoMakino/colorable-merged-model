@@ -8,7 +8,7 @@ import {
 } from "three";
 import { ColorableMergedMaterial } from "./index.js";
 import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl.js";
-import { TweenableColorMap } from "../TweenableColorMap";
+import { TweenableColorMap } from "../TweenableColorMap.js";
 
 export interface ColorableMergedBodyMaterialParam {
   blending?: Blending;
