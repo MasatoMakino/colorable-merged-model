@@ -81,4 +81,11 @@ describe("ColorableMergedView", () => {
     expect(view.body).toBeUndefined();
     expect(view.edge).toBeUndefined();
   });
+
+  test("should not have parent elements when no geometries are added", async () => {
+    const view = generateView();
+    await view.merge();
+    expect(view.body?.geometryMerger.object3D.parent).toBeFalsy();
+    expect(view.edge?.geometryMerger.object3D.parent).toBeFalsy();
+  });
 });
