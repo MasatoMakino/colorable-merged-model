@@ -35,6 +35,7 @@ export class ColorableMergedBodyMaterial extends ColorableMergedMaterial {
     this.side = param?.side ?? FrontSide;
 
     colors.setMaterial(this);
+    colors.updateUniformsAll();
   }
 
   /**

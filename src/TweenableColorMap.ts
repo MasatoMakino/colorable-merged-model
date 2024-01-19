@@ -91,6 +91,12 @@ export class TweenableColorMap extends EventEmitter {
     );
   }
 
+  public updateUniformsAll(): void {
+    this.colors.forEach((color) => {
+      this.updateUniform(color);
+    });
+  }
+
   /**
    * このカラーマップに紐づけられたマテリアルのuniformを更新する。
    * 対象となるuniformは、uniformNameで指定されたもの。
