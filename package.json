@@ -36,7 +36,7 @@
     "@vitest/coverage-istanbul": "^1.0.4",
     "browser-sync": "^3.0.2",
     "husky": "^8.0.3",
-    "jsdom": "^23.0.1",
+    "jsdom": "^24.0.0",
     "lint-staged": "^15.0.1",
     "prettier": "^3.0.3",
     "prettier-plugin-organize-imports": "^3.2.3",
