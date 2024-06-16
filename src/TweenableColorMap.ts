@@ -5,10 +5,11 @@ import {
 import { Easing } from "@tweenjs/tween.js";
 import { EventEmitter } from "eventemitter3";
 import { ShaderMaterial, Vector4 } from "three";
+import { IColorableMergedNodeMaterial } from "./material/index.js";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();
-  private material?: ShaderMaterial;
+  private material?: ShaderMaterial | IColorableMergedNodeMaterial;
 
   /**
    * コンストラクタ
@@ -19,7 +20,7 @@ export class TweenableColorMap extends EventEmitter {
     TweenableColorTicker.start();
   }
 
-  setMaterial(material: ShaderMaterial) {
+  setMaterial(material: ShaderMaterial | IColorableMergedNodeMaterial) {
     this.material = material;
   }
 
@@ -107,8 +108,16 @@ export class TweenableColorMap extends EventEmitter {
   private updateUniform(tweenableColor: TweenableColor): void {
     if (this.material == null) return;
 
-    const colorUniform = this.material.uniforms[this.uniformName]
-      .value as Vector4[];
+    const getUniform = (
+      material: ShaderMaterial | IColorableMergedNodeMaterial,
+    ) => {
+      if (material == null) return undefined;
+      if (material instanceof ShaderMaterial) {
+        return material.uniforms[this.uniformName].value as Vector4[];
+      }
+      return material.uniformColors.value as Vector4[];
+    };
+    const colorUniform = getUniform(this.material);
 
     if (colorUniform == null) {
       console.error(
