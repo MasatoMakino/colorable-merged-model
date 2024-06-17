@@ -1,4 +1,4 @@
-import { PerspectiveCamera, Scene, WebGLRenderer } from "three";
+import { Color, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
@@ -14,7 +14,10 @@ const generateSceneObjects = (type: "webgl" | "webgpu") => {
     type === "webgl"
       ? new WebGLRenderer({ antialias: true })
       : new WebGPURenderer({ antialias: true });
+
   renderer.setSize(w, h);
+  renderer.setClearColor(new Color(0x000000));
+
   document.body.appendChild(renderer.domElement);
   const rendererInfo = document.createElement("div");
   document.body.appendChild(rendererInfo);
