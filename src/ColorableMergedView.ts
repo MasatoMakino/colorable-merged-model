@@ -47,11 +47,9 @@ export class ColorableMergedView extends Group {
   constructor(option: {
     bodyOption?: ColorableMergedBodyParam;
     edgeOption?: ColorableMergedEdgeParam;
-    rendererType?: "webgl" | "webgpu"; //default : webgl
   }) {
     super();
 
-    option.rendererType = option.rendererType ?? "webgl";
     if (option.bodyOption != null) {
       this.body = new ColorableMergedBody(option.bodyOption);
       this.add(this.body);

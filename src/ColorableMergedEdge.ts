@@ -1,8 +1,5 @@
 import { LineSegments } from "three";
-import {
-  ColorableMergedEdgeMaterialParam,
-  EdgeGeometryMerger,
-} from "./index.js";
+import { EdgeGeometryMerger } from "./index.js";
 
 export interface ColorableMergedEdgeParam {
   edgeDetail?: number;
