@@ -1,16 +1,18 @@
-import { BoxGeometry, ShaderMaterial } from "three";
+import { BoxGeometry } from "three";
 import {
-  ColorableMergedBody,
   ColorableMergedBodyMaterial,
-  ColorableMergedEdge,
+  ColorableMergedBodyNodeMaterial,
   ColorableMergedEdgeMaterial,
+  ColorableMergedEdgeNodeMaterial,
   ColorableMergedView,
   TweenableColorMap,
 } from "../src/index.js";
 
 export async function generateModel(
   n: number = 20,
+  type?: "webgl" | "webgpu",
 ): Promise<ColorableMergedView> {
+  type = type ?? "webgl";
   const option = {
     bodyOption: { color: [1, 1, 1, 0.2] as [number, number, number, number] },
     edgeOption: { color: [1, 1, 1, 0.8] as [number, number, number, number] },
@@ -51,12 +53,37 @@ export async function generateModel(
   await Promise.all(promises);
   await view.merge();
 
+  if (type === "webgl") {
+    initMaterial(view, bodyColors, edgeColors);
+  } else if (type === "webgpu") {
+    initNodeMaterial(view, bodyColors, edgeColors);
+  }
+
+  return view;
+}
+
+const initMaterial = (
+  view: ColorableMergedView,
+  bodyColors: TweenableColorMap,
+  edgeColors: TweenableColorMap,
+) => {
   if (view.body) {
     view.body.material = new ColorableMergedBodyMaterial(bodyColors);
   }
   if (view.edge) {
     view.edge.material = new ColorableMergedEdgeMaterial(edgeColors);
   }
+};
 
-  return view;
-}
+const initNodeMaterial = (
+  view: ColorableMergedView,
+  bodyColors: TweenableColorMap,
+  edgeColors: TweenableColorMap,
+) => {
+  if (view.body) {
+    view.body.material = new ColorableMergedBodyNodeMaterial(bodyColors);
+  }
+  if (view.edge) {
+    view.edge.material = new ColorableMergedEdgeNodeMaterial(edgeColors);
+  }
+};
