@@ -50,10 +50,7 @@ export class ColorableMergedBodyNodeMaterial
     });
 
     const color = this.uniformColors[0];
-    this.colorNode = vec4(color).xyz;
-
-    //TODO : update alphaNode
-    this.opacityNode = vec4(color).w;
+    this.colorNode = vec4(color);
 
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
