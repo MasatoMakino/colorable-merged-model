@@ -6,6 +6,10 @@ import {
   ColorableMergedEdgeParam,
 } from "./index.js";
 
+/**
+ * 色変更アニメーションのパラメータ。
+ * 変更後の色と、その色に変化するまでの時間とイージング関数を指定する。
+ */
 export interface ChangeColorParam {
   bodyColor?: [number, number, number, number];
   edgeColor?: [number, number, number, number];
@@ -15,6 +19,13 @@ export interface ChangeColorParam {
   duration?: number;
   now?: number;
 }
+
+/**
+ * 色変更が可能なモデル。
+ *
+ * 半透明なモデルと、エッジの組み合わせで構成される。
+ * それぞれに対して、色変更アニメーションができる。
+ */
 export class ColorableMergedView extends Group {
   static readonly MODEL_INDEX = "MODEL_INDEX";
 
@@ -36,9 +47,11 @@ export class ColorableMergedView extends Group {
   constructor(option: {
     bodyOption?: ColorableMergedBodyParam;
     edgeOption?: ColorableMergedEdgeParam;
+    rendererType?: "webgl" | "webgpu"; //default : webgl
   }) {
     super();
 
+    option.rendererType = option.rendererType ?? "webgl";
     if (option.bodyOption != null) {
       this.body = new ColorableMergedBody(option.bodyOption);
       this.add(this.body);
