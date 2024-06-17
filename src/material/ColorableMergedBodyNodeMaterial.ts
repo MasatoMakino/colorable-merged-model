@@ -6,8 +6,10 @@ import {
   uniform,
 } from "three/examples/jsm/nodes/Nodes.js";
 import { TweenableColorMap } from "../TweenableColorMap.js";
-import { ColorableMergedBodyMaterialParam } from "./ColorableMergedBodyMaterial.js";
-import { IColorableMergedNodeMaterial } from "./IColorableMergedNodeMaterial.js";
+import {
+  ColorableMergedBodyMaterialParam,
+  IColorableMergedNodeMaterial,
+} from "./index.js";
 
 export class ColorableMergedBodyNodeMaterial
   extends MeshBasicNodeMaterial
@@ -31,6 +33,10 @@ export class ColorableMergedBodyNodeMaterial
       colors.getSize(),
     );
 
+    //TODO : update colorNode
+
+    //TODO : update alphaNode
+
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
     this.side = param?.side ?? FrontSide;
@@ -39,7 +45,9 @@ export class ColorableMergedBodyNodeMaterial
     colors.updateUniformsAll();
   }
 
-  static getColorUniform(colorLength: number) {
+  static getColorUniform(
+    colorLength: number,
+  ): ShaderNodeObject<UniformNode<Vector4[]>> {
     const colors = new Array(colorLength)
       .fill(0)
       .map(() => new Vector4(1, 1, 1, 0.5));
