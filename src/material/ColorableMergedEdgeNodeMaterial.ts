@@ -15,7 +15,7 @@ export class ColorableMergedEdgeNodeMaterial
   implements IColorableMergedNodeMaterial
 {
   readonly isColorableMergedMaterial: boolean = true;
-  readonly uniformColorArray: UniformNode<Vector4>[] = [];
+  readonly uniformColors: UniformNode<Vector4>[] = [];
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -25,7 +25,7 @@ export class ColorableMergedEdgeNodeMaterial
 
     ColorableMergedBodyNodeMaterial.initColorUniformArray(
       colors.getSize(),
-      this.uniformColorArray,
+      this.uniformColors,
     );
     this.depthWrite = param?.depthWrite ?? true;
     this.transparent = true;

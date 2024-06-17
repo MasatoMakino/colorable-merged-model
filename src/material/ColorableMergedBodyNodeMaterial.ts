@@ -23,7 +23,7 @@ export class ColorableMergedBodyNodeMaterial
   implements IColorableMergedNodeMaterial
 {
   readonly isColorableMergedMaterial: boolean = true;
-  readonly uniformColorArray: UniformNode<Vector4>[] = [];
+  readonly uniformColors: UniformNode<Vector4>[] = [];
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -37,15 +37,23 @@ export class ColorableMergedBodyNodeMaterial
 
     ColorableMergedBodyNodeMaterial.initColorUniformArray(
       colors.getSize(),
-      this.uniformColorArray,
+      this.uniformColors,
     );
 
     //TODO : update colorNode
-    const uniform = this.uniformColorArray[0];
-    this.colorNode = vec3(uniform).xyz;
+    const getColorVector4 = tslFn(([uniforms]: [UniformNode<Vector4>[]]) => {
+      //ここで取得できるのはany型で、index用の値が入っているがキャストできない
+      const index = attribute(ColorableMergedView.MODEL_INDEX);
+      //indexのキャストに失敗したため固定値0を指定している
+      const color = vec4(uniforms[0]);
+      return color;
+    });
+
+    const color = this.uniformColors[0];
+    this.colorNode = vec4(color).xyz;
 
     //TODO : update alphaNode
-    this.opacityNode = vec4(uniform).w;
+    this.opacityNode = vec4(color).w;
 
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;

@@ -116,7 +116,7 @@ export class TweenableColorMap extends EventEmitter {
       if (material instanceof ShaderMaterial) {
         return material.uniforms[this.uniformName].value as Vector4[];
       }
-      return material.uniformColorArray;
+      return material.uniformColors;
     };
     const colorUniform = getUniform(this.material);
 
