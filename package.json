@@ -51,7 +51,7 @@
     "preversion": "git checkout main && git pull && npm ci && npx vitest --run && npm run build",
     "postversion": "git add package.json package-lock.json && git checkout -b version/$(git describe --tags --abbrev=0)",
     "buildTS": "tsc",
-    "start:dev": "npm run server & npm run watch:tsc & npm run watch:workerBundle & npm run watch:demo",
+    "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
     "build": "npm run buildTS & npm run typedocs & npm run demo",
     "demo": "npx @masatomakino/gulptask-demo-page --compileTarget ES2021 --compileModule es2020",
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
