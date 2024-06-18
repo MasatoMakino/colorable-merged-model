@@ -1,7 +1,8 @@
 import { Vector4 } from "three";
 import {
   LineBasicNodeMaterial,
-  UniformNode,
+  ShaderNodeObject,
+  UniformsNode,
 } from "three/examples/jsm/nodes/Nodes.js";
 import { TweenableColorMap } from "../TweenableColorMap.js";
 import { ColorableMergedBodyNodeMaterial } from "./ColorableMergedBodyNodeMaterial.js";
@@ -15,7 +16,8 @@ export class ColorableMergedEdgeNodeMaterial
   implements IColorableMergedNodeMaterial
 {
   readonly isColorableMergedMaterial: boolean = true;
-  readonly uniformColors: UniformNode<Vector4>[] = [];
+  readonly indexedColors: Vector4[];
+  readonly uniformsColorArray: ShaderNodeObject<UniformsNode>;
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -23,10 +25,13 @@ export class ColorableMergedEdgeNodeMaterial
   ) {
     super();
 
-    ColorableMergedBodyNodeMaterial.initColorUniformArray(
+    this.indexedColors = ColorableMergedBodyNodeMaterial.initColorUniformArray(
       colors.getSize(),
-      this.uniformColors,
     );
+    this.uniformsColorArray =
+      ColorableMergedBodyNodeMaterial.initUniformsColorArray(
+        this.indexedColors,
+      );
     this.depthWrite = param?.depthWrite ?? true;
     this.transparent = true;
 

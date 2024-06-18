@@ -1,8 +1,12 @@
 import { Vector4 } from "three";
-import { UniformNode } from "three/examples/jsm/nodes/Nodes.js";
+import {
+  ShaderNodeObject,
+  UniformsNode,
+} from "three/examples/jsm/nodes/Nodes.js";
 import { IColorableMergedMaterial } from "./IColorableMergedMaterial.js";
 
 export interface IColorableMergedNodeMaterial extends IColorableMergedMaterial {
-  readonly uniformColors: UniformNode<Vector4>[];
+  readonly indexedColors: Vector4[];
+  readonly uniformsColorArray: ShaderNodeObject<UniformsNode>;
   name: string;
 }
