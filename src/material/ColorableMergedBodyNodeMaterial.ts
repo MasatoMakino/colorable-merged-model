@@ -1,9 +1,11 @@
-import { FrontSide, NormalBlending, Vector4 } from "three";
+import { Color, FrontSide, NormalBlending, Vector4 } from "three";
 import {
   MeshBasicNodeMaterial,
   ShaderNodeObject,
+  UniformNode,
   UniformsNode,
   attribute,
+  uniform,
   uniforms,
 } from "three/examples/jsm/nodes/Nodes.js";
 import { ColorableMergedView } from "../ColorableMergedView.js";
@@ -20,6 +22,8 @@ export class ColorableMergedBodyNodeMaterial
   readonly isColorableMergedMaterial: boolean = true;
   readonly indexedColors: Vector4[] = [];
   readonly uniformsColorArray: ShaderNodeObject<UniformsNode>;
+  readonly materialColorUniform: ShaderNodeObject<UniformNode<Color>>;
+  readonly materialOpacityUniform: ShaderNodeObject<UniformNode<number>>;
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -39,10 +43,14 @@ export class ColorableMergedBodyNodeMaterial
         this.indexedColors,
       );
 
-    //TODO add material.color and material.opacity
-    this.colorNode = this.uniformsColorArray.element(
+    this.materialColorUniform = uniform(this.color);
+    this.materialOpacityUniform = uniform(this.opacity);
+
+    const colorElement = this.uniformsColorArray.element(
       attribute(ColorableMergedView.MODEL_INDEX) as unknown as number,
     );
+    this.colorNode = this.materialColorUniform.mul(colorElement.xyz);
+    this.opacityNode = this.materialOpacityUniform.mul(colorElement.w);
 
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
@@ -53,7 +61,7 @@ export class ColorableMergedBodyNodeMaterial
   }
 
   static initColorUniformArray(colorLength: number) {
-    return Array.from({ length: colorLength }, () => new Vector4(1, 1, 1, 0.5));
+    return Array.from({ length: colorLength }, () => new Vector4(1, 1, 1, 1));
   }
 
   static initUniformsColorArray(vec4Array: Vector4[]) {
