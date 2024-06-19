@@ -13,7 +13,7 @@ export class TweenableColorMap extends EventEmitter {
 
   /**
    * コンストラクタ
-   * @param uniformName このColorMapが操作するuniform名。マテリアル側に同名のuniformが必要。
+   * @param uniformName このColorMapが操作するuniform名。ShaderMaterialを継承した場合、マテリアル側に同名のuniformが必要。
    */
   constructor(readonly uniformName: string) {
     super();
