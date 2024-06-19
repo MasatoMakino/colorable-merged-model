@@ -30,6 +30,10 @@ export class ColorableMergedEdgeNodeMaterial
     param?: ColorableMergedEdgeMaterialParam,
   ) {
     super();
+    if (colors.getSize() === 0) {
+      throw new Error(`ColorableMergedNodeMaterialには少なくとも1つ以上のTweenableColorが必要です。
+          このMaterialに紐づけられたTweenableColoMapには1つもTweenableColorが登録されていません。`);
+    }
 
     this.indexedColors = ColorableMergedBodyNodeMaterial.initColorUniformArray(
       colors.getSize(),
