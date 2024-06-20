@@ -1,4 +1,4 @@
-import { BoxGeometry } from "three";
+import { BoxGeometry, Material } from "three";
 import {
   ColorableMergedBodyMaterial,
   ColorableMergedBodyNodeMaterial,
@@ -22,68 +22,108 @@ export async function generateModel(
   const bodyColors = new TweenableColorMap("colors");
   const edgeColors = new TweenableColorMap("colors");
 
-  const addModel = async (x: number, y: number, z: number) => {
-    const size = 0.1;
-    const geo = new BoxGeometry(size, size, size);
+  await addBoxAll(n, view, bodyColors, edgeColors);
+  initMaterial(view, bodyColors, edgeColors, getMaterialConstractors(type));
 
-    const getQuadrant = (i: number): number => {
-      return i < n / 2 ? -1 : 1;
+  return view;
+}
+
+/**
+ * レンダラーの種類に応じたMaterialクラスを取得
+ * @param type
+ * @returns
+ */
+const getMaterialConstractors = (type: "webgl" | "webgpu") => {
+  if (type === "webgpu") {
+    return {
+      bodyMaterialClass: ColorableMergedBodyNodeMaterial,
+      edgeMaterialClass: ColorableMergedEdgeNodeMaterial,
     };
-    const index = getQuadrant(x) * getQuadrant(y) * getQuadrant(z);
-    const calcPos = (i: number) => {
-      return (i - n / 2) * (size * 3);
-    };
-    geo.translate(calcPos(x), calcPos(y), calcPos(z));
-
-    bodyColors.add([1, 1, 1, 0.2], index);
-    edgeColors.add([1, 1, 1, 0.8], index);
-
-    await view.body?.geometryMerger.add(geo, bodyColors, index);
-    await view.edge?.geometryMerger.add(geo, edgeColors, index);
+  }
+  return {
+    bodyMaterialClass: ColorableMergedBodyMaterial,
+    edgeMaterialClass: ColorableMergedEdgeMaterial,
   };
+};
 
+/**
+ * Boxを指定個数生成、追加する
+ * @param n
+ * @param view
+ * @param bodyColors
+ * @param edgeColors
+ */
+const addBoxAll = async (
+  n: number,
+  view: ColorableMergedView,
+  bodyColors: TweenableColorMap,
+  edgeColors: TweenableColorMap,
+) => {
   const promises: Promise<void>[] = [];
   for (let x = 0; x < n; x++) {
     for (let y = 0; y < n; y++) {
       for (let z = 0; z < n; z++) {
-        promises.push(addModel(x, y, z));
+        promises.push(
+          addBoxModelAndColor(n, x, y, z, view, bodyColors, edgeColors),
+        );
       }
     }
   }
   await Promise.all(promises);
   await view.merge();
+};
 
-  if (type === "webgl") {
-    initMaterial(view, bodyColors, edgeColors);
-  } else if (type === "webgpu") {
-    initNodeMaterial(view, bodyColors, edgeColors);
-  }
+/**
+ * Boxを1つ生成、追加する
+ * @param n
+ * @param x
+ * @param y
+ * @param z
+ * @param view
+ * @param bodyColors
+ * @param edgeColors
+ */
+const addBoxModelAndColor = async (
+  n: number,
+  x: number,
+  y: number,
+  z: number,
+  view: ColorableMergedView,
+  bodyColors: TweenableColorMap,
+  edgeColors: TweenableColorMap,
+) => {
+  const size = 0.1;
+  const geo = new BoxGeometry(size, size, size);
 
-  return view;
-}
+  const getQuadrant = (i: number): number => {
+    return i < n / 2 ? -1 : 1;
+  };
+  const index = getQuadrant(x) * getQuadrant(y) * getQuadrant(z);
+  const calcPos = (i: number) => {
+    return (i - n / 2) * (size * 3);
+  };
+  geo.translate(calcPos(x), calcPos(y), calcPos(z));
+
+  bodyColors.add([1, 1, 1, 0.2], index);
+  edgeColors.add([1, 1, 1, 0.8], index);
+
+  await view.body?.geometryMerger.add(geo, bodyColors, index);
+  await view.edge?.geometryMerger.add(geo, edgeColors, index);
+};
 
 const initMaterial = (
   view: ColorableMergedView,
   bodyColors: TweenableColorMap,
   edgeColors: TweenableColorMap,
+  materialConstractors: {
+    bodyMaterialClass: new (colors: TweenableColorMap) => Material;
+    edgeMaterialClass: new (colors: TweenableColorMap) => Material;
+  },
 ) => {
   if (view.body) {
-    view.body.material = new ColorableMergedBodyMaterial(bodyColors);
+    view.body.material = new materialConstractors.bodyMaterialClass(bodyColors);
   }
   if (view.edge) {
-    view.edge.material = new ColorableMergedEdgeMaterial(edgeColors);
-  }
-};
-
-const initNodeMaterial = (
-  view: ColorableMergedView,
-  bodyColors: TweenableColorMap,
-  edgeColors: TweenableColorMap,
-) => {
-  if (view.body) {
-    view.body.material = new ColorableMergedBodyNodeMaterial(bodyColors);
-  }
-  if (view.edge) {
-    view.edge.material = new ColorableMergedEdgeNodeMaterial(edgeColors);
+    view.edge.material = new materialConstractors.edgeMaterialClass(edgeColors);
   }
 };
