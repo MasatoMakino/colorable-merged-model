@@ -7,6 +7,8 @@ import {
   attribute,
   uniform,
   uniforms,
+  materialColor,
+  materialOpacity,
 } from "three/examples/jsm/nodes/Nodes.js";
 import { ColorableMergedView } from "../ColorableMergedView.js";
 import { TweenableColorMap } from "../TweenableColorMap.js";
@@ -22,8 +24,6 @@ export class ColorableMergedBodyNodeMaterial
   readonly isColorableMergedMaterial: boolean = true;
   readonly indexedColors: Vector4[] = [];
   readonly uniformsColorArray: ShaderNodeObject<UniformsNode>;
-  readonly materialColorUniform: ShaderNodeObject<UniformNode<Color>>;
-  readonly materialOpacityUniform: ShaderNodeObject<UniformNode<number>>;
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -43,14 +43,11 @@ export class ColorableMergedBodyNodeMaterial
         this.indexedColors,
       );
 
-    this.materialColorUniform = uniform(this.color);
-    this.materialOpacityUniform = uniform(this.opacity);
-
     const colorElement = this.uniformsColorArray.element(
       attribute(ColorableMergedView.MODEL_INDEX) as unknown as number,
     );
-    this.colorNode = this.materialColorUniform.mul(colorElement.xyz);
-    this.opacityNode = this.materialOpacityUniform.mul(colorElement.w);
+    this.colorNode = materialColor.mul(colorElement.xyz);
+    this.opacityNode = materialOpacity.mul(colorElement.w);
 
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
