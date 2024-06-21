@@ -1,4 +1,4 @@
-import { Vector4 } from "three";
+import { Color, ColorSpace, Vector4 } from "three";
 import {
   LineBasicNodeMaterial,
   ShaderNodeObject,
@@ -14,6 +14,12 @@ import {
   IColorableMergedNodeMaterial,
 } from "./index.js";
 import { ColorableMergedView } from "../ColorableMergedView.js";
+import { TweenableColor } from "@masatomakino/tweenable-color";
+
+export interface ColorableMergedEdgeNodeMaterialParam
+  extends ColorableMergedEdgeMaterialParam {
+  colorSpace?: ColorSpace;
+}
 
 export class ColorableMergedEdgeNodeMaterial
   extends LineBasicNodeMaterial
@@ -23,9 +29,12 @@ export class ColorableMergedEdgeNodeMaterial
   readonly indexedColors: Vector4[];
   readonly uniformsColorArray: ShaderNodeObject<UniformsNode>;
 
+  protected readonly colorConverter = new Color();
+  colorSpace: ColorSpace;
+
   constructor(
     readonly colors: TweenableColorMap,
-    param?: ColorableMergedEdgeMaterialParam,
+    param?: ColorableMergedEdgeNodeMaterialParam,
   ) {
     super();
     if (colors.getSize() === 0) {
@@ -43,6 +52,7 @@ export class ColorableMergedEdgeNodeMaterial
 
     this.depthWrite = param?.depthWrite ?? true;
     this.transparent = true;
+    this.colorSpace = param?.colorSpace ?? "srgb";
 
     const colorElement = this.uniformsColorArray.element(
       attribute(ColorableMergedView.MODEL_INDEX) as unknown as number,
@@ -52,5 +62,19 @@ export class ColorableMergedEdgeNodeMaterial
 
     colors.setMaterial(this);
     colors.updateUniformsAll();
+  }
+
+  /**
+   * 指定されたuniformを更新する。
+   * @param tweenableColor
+   */
+  updateUniform(tweenableColor: TweenableColor): void {
+    ColorableMergedBodyNodeMaterial.updateUniform(
+      this.colors,
+      tweenableColor,
+      this.indexedColors,
+      this.colorSpace,
+      this.colorConverter,
+    );
   }
 }

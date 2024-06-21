@@ -1,11 +1,9 @@
-import { Color, FrontSide, NormalBlending, Vector4 } from "three";
+import { Color, FrontSide, NormalBlending, Vector4, ColorSpace } from "three";
 import {
   MeshBasicNodeMaterial,
   ShaderNodeObject,
-  UniformNode,
   UniformsNode,
   attribute,
-  uniform,
   uniforms,
   materialColor,
   materialOpacity,
@@ -16,6 +14,12 @@ import {
   ColorableMergedBodyMaterialParam,
   IColorableMergedNodeMaterial,
 } from "./index.js";
+import { TweenableColor } from "@masatomakino/tweenable-color";
+
+export interface ColorableMergedNodeBodyMaterialParam
+  extends ColorableMergedBodyMaterialParam {
+  colorSpace?: ColorSpace;
+}
 
 export class ColorableMergedBodyNodeMaterial
   extends MeshBasicNodeMaterial
@@ -25,9 +29,12 @@ export class ColorableMergedBodyNodeMaterial
   readonly indexedColors: Vector4[] = [];
   readonly uniformsColorArray: ShaderNodeObject<UniformsNode>;
 
+  protected readonly colorConverter = new Color();
+  colorSpace: ColorSpace;
+
   constructor(
     readonly colors: TweenableColorMap,
-    param?: ColorableMergedBodyMaterialParam,
+    param?: ColorableMergedNodeBodyMaterialParam,
   ) {
     super();
     if (colors.getSize() === 0) {
@@ -53,6 +60,8 @@ export class ColorableMergedBodyNodeMaterial
     this.blending = param?.blending ?? NormalBlending;
     this.side = param?.side ?? FrontSide;
 
+    this.colorSpace = param?.colorSpace ?? "srgb";
+
     colors.setMaterial(this);
     colors.updateUniformsAll();
   }
@@ -63,5 +72,48 @@ export class ColorableMergedBodyNodeMaterial
 
   static initUniformsColorArray(vec4Array: Vector4[]) {
     return uniforms(vec4Array, "vec4");
+  }
+
+  /**
+   * 指定されたuniformを更新する。
+   * @param tweenableColor
+   */
+  updateUniform(tweenableColor: TweenableColor): void {
+    ColorableMergedBodyNodeMaterial.updateUniform(
+      this.colors,
+      tweenableColor,
+      this.indexedColors,
+      this.colorSpace,
+      this.colorConverter,
+    );
+  }
+
+  static updateUniform(
+    colorMap: TweenableColorMap,
+    tweenableColor: TweenableColor,
+    indexedColors: Vector4[],
+    colorSpace?: ColorSpace,
+    colorTransform?: Color,
+  ): void {
+    const index = colorMap.getUniformIndexFromColor(tweenableColor);
+    const colorAttribute = tweenableColor.getAttribute();
+
+    indexedColors[index].set(...colorAttribute);
+    if (colorSpace != null && colorSpace !== "") {
+      colorTransform ??= new Color();
+      colorTransform.setRGB(
+        colorAttribute[0],
+        colorAttribute[1],
+        colorAttribute[2],
+        colorSpace,
+      );
+
+      indexedColors[index].set(
+        colorTransform.r,
+        colorTransform.g,
+        colorTransform.b,
+        colorAttribute[3],
+      );
+    }
   }
 }
