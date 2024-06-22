@@ -19,6 +19,7 @@ import { TweenableColor } from "@masatomakino/tweenable-color";
 export interface ColorableMergedNodeBodyMaterialParam
   extends ColorableMergedBodyMaterialParam {
   colorSpace?: ColorSpace;
+  applyGammaToAlpha?: boolean;
 }
 
 export class ColorableMergedBodyNodeMaterial
@@ -31,6 +32,7 @@ export class ColorableMergedBodyNodeMaterial
 
   protected readonly colorConverter = new Color();
   colorSpace: ColorSpace;
+  applyGammaToAlpha: boolean;
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -59,8 +61,8 @@ export class ColorableMergedBodyNodeMaterial
     this.transparent = true;
     this.blending = param?.blending ?? NormalBlending;
     this.side = param?.side ?? FrontSide;
-
     this.colorSpace = param?.colorSpace ?? "srgb";
+    this.applyGammaToAlpha = param?.applyGammaToAlpha ?? false;
 
     colors.setMaterial(this);
     colors.updateUniformsAll();
@@ -84,21 +86,42 @@ export class ColorableMergedBodyNodeMaterial
       tweenableColor,
       this.indexedColors,
       this.colorSpace,
+      this.applyGammaToAlpha,
       this.colorConverter,
     );
   }
 
+  /**
+   * 指定されたuniformを更新する。
+   *
+   * @param colorMap
+   *   tweenableColorMapインスタンス
+   * @param tweenableColor
+   *   更新するTweenableColorインスタンス。TweenableColorMapに登録されている必要がある。
+   * @param indexedColors
+   *   マテリアルのuniformに設定されているVector4配列
+   * @param colorSpace
+   *   colorSpace色空間が指定されている場合、RGBAの各要素をワーキングカラースペースに変換する。
+   * @param applyGammaToAlpha
+   *   アルファチャンネルを色空間の変換対象にするか否か。
+   * @param colorTransform
+   *   colorSpaceが指定されている場合に、色空間の変換に使うColorインスタンス。
+   *   再利用のために引数で渡すことを推奨する。
+   */
   static updateUniform(
     colorMap: TweenableColorMap,
     tweenableColor: TweenableColor,
     indexedColors: Vector4[],
-    colorSpace?: ColorSpace,
+    colorSpace: ColorSpace,
+    applyGammaToAlpha: boolean,
     colorTransform?: Color,
   ): void {
     const index = colorMap.getUniformIndexFromColor(tweenableColor);
     const colorAttribute = tweenableColor.getAttribute();
+    const targetVec4 = indexedColors[index];
 
-    indexedColors[index].set(...colorAttribute);
+    targetVec4.set(...colorAttribute);
+
     if (colorSpace != null && colorSpace !== "") {
       colorTransform ??= new Color();
       colorTransform.setRGB(
@@ -107,13 +130,14 @@ export class ColorableMergedBodyNodeMaterial
         colorAttribute[2],
         colorSpace,
       );
+      targetVec4.setX(colorTransform.r);
+      targetVec4.setY(colorTransform.g);
+      targetVec4.setZ(colorTransform.b);
 
-      indexedColors[index].set(
-        colorTransform.r,
-        colorTransform.g,
-        colorTransform.b,
-        colorAttribute[3],
-      );
+      if (applyGammaToAlpha) {
+        colorTransform.setRGB(colorAttribute[3], 0, 0, colorSpace);
+        targetVec4.setW(colorTransform.r);
+      }
     }
   }
 }

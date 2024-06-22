@@ -19,6 +19,7 @@ import { TweenableColor } from "@masatomakino/tweenable-color";
 export interface ColorableMergedEdgeNodeMaterialParam
   extends ColorableMergedEdgeMaterialParam {
   colorSpace?: ColorSpace;
+  applyGammaToAlpha?: boolean;
 }
 
 export class ColorableMergedEdgeNodeMaterial
@@ -31,6 +32,7 @@ export class ColorableMergedEdgeNodeMaterial
 
   protected readonly colorConverter = new Color();
   colorSpace: ColorSpace;
+  applyGammaToAlpha: boolean;
 
   constructor(
     readonly colors: TweenableColorMap,
@@ -53,6 +55,7 @@ export class ColorableMergedEdgeNodeMaterial
     this.depthWrite = param?.depthWrite ?? true;
     this.transparent = true;
     this.colorSpace = param?.colorSpace ?? "srgb";
+    this.applyGammaToAlpha = param?.applyGammaToAlpha ?? false;
 
     const colorElement = this.uniformsColorArray.element(
       attribute(ColorableMergedView.MODEL_INDEX) as unknown as number,
@@ -74,6 +77,7 @@ export class ColorableMergedEdgeNodeMaterial
       tweenableColor,
       this.indexedColors,
       this.colorSpace,
+      this.applyGammaToAlpha,
       this.colorConverter,
     );
   }
