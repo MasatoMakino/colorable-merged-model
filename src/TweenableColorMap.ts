@@ -108,24 +108,19 @@ export class TweenableColorMap extends EventEmitter {
   private updateUniform(tweenableColor: TweenableColor): void {
     if (this.material == null) return;
 
-    const getUniform = (
-      material: ShaderMaterial | IColorableMergedNodeMaterial,
-    ) => {
-      if (material == null) return undefined;
-      if (material instanceof ShaderMaterial) {
-        return material.uniforms[this.uniformName].value as Vector4[];
-      }
-      return material.indexedColors;
-    };
-    const colorUniform = getUniform(this.material);
+    if ("updateUniform" in this.material) {
+      this.material.updateUniform(tweenableColor);
+      return;
+    }
 
+    const colorUniform = this.material.uniforms[this.uniformName]
+      .value as Vector4[];
     if (colorUniform == null) {
       console.error(
         `対象のマテリアルに、${this.uniformName}という名前のuniformが存在しません。${this.material.name}のuniform生成処理にこの名前のuniformを追加してください。`,
       );
       return;
     }
-
     const index = this.getUniformIndexFromColor(tweenableColor);
     const colorAttribute = tweenableColor.getAttribute();
     colorUniform[index].set(...colorAttribute);
