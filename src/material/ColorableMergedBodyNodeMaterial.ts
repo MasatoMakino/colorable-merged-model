@@ -7,7 +7,7 @@ import {
   uniforms,
   materialColor,
   materialOpacity,
-} from "three/examples/jsm/nodes/Nodes.js";
+} from "three/src/nodes/Nodes.js";
 import { ColorableMergedView } from "../ColorableMergedView.js";
 import { TweenableColorMap } from "../TweenableColorMap.js";
 import {

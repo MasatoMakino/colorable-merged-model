@@ -6,7 +6,7 @@ import {
   attribute,
   materialColor,
   materialOpacity,
-} from "three/examples/jsm/nodes/Nodes.js";
+} from "three/src/nodes/Nodes.js";
 import { TweenableColorMap } from "../TweenableColorMap.js";
 import { ColorableMergedBodyNodeMaterial } from "./ColorableMergedBodyNodeMaterial.js";
 import {
