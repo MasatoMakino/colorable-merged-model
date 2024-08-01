@@ -28,7 +28,7 @@
   "peerDependencies": {
     "@masatomakino/tweenable-color": "0.1.0 - 0.3.x",
     "eventemitter3": "^5.0.1",
-    "three": ">=0.152.2 <1.0.0"
+    "three": ">=0.167.0 <1.0.0"
   },
   "devDependencies": {
     "@masatomakino/gulptask-demo-page": "^0.8.0",
