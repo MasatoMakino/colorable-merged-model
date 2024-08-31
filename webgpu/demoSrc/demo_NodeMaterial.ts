@@ -1,5 +1,4 @@
 import {
-  ColorableMergedBodyMaterial,
   ColorableMergedBodyNodeMaterial,
   ColorableMergedView,
 } from "../src/index.js";

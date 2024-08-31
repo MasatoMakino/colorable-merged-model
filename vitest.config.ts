@@ -9,6 +9,7 @@ export default defineConfig({
         resources: "usable",
       },
     },
+    include: ["__test__/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
     coverage: {
       provider: "istanbul",
       reporter: ["text", "lcov"],

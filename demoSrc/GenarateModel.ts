@@ -1,9 +1,7 @@
 import { BoxGeometry, Material } from "three";
 import {
   ColorableMergedBodyMaterial,
-  ColorableMergedBodyNodeMaterial,
   ColorableMergedEdgeMaterial,
-  ColorableMergedEdgeNodeMaterial,
   ColorableMergedView,
   TweenableColorMap,
 } from "../src/index.js";
@@ -34,12 +32,12 @@ export async function generateModel(
  * @returns
  */
 const getMaterialConstractors = (type: "webgl" | "webgpu") => {
-  if (type === "webgpu") {
-    return {
-      bodyMaterialClass: ColorableMergedBodyNodeMaterial,
-      edgeMaterialClass: ColorableMergedEdgeNodeMaterial,
-    };
-  }
+  // if (type === "webgpu") {
+  //   return {
+  //     bodyMaterialClass: ColorableMergedBodyNodeMaterial,
+  //     edgeMaterialClass: ColorableMergedEdgeNodeMaterial,
+  //   };
+  // }
   return {
     bodyMaterialClass: ColorableMergedBodyMaterial,
     edgeMaterialClass: ColorableMergedEdgeMaterial,

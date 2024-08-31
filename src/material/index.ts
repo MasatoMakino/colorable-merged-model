@@ -9,5 +9,3 @@ export {
   ColorableMergedEdgeMaterial,
   ColorableMergedEdgeMaterialParam,
 } from "./ColorableMergedEdgeMaterial.js";
-export * from "./ColorableMergedBodyNodeMaterial.js";
-export * from "./ColorableMergedEdgeNodeMaterial.js";
