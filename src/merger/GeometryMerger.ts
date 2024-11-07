@@ -39,10 +39,12 @@ export class GeometryMerger<
     const uniformIndex = colorMap.getUniformIndex(index);
 
     const n = readGeometryCount(convertedGeometry);
-    convertedGeometry.setAttribute(
-      ColorableMergedView.MODEL_INDEX,
-      new BufferAttribute(new Uint16Array(new Array(n).fill(uniformIndex)), 1),
-    );
+    const attrArray = new Uint16Array(n);
+    for (let i = 0; i < n; i++) {
+      attrArray[i] = uniformIndex;
+    }
+    const attr = new BufferAttribute(attrArray, 1);
+    convertedGeometry.setAttribute(ColorableMergedView.MODEL_INDEX, attr);
     this.geometries.push(convertedGeometry);
   }
 
