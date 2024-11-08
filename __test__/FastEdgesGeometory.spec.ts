@@ -10,6 +10,7 @@ import {
   SphereGeometry,
   TorusGeometry,
   TorusKnotGeometry,
+  TypedArray,
 } from "three";
 
 describe("FastEdgesGeometry", () => {
@@ -45,6 +46,34 @@ describe("FastEdgesGeometry", () => {
     checkPosition(new CylinderGeometry());
     checkPosition(new ConeGeometry());
     checkPosition(new RingGeometry());
-    checkPosition(new BoxGeometry(10, 11, 12));
+    checkPosition(new BoxGeometry(1, 0.9, 1));
+    testLineSegmentsPosition(new BoxGeometry());
   });
+
+  const testLineSegmentsPosition = (geo: BufferGeometry) => {
+    const fastEdges = new FastEdgesGeometry(geo);
+    const edges = new EdgesGeometry(geo);
+    const chunkSize = 6;
+    const fastEdgesArray = splitArrayIntoChunks(
+      fastEdges.attributes.position.array,
+      chunkSize,
+    );
+    const edgesArray = splitArrayIntoChunks(
+      edges.attributes.position.array,
+      chunkSize,
+    );
+    expect(fastEdgesArray.sort()).toStrictEqual(edgesArray.sort());
+  };
+
+  function splitArrayIntoChunks(
+    array: TypedArray,
+    chunkSize: number,
+  ): number[][] {
+    const result: number[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      const chunk = Array.from(array.slice(i, i + chunkSize));
+      result.push(chunk);
+    }
+    return result;
+  }
 });
