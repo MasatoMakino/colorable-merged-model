@@ -65,12 +65,12 @@ export class FastEdgesGeometry extends BufferGeometry {
 
         // create hashes for the edge from the vertices
 
-        hashes[0] = FastEdgesGeometry.simpleHash(
+        hashes[0] = FastEdgesGeometry.computeVertexHash(
           Math.round(a.x * precision),
           Math.round(a.y * precision),
           Math.round(a.z * precision),
         );
-        hashes[1] = FastEdgesGeometry.simpleHash(
+        hashes[1] = FastEdgesGeometry.computeVertexHash(
           Math.round(b.x * precision),
           Math.round(b.y * precision),
           Math.round(b.z * precision),
@@ -78,7 +78,7 @@ export class FastEdgesGeometry extends BufferGeometry {
         if (hashes[0] === hashes[1]) {
           continue;
         }
-        hashes[2] = FastEdgesGeometry.simpleHash(
+        hashes[2] = FastEdgesGeometry.computeVertexHash(
           Math.round(c.x * precision),
           Math.round(c.y * precision),
           Math.round(c.z * precision),
@@ -98,8 +98,11 @@ export class FastEdgesGeometry extends BufferGeometry {
           const v0 = _triangle[vertKeys[j]] as Vector3;
           const v1 = _triangle[vertKeys[jNext]] as Vector3;
 
-          const hash = FastEdgesGeometry.simpleHash(vecHash0, vecHash1);
-          const reverseHash = FastEdgesGeometry.simpleHash(vecHash1, vecHash0);
+          const hash = FastEdgesGeometry.computeVertexHash(vecHash0, vecHash1);
+          const reverseHash = FastEdgesGeometry.computeVertexHash(
+            vecHash1,
+            vecHash0,
+          );
 
           if (edgeData.has(reverseHash)) {
             // if we found a sibling edge add it into the vertex array if
@@ -143,7 +146,17 @@ export class FastEdgesGeometry extends BufferGeometry {
     return this;
   }
 
-  static simpleHash(x: number, y: number, z: number = 0): number {
+  /**
+   * Computes a hash value for a vertex based on its x, y, and z coordinates.
+   * This hash function uses three prime numbers to combine the coordinates
+   * into a single hash value.
+   *
+   * @param x - The x-coordinate of the vertex.
+   * @param y - The y-coordinate of the vertex.
+   * @param z - The z-coordinate of the vertex. Defaults to 0 if not provided.
+   * @returns The computed hash value for the vertex.
+   */
+  static computeVertexHash(x: number, y: number, z: number = 0): number {
     const prime1 = 31;
     const prime2 = 37;
     const prime3 = 41;
