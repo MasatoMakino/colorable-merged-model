@@ -81,9 +81,15 @@ const generateEdges = (
   const time = end - start;
   console.log(`FastEdgesGeometry: ${time}ms`);
 
-  console.log(
-    `FastEdgesGeometry is ${timeEdges / time} times faster than EdgesGeometry`,
-  );
+  if (timeEdges / time < 1) {
+    console.warn(
+      `🚫 FastEdgesGeometry is slower than EdgesGeometry. FastEdgesGeometry is ${timeEdges / time} times slower than EdgesGeometry.`,
+    );
+  } else {
+    console.log(
+      `👍 FastEdgesGeometry is ${timeEdges / time} times faster than EdgesGeometry.`,
+    );
+  }
 
   return { edges, fastEdges };
 };
