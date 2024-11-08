@@ -104,19 +104,17 @@ export class FastEdgesGeometry extends BufferGeometry {
             vecHash0,
           );
 
-          if (edgeData.has(reverseHash)) {
+          const reverseHashEdgeData = edgeData.get(reverseHash);
+          if (reverseHashEdgeData !== undefined) {
             // if we found a sibling edge add it into the vertex array if
             // it meets the angle threshold and delete the edge from the map.
-            if (
-              _normal.dot(edgeData.get(reverseHash)!.normal) <= thresholdDot
-            ) {
+            if (_normal.dot(reverseHashEdgeData.normal) <= thresholdDot) {
               vertices.push(v0.x, v0.y, v0.z);
               vertices.push(v1.x, v1.y, v1.z);
             }
-
             edgeData.delete(reverseHash);
-          } else if (!edgeData.has(hash)) {
-            // if we've already got an edge here then skip adding a new one
+          } else {
+            // If there is no hash collision, edgeData will not contain the edge, so add it
             edgeData.set(hash, {
               index0: indexArr[j],
               index1: indexArr[jNext],
@@ -127,7 +125,7 @@ export class FastEdgesGeometry extends BufferGeometry {
       }
 
       // iterate over all remaining, unmatched edges and add them to the vertex array
-      edgeData.forEach((value, key, map) => {
+      edgeData.forEach((value) => {
         const { index0, index1 } = value;
         _v0.fromBufferAttribute(positionAttr, index0);
         _v1.fromBufferAttribute(positionAttr, index1);
