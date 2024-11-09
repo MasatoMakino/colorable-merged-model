@@ -4,7 +4,7 @@ import { generateScene } from "./GenerateScene.js";
 import { ColorSwitcher } from "./ColorSwitcher.js";
 
 const onDomContentsLoaded = async () => {
-  const scene = generateScene();
+  const { scene } = generateScene();
   const model: ColorableMergedView = await generateModel();
   scene.add(model);
   new ColorSwitcher(model);

@@ -32,7 +32,7 @@ const generateSceneObjects = (type: "webgl" | "webgpu") => {
   };
   rendering();
 
-  return scene;
+  return { scene, camera };
 };
 
 export function generateScene() {
