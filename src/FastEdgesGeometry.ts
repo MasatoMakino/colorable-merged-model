@@ -11,11 +11,41 @@ const _v1 = /*@__PURE__*/ new Vector3();
 const _normal = /*@__PURE__*/ new Vector3();
 const _triangle = /*@__PURE__*/ new Triangle();
 
+/**
+ * FastEdgesGeometry is a performance-optimized version of EdgesGeometry that generates edges
+ * for a given geometry based on a specified threshold angle.
+ *
+ * While this class provides improved performance, it may encounter hash collisions when provided
+ * with custom geometries. As a result, it may not be fully compatible with all geometries.
+ * If edge generation fails, consider adjusting the seed value in the options.
+ *
+ * @param geometry - The input BufferGeometry for which edges are to be generated. Defaults to null.
+ * @param thresholdAngle - The angle threshold in degrees to consider an edge. Defaults to 1.
+ * @param options - Optional parameters.
+ * @param options.seed - An optional seed value for hash generation.
+ *
+ */
 export class FastEdgesGeometry extends BufferGeometry {
   readonly type = "EdgesGeometry";
   parameters: { geometry: BufferGeometry | null; thresholdAngle: number };
 
-  constructor(geometry: BufferGeometry | null = null, thresholdAngle = 1) {
+  /**
+   * Creates an instance of FastEdgesGeometry.
+   *
+   * This class extends BufferGeometry and is used to generate edges for a given geometry
+   * based on a specified threshold angle. It provides an optimized implementation for
+   * edge generation.
+   *
+   * @param geometry - The input BufferGeometry for which edges are to be generated. Defaults to null.
+   * @param thresholdAngle - The angle threshold in degrees to consider an edge. Defaults to 1.
+   * @param options - Optional parameters.
+   * @param options.seed - An optional seed value for hash generation.
+   */
+  constructor(
+    geometry: BufferGeometry | null = null,
+    thresholdAngle = 1,
+    options?: { seed?: number },
+  ) {
     super();
 
     this.parameters = {
@@ -65,23 +95,26 @@ export class FastEdgesGeometry extends BufferGeometry {
 
         // create hashes for the edge from the vertices
 
-        hashes[0] = FastEdgesGeometry.computeVertexHash(
+        hashes[0] = FastEdgesGeometry.hybridtaus(
           Math.round(a.x * precision),
           Math.round(a.y * precision),
           Math.round(a.z * precision),
+          options?.seed,
         );
-        hashes[1] = FastEdgesGeometry.computeVertexHash(
+        hashes[1] = FastEdgesGeometry.hybridtaus(
           Math.round(b.x * precision),
           Math.round(b.y * precision),
           Math.round(b.z * precision),
+          options?.seed,
         );
         if (hashes[0] === hashes[1]) {
           continue;
         }
-        hashes[2] = FastEdgesGeometry.computeVertexHash(
+        hashes[2] = FastEdgesGeometry.hybridtaus(
           Math.round(c.x * precision),
           Math.round(c.y * precision),
           Math.round(c.z * precision),
+          options?.seed,
         );
 
         // skip degenerate triangles
@@ -98,10 +131,17 @@ export class FastEdgesGeometry extends BufferGeometry {
           const v0 = _triangle[vertKeys[j]] as Vector3;
           const v1 = _triangle[vertKeys[jNext]] as Vector3;
 
-          const hash = FastEdgesGeometry.computeVertexHash(vecHash0, vecHash1);
-          const reverseHash = FastEdgesGeometry.computeVertexHash(
+          const hash = FastEdgesGeometry.hybridtaus(
+            vecHash0,
+            vecHash1,
+            0,
+            options?.seed,
+          );
+          const reverseHash = FastEdgesGeometry.hybridtaus(
             vecHash1,
             vecHash0,
+            0,
+            options?.seed,
           );
 
           const reverseHashEdgeData = edgeData.get(reverseHash);
@@ -145,19 +185,52 @@ export class FastEdgesGeometry extends BufferGeometry {
   }
 
   /**
-   * Computes a hash value for a vertex based on its x, y, and z coordinates.
-   * This hash function uses three prime numbers to combine the coordinates
-   * into a single hash value.
+   * Applies the Tausworthe algorithm to generate a pseudo-random number.
    *
+   * This function takes an input number `z` and applies a series of bitwise operations
+   * using the provided shift values (`s1`, `s2`, `s3`) and a mask value. The result is
+   * a pseudo-random number generated using the Tausworthe algorithm.
+   *
+   * @param z - The input number to be transformed.
+   * @param s1 - The first shift value.
+   * @param s2 - The second shift value.
+   * @param s3 - The third shift value.
+   * @param mask - The mask value to be applied.
+   * @returns The transformed number as a result of the Tausworthe algorithm.
+   */
+  static taus(
+    z: number,
+    s1: number,
+    s2: number,
+    s3: number,
+    mask: number,
+  ): number {
+    const u32 = (n: number) => n >>> 0;
+    return u32(((z & mask) << s1) ^ (((z << s2) ^ z) >>> s3));
+  }
+
+  /**
+   * Computes a hash value for a vertex based on the hybrid Tausworthe algorithm.
+   * https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch37.html
    * @param x - The x-coordinate of the vertex.
    * @param y - The y-coordinate of the vertex.
-   * @param z - The z-coordinate of the vertex. Defaults to 0 if not provided.
-   * @returns The computed hash value for the vertex.
+   * @param z - The z-coordinate of the vertex.
+   * @param seed - The seed value for the hash. Defaults to 255 if not provided.
+   * @returns The computed hash value.
    */
-  static computeVertexHash(x: number, y: number, z: number = 0): number {
-    const prime1 = 31;
-    const prime2 = 37;
-    const prime3 = 41;
-    return x * prime1 + y * prime2 + z * prime3;
+  static hybridtaus(
+    x: number,
+    y: number,
+    z: number,
+    seed: number = 255,
+  ): number {
+    const u32 = (n: number) => n >>> 0;
+
+    x = FastEdgesGeometry.taus(x, 13, 19, 12, 0xfffffffe);
+    y = FastEdgesGeometry.taus(y, 2, 25, 4, 0xfffffff8);
+    z = FastEdgesGeometry.taus(z, 3, 11, 17, 0xfffffff0);
+    seed = u32(seed * 1664525 + 1013904223);
+
+    return u32(x ^ y ^ z ^ seed);
   }
 }

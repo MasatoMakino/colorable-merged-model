@@ -76,7 +76,9 @@ const generateEdges = (
   console.log(`EdgesGeometry: ${timeEdges}ms`);
 
   const start = performance.now();
-  const fastEdges = new FastEdgesGeometry(geometry, thresholdAngle);
+  const fastEdges = new FastEdgesGeometry(geometry, thresholdAngle, {
+    seed: 0,
+  });
   const end = performance.now();
   const time = end - start;
   console.log(`FastEdgesGeometry: ${time}ms`);
