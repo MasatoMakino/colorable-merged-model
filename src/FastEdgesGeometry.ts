@@ -11,6 +11,20 @@ const _v1 = /*@__PURE__*/ new Vector3();
 const _normal = /*@__PURE__*/ new Vector3();
 const _triangle = /*@__PURE__*/ new Triangle();
 
+/**
+ * FastEdgesGeometry is a performance-optimized version of EdgesGeometry that generates edges
+ * for a given geometry based on a specified threshold angle.
+ *
+ * While this class provides improved performance, it may encounter hash collisions when provided
+ * with custom geometries. As a result, it may not be fully compatible with all geometries.
+ * If edge generation fails, consider adjusting the seed value in the options.
+ *
+ * @param geometry - The input BufferGeometry for which edges are to be generated. Defaults to null.
+ * @param thresholdAngle - The angle threshold in degrees to consider an edge. Defaults to 1.
+ * @param options - Optional parameters.
+ * @param options.seed - An optional seed value for hash generation.
+ *
+ */
 export class FastEdgesGeometry extends BufferGeometry {
   readonly type = "EdgesGeometry";
   parameters: { geometry: BufferGeometry | null; thresholdAngle: number };

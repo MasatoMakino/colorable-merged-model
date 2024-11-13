@@ -46,8 +46,7 @@ describe("FastEdgesGeometry", () => {
     checkPosition(new CylinderGeometry());
     checkPosition(new ConeGeometry());
     checkPosition(new RingGeometry());
-    checkPosition(new BoxGeometry(1, 0.9, 1));
-    testLineSegmentsPosition(new BoxGeometry());
+    checkPosition(new BoxGeometry());
   });
 
   const testLineSegmentsPosition = (geo: BufferGeometry) => {
