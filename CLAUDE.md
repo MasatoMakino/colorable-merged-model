@@ -85,6 +85,5 @@ npm run server
 ## Geometry Naming Convention
 
 The library expects geometries to follow a specific naming pattern for ID extraction:
-`{prefix}_{category}_{id}` where the ID is extracted using regex `.*_.*_(\d*)`
-
+`{prefix}_{category}_{id}` where the ID is extracted using regex `.*_.*_(\d+)`
 Customize the `getGeometryID` function in ColorableMergedView if using different naming conventions.
