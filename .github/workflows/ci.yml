@@ -28,5 +28,5 @@ jobs:
       - name: Check TypeScript
         run: npx tsc --noEmit
       - name: Run Biome
-        run: npx biome ci .  
+        run: npx biome ci .
       - run: npx vitest --run
