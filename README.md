@@ -258,7 +258,7 @@ class CustomColorableMergedView extends ColorableMergedView {
 
 ### Color Animation Events
 
-Listen to color animation events for individual geometries:
+Each geometry's color is managed by a TweenableColor instance from the [@masatomakino/tweenable-color](https://github.com/MasatoMakino/tweenable-color) module. You can access individual TweenableColor instances to listen to animation events:
 
 ```typescript
 const colorMap = new TweenableColorMap("colors");
@@ -267,21 +267,14 @@ const geometryId = 1;
 // Add a color for the geometry
 colorMap.add([1, 0, 0, 1], geometryId);
 
-// Get the TweenableColor instance and listen to its events
+// Get the TweenableColor instance for event handling
 const tweenableColor = colorMap.get(geometryId);
-if (tweenableColor) {
-  tweenableColor.on("onUpdate", (color) => {
-    console.log(`Color animation updated for geometry ${geometryId}`);
-  });
-
-  tweenableColor.on("onComplete", (color) => {
-    console.log(`Color animation completed for geometry ${geometryId}`);
-  });
-}
 
 // Start the animation
 colorMap.changeColor([0, 1, 0, 1], geometryId, { duration: 2000 });
 ```
+
+For detailed information about available events and event handling, please refer to the [@masatomakino/tweenable-color documentation](https://github.com/MasatoMakino/tweenable-color).
 
 ## Performance Considerations
 
