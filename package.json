@@ -31,6 +31,7 @@
     "three": ">=0.167.0 <1.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.0.6",
     "@masatomakino/gulptask-demo-page": "^0.10.0",
     "@masatomakino/release-helper": "^0.2.0",
     "@types/color": "^4.2.0",
@@ -42,8 +43,6 @@
     "jsdom": "^26.0.0",
     "lil-gui": "^0.20.0",
     "lint-staged": "^16.1.0",
-    "prettier": "^3.0.3",
-    "prettier-plugin-organize-imports": "^4.0.0",
     "three": "^0.178.0",
     "typedoc": "^0.28.0",
     "typescript": "^5.2.2"
@@ -65,7 +64,7 @@
     "release": "npx @masatomakino/release-helper release"
   },
   "lint-staged": {
-    "*.{js,ts,css,md}": "prettier --write"
+    "*.{js,ts,css,md}": "biome format --write --no-errors-on-unmatched"
   },
   "keywords": [
     "three.js"
