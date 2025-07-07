@@ -1,12 +1,12 @@
-import {
+import GUI from "lil-gui";
+import type { ColorSpace } from "three";
+import type {
   ColorableMergedBodyNodeMaterial,
   ColorableMergedView,
 } from "../src/index.js";
+import { ColorSwitcher } from "./ColorSwitcher.js";
 import { generateModel } from "./GenarateModel.js";
 import { generateWebGPUScene } from "./GenerateScene.js";
-import { ColorSwitcher } from "./ColorSwitcher.js";
-import GUI from "lil-gui";
-import { ColorSpace } from "three";
 
 const onDomContentsLoaded = async () => {
   const scene = generateWebGPUScene();

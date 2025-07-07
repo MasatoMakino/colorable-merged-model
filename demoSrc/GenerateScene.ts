@@ -2,7 +2,7 @@ import { Color, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-const generateSceneObjects = (type: "webgl" | "webgpu") => {
+const generateSceneObjects = (_type: "webgl" | "webgpu") => {
   const w = 1280;
   const h = 720;
   const scene = new Scene();

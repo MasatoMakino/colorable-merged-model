@@ -1,7 +1,7 @@
-import { ColorSpace, Vector4 } from "three";
-import { ShaderNodeObject, UniformsNode } from "three/src/nodes/Nodes.js";
-import { IColorableMergedMaterial } from "./IColorableMergedMaterial.js";
-import { TweenableColor } from "@masatomakino/tweenable-color";
+import type { TweenableColor } from "@masatomakino/tweenable-color";
+import type { ColorSpace, Vector4 } from "three";
+import type { ShaderNodeObject, UniformsNode } from "three/src/nodes/Nodes.js";
+import type { IColorableMergedMaterial } from "./IColorableMergedMaterial.js";
 
 export interface IColorableMergedNodeMaterial extends IColorableMergedMaterial {
   readonly indexedColors: Vector4[];

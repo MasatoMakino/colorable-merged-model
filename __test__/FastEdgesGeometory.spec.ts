@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-import { FastEdgesGeometry } from "../src";
 import {
   BoxGeometry,
   BufferGeometry,
@@ -10,8 +8,10 @@ import {
   SphereGeometry,
   TorusGeometry,
   TorusKnotGeometry,
-  TypedArray,
+  type TypedArray,
 } from "three";
+import { describe, expect, it } from "vitest";
+import { FastEdgesGeometry } from "../src";
 
 describe("FastEdgesGeometry", () => {
   it("should correctly initialize FastEdgesGeometry constructor", () => {
@@ -49,7 +49,7 @@ describe("FastEdgesGeometry", () => {
     checkPosition(new BoxGeometry());
   });
 
-  const testLineSegmentsPosition = (geo: BufferGeometry) => {
+  const _testLineSegmentsPosition = (geo: BufferGeometry) => {
     const fastEdges = new FastEdgesGeometry(geo);
     const edges = new EdgesGeometry(geo);
     const chunkSize = 6;

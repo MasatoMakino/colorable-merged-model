@@ -1,5 +1,5 @@
-import { describe, it, test, expect } from "vitest";
-import { ColorableMergedMaterial, TweenableColorMap } from "../src";
+import { describe, expect, it } from "vitest";
+import { ColorableMergedMaterial } from "../src";
 
 describe("ColorableMergedMaterial", () => {
   it("constructor", () => {
@@ -8,6 +8,6 @@ describe("ColorableMergedMaterial", () => {
   });
 
   it.fails("generate empty body or edge", async () => {
-    const materlal = new ColorableMergedMaterial({}, 0);
+    const _materlal = new ColorableMergedMaterial({}, 0);
   });
 });

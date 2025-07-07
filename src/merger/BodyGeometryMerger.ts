@@ -1,5 +1,5 @@
-import { ColorableMergedBodyParam } from "../index.js";
-import { BufferGeometry } from "three";
+import type { BufferGeometry } from "three";
+import type { ColorableMergedBodyParam } from "../index.js";
 import { GeometryMerger } from "./GeometryMerger.js";
 
 export class BodyGeometryMerger extends GeometryMerger<ColorableMergedBodyParam> {

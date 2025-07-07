@@ -1,6 +1,6 @@
-import { ColorableMergedView, TweenableColorMap } from "../src";
 import { BoxGeometry } from "three";
 import { describe, expect, test } from "vitest";
+import { ColorableMergedView, TweenableColorMap } from "../src";
 
 describe("ColorableMergedView", () => {
   const generateView = () => {

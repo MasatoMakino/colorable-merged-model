@@ -4,7 +4,7 @@ import {
 } from "@masatomakino/tweenable-color";
 import { Easing } from "@tweenjs/tween.js";
 import { EventEmitter } from "eventemitter3";
-import { ShaderMaterial, Vector4 } from "three";
+import type { ShaderMaterial, Vector4 } from "three";
 
 export class TweenableColorMap extends EventEmitter {
   readonly colors: Map<string, TweenableColor> = new Map();

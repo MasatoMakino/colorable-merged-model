@@ -1,12 +1,12 @@
+import { TweenableColorTicker } from "@masatomakino/tweenable-color";
+import * as TWEEN from "@tweenjs/tween.js";
+import { BoxGeometry, type ShaderMaterial } from "three";
+import { describe, expect, test } from "vitest";
 import {
   ColorableMergedBody,
   ColorableMergedBodyMaterial,
   TweenableColorMap,
 } from "../src";
-import * as TWEEN from "@tweenjs/tween.js";
-import { BoxGeometry, ShaderMaterial } from "three";
-import { TweenableColorTicker } from "@masatomakino/tweenable-color";
-import { describe, expect, test } from "vitest";
 
 describe("TweenableColorMap", () => {
   const generateNewColorMap = () => {

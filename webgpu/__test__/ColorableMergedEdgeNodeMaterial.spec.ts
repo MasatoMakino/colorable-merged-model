@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { ColorableMergedEdgeNodeMaterial, TweenableColorMap } from "../src";
 
 describe("ColorableMergedEdgeNodeMaterial", () => {
@@ -11,6 +11,6 @@ describe("ColorableMergedEdgeNodeMaterial", () => {
 
   it.fails("generate empty color map", async () => {
     const colorMap = new TweenableColorMap("colors");
-    const materlal = new ColorableMergedEdgeNodeMaterial(colorMap);
+    const _materlal = new ColorableMergedEdgeNodeMaterial(colorMap);
   });
 });

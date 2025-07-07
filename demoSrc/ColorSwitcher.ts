@@ -1,7 +1,7 @@
-import {
+import type {
   ColorableMergedBodyMaterial,
-  ColorableMergedView,
   ColorableMergedEdgeMaterial,
+  ColorableMergedView,
 } from "../src/index.js";
 
 export class ColorSwitcher {

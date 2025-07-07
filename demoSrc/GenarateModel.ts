@@ -1,4 +1,4 @@
-import { BoxGeometry, Material } from "three";
+import { BoxGeometry, type Material } from "three";
 import {
   ColorableMergedBodyMaterial,
   ColorableMergedEdgeMaterial,
@@ -31,7 +31,7 @@ export async function generateModel(
  * @param type
  * @returns
  */
-const getMaterialConstractors = (type: "webgl" | "webgpu") => {
+const getMaterialConstractors = (_type: "webgl" | "webgpu") => {
   // if (type === "webgpu") {
   //   return {
   //     bodyMaterialClass: ColorableMergedBodyNodeMaterial,

@@ -1,14 +1,14 @@
+import { BufferAttribute, type BufferGeometry } from "three";
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import {
-  ColorableMergedBody,
-  ColorableMergedBodyParam,
-  ColorableMergedEdge,
-  ColorableMergedEdgeParam,
+  type ColorableMergedBody,
+  type ColorableMergedBodyParam,
+  type ColorableMergedEdge,
+  type ColorableMergedEdgeParam,
   ColorableMergedView,
   readGeometryCount,
-  TweenableColorMap,
+  type TweenableColorMap,
 } from "../index.js";
-import { BufferAttribute, BufferGeometry } from "three";
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 /**
  * ジオメトリのマージを担当するクラス。

@@ -1,15 +1,14 @@
+import GUI from "lil-gui";
 import {
   AdditiveBlending,
   BoxGeometry,
-  BufferGeometry,
+  type BufferGeometry,
   EdgesGeometry,
   LineBasicMaterial,
   LineSegments,
-  TorusKnotGeometry,
 } from "three";
-import { generateScene } from "./GenerateScene";
 import { FastEdgesGeometry } from "../src";
-import GUI from "lil-gui";
+import { generateScene } from "./GenerateScene";
 
 const onDomContentsLoaded = async () => {
   const { scene, camera } = generateScene();
@@ -40,7 +39,7 @@ const onDomContentsLoaded = async () => {
     edgesMesh.position.x = -value;
     fastEdgesMesh.position.x = value;
   });
-  gui.add(obj, "thresholdAngle", 0, 10, 0.1).onChange((value: number) => {
+  gui.add(obj, "thresholdAngle", 0, 10, 0.1).onChange(() => {
     regenerateEdges();
   });
 

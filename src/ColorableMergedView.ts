@@ -1,9 +1,9 @@
 import { Group } from "three";
 import {
   ColorableMergedBody,
-  ColorableMergedBodyParam,
+  type ColorableMergedBodyParam,
   ColorableMergedEdge,
-  ColorableMergedEdgeParam,
+  type ColorableMergedEdgeParam,
 } from "./index.js";
 
 /**

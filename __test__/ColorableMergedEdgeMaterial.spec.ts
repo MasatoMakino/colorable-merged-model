@@ -1,5 +1,5 @@
+import { describe, expect, it } from "vitest";
 import { ColorableMergedEdgeMaterial, TweenableColorMap } from "../src";
-import { it, describe, expect } from "vitest";
 
 describe("ColorableMergedEdgeMaterial", () => {
   it("constructor", () => {

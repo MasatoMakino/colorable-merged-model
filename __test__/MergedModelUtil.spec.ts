@@ -1,6 +1,6 @@
-import { readGeometryCount } from "../src/index.js";
 import { BoxGeometry, PlaneGeometry } from "three";
 import { describe, expect, test } from "vitest";
+import { readGeometryCount } from "../src/index.js";
 
 describe("MergedModelUtil", () => {
   test("count plane", () => {

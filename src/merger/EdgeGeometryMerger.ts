@@ -1,5 +1,5 @@
-import { ColorableMergedEdgeParam, FastEdgesGeometry } from "../index.js";
-import { BufferGeometry, EdgesGeometry } from "three";
+import { type BufferGeometry, EdgesGeometry } from "three";
+import { type ColorableMergedEdgeParam, FastEdgesGeometry } from "../index.js";
 import { GeometryMerger } from "./GeometryMerger.js";
 
 export class EdgeGeometryMerger extends GeometryMerger<ColorableMergedEdgeParam> {
