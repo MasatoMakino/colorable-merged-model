@@ -1,14 +1,15 @@
 import {
-  Blending,
+  type Blending,
   FrontSide,
+  IUniform,
   NormalBlending,
-  Side,
+  type Side,
   UniformsLib,
   UniformsUtils,
 } from "three";
-import { ColorableMergedMaterial } from "./index.js";
+import type { TweenableColorMap } from "../TweenableColorMap.js";
 import { fragment, vertex } from "./ColorableMergedBodyMaterial.glsl.js";
-import { TweenableColorMap } from "../TweenableColorMap.js";
+import { ColorableMergedMaterial } from "./ColorableMergedMaterial.js";
 
 export interface ColorableMergedBodyMaterialParam {
   blending?: Blending;
@@ -43,7 +44,9 @@ export class ColorableMergedBodyMaterial extends ColorableMergedMaterial {
    *
    * @see https://github.com/mrdoob/three.js/blob/0c26bb4bb8220126447c8373154ac045588441de/src/renderers/shaders/ShaderLib.js#L11
    */
-  public static getBasicUniforms(colorsCount: number): any {
+  public static getBasicUniforms(colorsCount: number): {
+    [uniform: string]: IUniform;
+  } {
     return UniformsUtils.merge([
       UniformsLib.common,
       UniformsLib.specularmap,
