@@ -40,11 +40,12 @@ export class FastEdgesGeometry extends BufferGeometry {
    * @param thresholdAngle - The angle threshold in degrees to consider an edge. Defaults to 1.
    * @param options - Optional parameters.
    * @param options.seed - An optional seed value for hash generation.
+   * @param options.precisionPoints - The number of decimal places to consider for vertex coordinate precision when hashing. Defaults to 6. Higher values may be needed for small geometries to avoid hash collisions.
    */
   constructor(
     geometry: BufferGeometry | null = null,
     thresholdAngle = 1,
-    options?: { seed?: number },
+    options?: { seed?: number; precisionPoints?: number },
   ) {
     super();
 
@@ -54,7 +55,7 @@ export class FastEdgesGeometry extends BufferGeometry {
     };
 
     if (geometry !== null) {
-      const precisionPoints = 4;
+      const precisionPoints = options?.precisionPoints ?? 6;
       const precision = 10 ** precisionPoints;
       const thresholdDot = Math.cos(MathUtils.DEG2RAD * thresholdAngle);
 
