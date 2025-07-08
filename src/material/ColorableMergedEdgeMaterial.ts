@@ -1,4 +1,4 @@
-import { IUniform, UniformsLib, UniformsUtils } from "three";
+import { type IUniform, UniformsLib, UniformsUtils } from "three";
 import type { TweenableColorMap } from "../TweenableColorMap.js";
 import { fragment, vertex } from "./ColorableMergedEdgeMaterial.glsl.js";
 import { ColorableMergedMaterial } from "./ColorableMergedMaterial.js";

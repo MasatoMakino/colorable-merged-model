@@ -1,7 +1,7 @@
 import {
   type Blending,
   FrontSide,
-  IUniform,
+  type IUniform,
   NormalBlending,
   type Side,
   UniformsLib,
