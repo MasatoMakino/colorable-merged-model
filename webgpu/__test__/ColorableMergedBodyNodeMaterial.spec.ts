@@ -9,8 +9,8 @@ describe("ColorableMergedBodyNodeMaterial", () => {
     expect(materlal).toBeInstanceOf(ColorableMergedBodyNodeMaterial);
   });
 
-  it.fails("generate empty color map", async () => {
+  it("should throw error when generating empty color map", () => {
     const colorMap = new TweenableColorMap("colors");
-    const _materlal = new ColorableMergedBodyNodeMaterial(colorMap);
+    expect(() => new ColorableMergedBodyNodeMaterial(colorMap)).toThrow();
   });
 });

@@ -7,7 +7,7 @@ describe("ColorableMergedMaterial", () => {
     expect(materlal).toBeInstanceOf(ColorableMergedMaterial);
   });
 
-  it.fails("generate empty body or edge", async () => {
-    const _materlal = new ColorableMergedMaterial({}, 0);
+  it("should throw error when generating empty body or edge", () => {
+    expect(() => new ColorableMergedMaterial({}, 0)).toThrow();
   });
 });

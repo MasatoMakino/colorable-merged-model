@@ -9,8 +9,8 @@ describe("ColorableMergedEdgeNodeMaterial", () => {
     expect(materlal).toBeInstanceOf(ColorableMergedEdgeNodeMaterial);
   });
 
-  it.fails("generate empty color map", async () => {
+  it("should throw error when generating empty color map", () => {
     const colorMap = new TweenableColorMap("colors");
-    const _materlal = new ColorableMergedEdgeNodeMaterial(colorMap);
+    expect(() => new ColorableMergedEdgeNodeMaterial(colorMap)).toThrow();
   });
 });
