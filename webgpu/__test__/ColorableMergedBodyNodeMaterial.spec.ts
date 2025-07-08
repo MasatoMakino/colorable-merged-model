@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { ColorableMergedBodyNodeMaterial, TweenableColorMap } from "../src";
 
 describe("ColorableMergedBodyNodeMaterial", () => {
@@ -9,8 +9,8 @@ describe("ColorableMergedBodyNodeMaterial", () => {
     expect(materlal).toBeInstanceOf(ColorableMergedBodyNodeMaterial);
   });
 
-  it.fails("generate empty color map", async () => {
+  it("should throw error when generating empty color map", () => {
     const colorMap = new TweenableColorMap("colors");
-    const materlal = new ColorableMergedBodyNodeMaterial(colorMap);
+    expect(() => new ColorableMergedBodyNodeMaterial(colorMap)).toThrow();
   });
 });

@@ -1,5 +1,5 @@
-import { describe, it, test, expect } from "vitest";
-import { ColorableMergedMaterial, TweenableColorMap } from "../src";
+import { describe, expect, it } from "vitest";
+import { ColorableMergedMaterial } from "../src";
 
 describe("ColorableMergedMaterial", () => {
   it("constructor", () => {
@@ -7,7 +7,7 @@ describe("ColorableMergedMaterial", () => {
     expect(materlal).toBeInstanceOf(ColorableMergedMaterial);
   });
 
-  it.fails("generate empty body or edge", async () => {
-    const materlal = new ColorableMergedMaterial({}, 0);
+  it("should throw error when generating empty body or edge", () => {
+    expect(() => new ColorableMergedMaterial({}, 0)).toThrow();
   });
 });

@@ -1,6 +1,6 @@
+import { describe, it } from "vitest";
 import { ColorableMergedEdge } from "../src";
 import { testColorableMergedObjects } from "./ColorableMergedObjects";
-import { describe, it } from "vitest";
 
 describe("ColorableMergedEdge", () => {
   it("should correctly initialize ColorableMergedEdge with default parameters", () => {

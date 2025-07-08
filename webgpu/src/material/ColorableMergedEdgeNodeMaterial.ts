@@ -1,20 +1,20 @@
-import { Color, ColorSpace, Vector4 } from "three";
+import type { TweenableColor } from "@masatomakino/tweenable-color";
+import { Color, type ColorSpace, type Vector4 } from "three";
 import {
-  LineBasicNodeMaterial,
-  ShaderNodeObject,
-  UniformsNode,
   attribute,
+  LineBasicNodeMaterial,
   materialColor,
   materialOpacity,
+  type ShaderNodeObject,
+  type UniformsNode,
 } from "three/src/nodes/Nodes.js";
-import { TweenableColorMap } from "../TweenableColorMap.js";
+import { ColorableMergedView } from "../ColorableMergedView.js";
+import type { TweenableColorMap } from "../TweenableColorMap.js";
 import { ColorableMergedBodyNodeMaterial } from "./ColorableMergedBodyNodeMaterial.js";
-import {
+import type {
   ColorableMergedEdgeMaterialParam,
   IColorableMergedNodeMaterial,
 } from "./index.js";
-import { ColorableMergedView } from "../ColorableMergedView.js";
-import { TweenableColor } from "@masatomakino/tweenable-color";
 
 export interface ColorableMergedEdgeNodeMaterialParam
   extends ColorableMergedEdgeMaterialParam {

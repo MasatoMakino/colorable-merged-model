@@ -1,10 +1,10 @@
-import {
-  ColorableMergedBody,
-  ColorableMergedEdge,
-  TweenableColorMap,
-} from "../src";
 import { BoxGeometry } from "three";
 import { describe, expect, test } from "vitest";
+import {
+  type ColorableMergedBody,
+  type ColorableMergedEdge,
+  TweenableColorMap,
+} from "../src";
 
 export const testColorableMergedObjects = (
   target: ColorableMergedBody | ColorableMergedEdge,

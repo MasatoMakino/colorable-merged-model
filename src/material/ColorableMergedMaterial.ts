@@ -1,5 +1,5 @@
-import { ShaderMaterial, ShaderMaterialParameters, Vector4 } from "three";
-import { IColorableMergedMaterial } from "./IColorableMergedMaterial.js";
+import { ShaderMaterial, type ShaderMaterialParameters, Vector4 } from "three";
+import type { IColorableMergedMaterial } from "./IColorableMergedMaterial.js";
 
 export class ColorableMergedMaterial
   extends ShaderMaterial

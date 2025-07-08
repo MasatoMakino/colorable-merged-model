@@ -1,7 +1,7 @@
-import { UniformsLib, UniformsUtils } from "three";
-import { ColorableMergedMaterial } from "./index.js";
+import { IUniform, UniformsLib, UniformsUtils } from "three";
+import type { TweenableColorMap } from "../TweenableColorMap.js";
 import { fragment, vertex } from "./ColorableMergedEdgeMaterial.glsl.js";
-import { TweenableColorMap } from "../TweenableColorMap.js";
+import { ColorableMergedMaterial } from "./ColorableMergedMaterial.js";
 
 export interface ColorableMergedEdgeMaterialParam {
   depthWrite?: boolean;
@@ -34,7 +34,9 @@ export class ColorableMergedEdgeMaterial extends ColorableMergedMaterial {
    *
    * @see https://github.com/mrdoob/three.js/blob/0c26bb4bb8220126447c8373154ac045588441de/src/renderers/shaders/ShaderLib.js#L11
    */
-  public static getBasicUniforms(colorLength: number): any {
+  public static getBasicUniforms(colorLength: number): {
+    [uniform: string]: IUniform;
+  } {
     return UniformsUtils.merge([
       UniformsLib.common,
       UniformsLib.fog,

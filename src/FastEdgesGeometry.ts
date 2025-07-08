@@ -55,7 +55,7 @@ export class FastEdgesGeometry extends BufferGeometry {
 
     if (geometry !== null) {
       const precisionPoints = 4;
-      const precision = Math.pow(10, precisionPoints);
+      const precision = 10 ** precisionPoints;
       const thresholdDot = Math.cos(MathUtils.DEG2RAD * thresholdAngle);
 
       const indexAttr = geometry.getIndex();
