@@ -131,3 +131,6 @@ out
 .idea
 docs/
 dist/
+
+# Claude Code settings
+.claude/settings.local.json
