@@ -21,6 +21,9 @@ type Vector3Like = { x: number; y: number; z: number };
  * with custom geometries. As a result, it may not be fully compatible with all geometries.
  * If edge generation fails, consider adjusting the seed value in the options.
  *
+ * Note: This class is not thread-safe due to shared static arrays.
+ * Use separate instances in concurrent environments.
+ *
  * @param geometry - The input BufferGeometry for which edges are to be generated. Defaults to null.
  * @param thresholdAngle - The angle threshold in degrees to consider an edge. Defaults to 1.
  * @param options - Optional parameters.
