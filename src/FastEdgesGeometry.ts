@@ -11,6 +11,8 @@ const _v1 = /*@__PURE__*/ new Vector3();
 const _normal = /*@__PURE__*/ new Vector3();
 const _triangle = /*@__PURE__*/ new Triangle();
 
+type Vector3Like = { x: number; y: number; z: number };
+
 /**
  * FastEdgesGeometry is a performance-optimized version of EdgesGeometry that generates edges
  * for a given geometry based on a specified threshold angle.
@@ -28,6 +30,11 @@ const _triangle = /*@__PURE__*/ new Triangle();
 export class FastEdgesGeometry extends BufferGeometry {
   readonly type = "EdgesGeometry";
   parameters: { geometry: BufferGeometry | null; thresholdAngle: number };
+
+  // Static arrays to avoid repeated allocation
+  private static readonly _indexArray = [0, 0, 0];
+  private static readonly _vertKeys = ["a", "b", "c"] as const;
+  private static readonly _hashArray = new Array<number>(3);
 
   /**
    * Creates an instance of FastEdgesGeometry.
@@ -63,16 +70,16 @@ export class FastEdgesGeometry extends BufferGeometry {
       const positionAttr = geometry.getAttribute("position");
       const indexCount = indexAttr ? indexAttr.count : positionAttr.count;
 
-      const indexArr = [0, 0, 0];
-      const vertKeys: (keyof Triangle)[] = ["a", "b", "c"];
-      const hashes = new Array(3);
+      const indexArr = FastEdgesGeometry._indexArray;
+      const vertKeys = FastEdgesGeometry._vertKeys;
+      const hashes = FastEdgesGeometry._hashArray;
 
       const edgeData = new Map<
         number,
         {
           index0: number;
           index1: number;
-          normal: Vector3;
+          normal: Vector3Like;
         }
       >();
       const vertices = [];
@@ -159,7 +166,7 @@ export class FastEdgesGeometry extends BufferGeometry {
             edgeData.set(hash, {
               index0: indexArr[j],
               index1: indexArr[jNext],
-              normal: _normal.clone(),
+              normal: { x: _normal.x, y: _normal.y, z: _normal.z },
             });
           }
         }
