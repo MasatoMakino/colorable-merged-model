@@ -68,16 +68,12 @@ Applied further optimizations:
 
 ### Code Structure Mapping
 
-```
-Three.js EdgesGeometry         → FastEdges (v0.7.3)            → FastEdges (v0.7.4+)
-─────────────────────────────────────────────────────────────────────────────────────
-for each triangle:
-  hash = "x,y,z" string        → hybridtaus(x,y,z)             → computeHash(x,y,z) inline
-  triangle.getNormal(normal)   → triangle.getNormal(normal)    → direct cross product
-  for each edge:
-    edgeData["hash"] = obj     → edgeData.set(hash, obj)       → typed arrays[slot]
-    vertices.push(...)         → vertices.push(...)            → vertexBuffer[writeIndex++]
-```
+| Operation | Three.js EdgesGeometry | FastEdges (v0.7.3) | FastEdges (v0.7.4+) |
+|-----------|------------------------|--------------------|--------------------|
+| Hash generation | `"x,y,z"` string | `hybridtaus(x,y,z)` | `computeHash(x,y,z)` inline |
+| Normal calculation | `triangle.getNormal(normal)` | `triangle.getNormal(normal)` | direct cross product |
+| Edge storage | `edgeData["hash"] = obj` | `edgeData.set(hash, obj)` | `typed arrays[slot]` |
+| Vertex accumulation | `vertices.push(...)` | `vertices.push(...)` | `vertexBuffer[writeIndex++]` |
 
 ### Inline Hash Function
 
