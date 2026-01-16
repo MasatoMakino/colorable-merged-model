@@ -73,12 +73,11 @@ export class FastEdgesGeometry extends BufferGeometry {
       const indexArr = FastEdgesGeometry._indexArray;
       const hashes = FastEdgesGeometry._hashArray;
 
-      // Phase 1 B: Cache seed and pre-transform
+      // Pre-transform seed to avoid repeated computation in hash function
       const seed = options?.seed ?? 255;
       const transformedSeed = (seed * 1664525 + 1013904223) >>> 0;
 
-      // Phase 2 D: Typed Array for edge storage
-      // Maximum edges = number of triangles * 3 (each triangle has 3 edges)
+      // Use typed arrays for edge storage to reduce memory allocation overhead
       const maxEdges = indexCount;
       const edgeIndex0 = new Uint32Array(maxEdges);
       const edgeIndex1 = new Uint32Array(maxEdges);
@@ -88,14 +87,11 @@ export class FastEdgesGeometry extends BufferGeometry {
       const edgeHashToSlot = new Map<number, number>();
       let edgeSlotCount = 0;
 
-      // Phase 2 E: Pre-allocate vertex buffer
-      // Each triangle has 3 edges, but edges are shared between triangles
-      // In worst case, all edges are output (boundary edges + threshold edges)
-      // Using indexCount (total edge count = triangles * 3) as upper bound
+      // Pre-allocate vertex buffer to avoid repeated array resizing
       const vertexBuffer = new Float32Array(indexCount * 2 * 3);
       let writeIndex = 0;
 
-      // Phase 1 A: Inline hash computation function
+      // Inline expansion of hybridtaus() to avoid function call overhead
       const computeHash = (x: number, y: number, z: number): number => {
         x = (((x & 0xfffffffe) << 13) ^ (((x << 19) ^ x) >>> 12)) >>> 0;
         y = (((y & 0xfffffff8) << 2) ^ (((y << 25) ^ y) >>> 4)) >>> 0;
@@ -118,7 +114,7 @@ export class FastEdgesGeometry extends BufferGeometry {
         _b.fromBufferAttribute(positionAttr, indexArr[1]);
         _c.fromBufferAttribute(positionAttr, indexArr[2]);
 
-        // Phase 1 C: Direct normal computation (cross product)
+        // Compute face normal directly via cross product
         const e1x = _b.x - _a.x,
           e1y = _b.y - _a.y,
           e1z = _b.z - _a.z;
@@ -161,7 +157,6 @@ export class FastEdgesGeometry extends BufferGeometry {
           continue;
         }
 
-        // Phase 3 H: Direct vertex references (no Triangle object)
         const triangleVerts = [_a, _b, _c];
 
         // iterate over every edge
