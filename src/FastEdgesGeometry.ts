@@ -8,10 +8,7 @@ import {
 
 const _v0 = /*@__PURE__*/ new Vector3();
 const _v1 = /*@__PURE__*/ new Vector3();
-const _normal = /*@__PURE__*/ new Vector3();
 const _triangle = /*@__PURE__*/ new Triangle();
-
-type Vector3Like = { x: number; y: number; z: number };
 
 /**
  * FastEdgesGeometry is a performance-optimized version of EdgesGeometry that generates edges
@@ -36,7 +33,6 @@ export class FastEdgesGeometry extends BufferGeometry {
 
   // Static arrays to avoid repeated allocation
   private static readonly _indexArray = [0, 0, 0];
-  private static readonly _vertKeys = ["a", "b", "c"] as const;
   private static readonly _hashArray = new Array<number>(3);
 
   /**
@@ -74,18 +70,37 @@ export class FastEdgesGeometry extends BufferGeometry {
       const indexCount = indexAttr ? indexAttr.count : positionAttr.count;
 
       const indexArr = FastEdgesGeometry._indexArray;
-      const vertKeys = FastEdgesGeometry._vertKeys;
       const hashes = FastEdgesGeometry._hashArray;
 
-      const edgeData = new Map<
-        number,
-        {
-          index0: number;
-          index1: number;
-          normal: Vector3Like;
-        }
-      >();
-      const vertices = [];
+      // Phase 1 B: Cache seed and pre-transform
+      const seed = options?.seed ?? 255;
+      const transformedSeed = (seed * 1664525 + 1013904223) >>> 0;
+
+      // Phase 2 D: Typed Array for edge storage
+      // Maximum edges = number of triangles * 3 (each triangle has 3 edges)
+      const maxEdges = indexCount;
+      const edgeIndex0 = new Uint32Array(maxEdges);
+      const edgeIndex1 = new Uint32Array(maxEdges);
+      const edgeNormalX = new Float32Array(maxEdges);
+      const edgeNormalY = new Float32Array(maxEdges);
+      const edgeNormalZ = new Float32Array(maxEdges);
+      const edgeHashToSlot = new Map<number, number>();
+      let edgeSlotCount = 0;
+
+      // Phase 2 E: Pre-allocate vertex buffer
+      // Each triangle has 3 edges, but edges are shared between triangles
+      // In worst case, all edges are output (boundary edges + threshold edges)
+      // Using indexCount (total edge count = triangles * 3) as upper bound
+      const vertexBuffer = new Float32Array(indexCount * 2 * 3);
+      let writeIndex = 0;
+
+      // Phase 1 A: Inline hash computation function
+      const computeHash = (x: number, y: number, z: number): number => {
+        x = (((x & 0xfffffffe) << 13) ^ (((x << 19) ^ x) >>> 12)) >>> 0;
+        y = (((y & 0xfffffff8) << 2) ^ (((y << 25) ^ y) >>> 4)) >>> 0;
+        z = (((z & 0xfffffff0) << 3) ^ (((z << 11) ^ z) >>> 17)) >>> 0;
+        return (x ^ y ^ z ^ transformedSeed) >>> 0;
+      };
 
       for (let i = 0; i < indexCount; i += 3) {
         if (indexAttr) {
@@ -102,30 +117,43 @@ export class FastEdgesGeometry extends BufferGeometry {
         a.fromBufferAttribute(positionAttr, indexArr[0]);
         b.fromBufferAttribute(positionAttr, indexArr[1]);
         c.fromBufferAttribute(positionAttr, indexArr[2]);
-        _triangle.getNormal(_normal);
 
-        // create hashes for the edge from the vertices
+        // Phase 1 C: Direct normal computation (cross product)
+        const e1x = b.x - a.x,
+          e1y = b.y - a.y,
+          e1z = b.z - a.z;
+        const e2x = c.x - a.x,
+          e2y = c.y - a.y,
+          e2z = c.z - a.z;
+        let nx = e1y * e2z - e1z * e2y;
+        let ny = e1z * e2x - e1x * e2z;
+        let nz = e1x * e2y - e1y * e2x;
+        const len = Math.sqrt(nx * nx + ny * ny + nz * nz);
+        if (len > 0) {
+          const invLen = 1 / len;
+          nx *= invLen;
+          ny *= invLen;
+          nz *= invLen;
+        }
 
-        hashes[0] = FastEdgesGeometry.hybridtaus(
+        // create hashes for the edge from the vertices (using inline hash)
+        hashes[0] = computeHash(
           Math.round(a.x * precision),
           Math.round(a.y * precision),
           Math.round(a.z * precision),
-          options?.seed,
         );
-        hashes[1] = FastEdgesGeometry.hybridtaus(
+        hashes[1] = computeHash(
           Math.round(b.x * precision),
           Math.round(b.y * precision),
           Math.round(b.z * precision),
-          options?.seed,
         );
         if (hashes[0] === hashes[1]) {
           continue;
         }
-        hashes[2] = FastEdgesGeometry.hybridtaus(
+        hashes[2] = computeHash(
           Math.round(c.x * precision),
           Math.round(c.y * precision),
           Math.round(c.z * precision),
-          options?.seed,
         );
 
         // skip degenerate triangles
@@ -133,59 +161,69 @@ export class FastEdgesGeometry extends BufferGeometry {
           continue;
         }
 
+        // Pre-compute vertex references for this triangle
+        const triangleVerts = [a, b, c];
+
         // iterate over every edge
         for (let j = 0; j < 3; j++) {
           // get the first and next vertex making up the edge
           const jNext = (j + 1) % 3;
           const vecHash0 = hashes[j];
           const vecHash1 = hashes[jNext];
-          const v0 = _triangle[vertKeys[j]] as Vector3;
-          const v1 = _triangle[vertKeys[jNext]] as Vector3;
+          const v0 = triangleVerts[j];
+          const v1 = triangleVerts[jNext];
 
-          const hash = FastEdgesGeometry.hybridtaus(
-            vecHash0,
-            vecHash1,
-            0,
-            options?.seed,
-          );
-          const reverseHash = FastEdgesGeometry.hybridtaus(
-            vecHash1,
-            vecHash0,
-            0,
-            options?.seed,
-          );
+          const hash = computeHash(vecHash0, vecHash1, 0);
+          const reverseHash = computeHash(vecHash1, vecHash0, 0);
 
-          const reverseHashEdgeData = edgeData.get(reverseHash);
-          if (reverseHashEdgeData !== undefined) {
+          const reverseSlot = edgeHashToSlot.get(reverseHash);
+          if (reverseSlot !== undefined) {
             // if we found a sibling edge add it into the vertex array if
             // it meets the angle threshold and delete the edge from the map.
-            if (_normal.dot(reverseHashEdgeData.normal) <= thresholdDot) {
-              vertices.push(v0.x, v0.y, v0.z);
-              vertices.push(v1.x, v1.y, v1.z);
+            const dotProduct =
+              nx * edgeNormalX[reverseSlot] +
+              ny * edgeNormalY[reverseSlot] +
+              nz * edgeNormalZ[reverseSlot];
+            if (dotProduct <= thresholdDot) {
+              vertexBuffer[writeIndex++] = v0.x;
+              vertexBuffer[writeIndex++] = v0.y;
+              vertexBuffer[writeIndex++] = v0.z;
+              vertexBuffer[writeIndex++] = v1.x;
+              vertexBuffer[writeIndex++] = v1.y;
+              vertexBuffer[writeIndex++] = v1.z;
             }
-            edgeData.delete(reverseHash);
+            edgeHashToSlot.delete(reverseHash);
           } else {
             // If there is no hash collision, edgeData will not contain the edge, so add it
-            edgeData.set(hash, {
-              index0: indexArr[j],
-              index1: indexArr[jNext],
-              normal: { x: _normal.x, y: _normal.y, z: _normal.z },
-            });
+            const slot = edgeSlotCount++;
+            edgeHashToSlot.set(hash, slot);
+            edgeIndex0[slot] = indexArr[j];
+            edgeIndex1[slot] = indexArr[jNext];
+            edgeNormalX[slot] = nx;
+            edgeNormalY[slot] = ny;
+            edgeNormalZ[slot] = nz;
           }
         }
       }
 
       // iterate over all remaining, unmatched edges and add them to the vertex array
-      edgeData.forEach((value) => {
-        const { index0, index1 } = value;
+      edgeHashToSlot.forEach((slot) => {
+        const index0 = edgeIndex0[slot];
+        const index1 = edgeIndex1[slot];
         _v0.fromBufferAttribute(positionAttr, index0);
         _v1.fromBufferAttribute(positionAttr, index1);
 
-        vertices.push(_v0.x, _v0.y, _v0.z);
-        vertices.push(_v1.x, _v1.y, _v1.z);
+        vertexBuffer[writeIndex++] = _v0.x;
+        vertexBuffer[writeIndex++] = _v0.y;
+        vertexBuffer[writeIndex++] = _v0.z;
+        vertexBuffer[writeIndex++] = _v1.x;
+        vertexBuffer[writeIndex++] = _v1.y;
+        vertexBuffer[writeIndex++] = _v1.z;
       });
 
-      this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+      // Create final buffer with exact size
+      const finalBuffer = vertexBuffer.slice(0, writeIndex);
+      this.setAttribute("position", new Float32BufferAttribute(finalBuffer, 3));
     }
   }
 
