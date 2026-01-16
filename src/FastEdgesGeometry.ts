@@ -2,13 +2,14 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   MathUtils,
-  Triangle,
   Vector3,
 } from "three";
 
 const _v0 = /*@__PURE__*/ new Vector3();
 const _v1 = /*@__PURE__*/ new Vector3();
-const _triangle = /*@__PURE__*/ new Triangle();
+const _a = /*@__PURE__*/ new Vector3();
+const _b = /*@__PURE__*/ new Vector3();
+const _c = /*@__PURE__*/ new Vector3();
 
 /**
  * FastEdgesGeometry is a performance-optimized version of EdgesGeometry that generates edges
@@ -113,18 +114,17 @@ export class FastEdgesGeometry extends BufferGeometry {
           indexArr[2] = i + 2;
         }
 
-        const { a, b, c } = _triangle;
-        a.fromBufferAttribute(positionAttr, indexArr[0]);
-        b.fromBufferAttribute(positionAttr, indexArr[1]);
-        c.fromBufferAttribute(positionAttr, indexArr[2]);
+        _a.fromBufferAttribute(positionAttr, indexArr[0]);
+        _b.fromBufferAttribute(positionAttr, indexArr[1]);
+        _c.fromBufferAttribute(positionAttr, indexArr[2]);
 
         // Phase 1 C: Direct normal computation (cross product)
-        const e1x = b.x - a.x,
-          e1y = b.y - a.y,
-          e1z = b.z - a.z;
-        const e2x = c.x - a.x,
-          e2y = c.y - a.y,
-          e2z = c.z - a.z;
+        const e1x = _b.x - _a.x,
+          e1y = _b.y - _a.y,
+          e1z = _b.z - _a.z;
+        const e2x = _c.x - _a.x,
+          e2y = _c.y - _a.y,
+          e2z = _c.z - _a.z;
         let nx = e1y * e2z - e1z * e2y;
         let ny = e1z * e2x - e1x * e2z;
         let nz = e1x * e2y - e1y * e2x;
@@ -138,22 +138,22 @@ export class FastEdgesGeometry extends BufferGeometry {
 
         // create hashes for the edge from the vertices (using inline hash)
         hashes[0] = computeHash(
-          Math.round(a.x * precision),
-          Math.round(a.y * precision),
-          Math.round(a.z * precision),
+          Math.round(_a.x * precision),
+          Math.round(_a.y * precision),
+          Math.round(_a.z * precision),
         );
         hashes[1] = computeHash(
-          Math.round(b.x * precision),
-          Math.round(b.y * precision),
-          Math.round(b.z * precision),
+          Math.round(_b.x * precision),
+          Math.round(_b.y * precision),
+          Math.round(_b.z * precision),
         );
         if (hashes[0] === hashes[1]) {
           continue;
         }
         hashes[2] = computeHash(
-          Math.round(c.x * precision),
-          Math.round(c.y * precision),
-          Math.round(c.z * precision),
+          Math.round(_c.x * precision),
+          Math.round(_c.y * precision),
+          Math.round(_c.z * precision),
         );
 
         // skip degenerate triangles
@@ -161,8 +161,8 @@ export class FastEdgesGeometry extends BufferGeometry {
           continue;
         }
 
-        // Pre-compute vertex references for this triangle
-        const triangleVerts = [a, b, c];
+        // Phase 3 H: Direct vertex references (no Triangle object)
+        const triangleVerts = [_a, _b, _c];
 
         // iterate over every edge
         for (let j = 0; j < 3; j++) {
