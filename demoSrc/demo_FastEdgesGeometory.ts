@@ -1,14 +1,82 @@
 import GUI from "lil-gui";
 import {
   AdditiveBlending,
+  BoxGeometry,
   type BufferGeometry,
   EdgesGeometry,
   LineBasicMaterial,
   LineSegments,
+  SphereGeometry,
   TorusKnotGeometry,
 } from "three";
 import { FastEdgesGeometry } from "../src";
 import { generateScene } from "./GenerateScene";
+
+interface BenchmarkResult {
+  geometry: string;
+  triangles: number;
+  edgesTime: number;
+  fastEdgesTime: number;
+  speedup: number;
+  iterations: number;
+}
+
+const runBenchmark = (
+  geometry: BufferGeometry,
+  thresholdAngle: number,
+  iterations: number = 100,
+): BenchmarkResult => {
+  const edgesTimes: number[] = [];
+  const fastTimes: number[] = [];
+
+  // Warmup for JIT optimization
+  for (let i = 0; i < 10; i++) {
+    new EdgesGeometry(geometry, thresholdAngle);
+    new FastEdgesGeometry(geometry, thresholdAngle);
+  }
+
+  // Measurement
+  for (let i = 0; i < iterations; i++) {
+    const start1 = performance.now();
+    new EdgesGeometry(geometry, thresholdAngle);
+    edgesTimes.push(performance.now() - start1);
+
+    const start2 = performance.now();
+    new FastEdgesGeometry(geometry, thresholdAngle);
+    fastTimes.push(performance.now() - start2);
+  }
+
+  // Use median to reduce outlier impact
+  const median = (arr: number[]) => {
+    const sorted = [...arr].sort((a, b) => a - b);
+    return sorted[Math.floor(sorted.length / 2)];
+  };
+
+  const indexAttr = geometry.getIndex();
+  const positionAttr = geometry.getAttribute("position");
+  const indexCount = indexAttr ? indexAttr.count : positionAttr.count;
+
+  return {
+    geometry: geometry.type,
+    triangles: Math.floor(indexCount / 3),
+    edgesTime: median(edgesTimes),
+    fastEdgesTime: median(fastTimes),
+    speedup: median(edgesTimes) / median(fastTimes),
+    iterations,
+  };
+};
+
+const runFullBenchmark = () => {
+  console.log("Running full benchmark...");
+  const results = [
+    runBenchmark(new BoxGeometry(1, 1, 1), 1),
+    runBenchmark(new SphereGeometry(1, 32, 32), 1),
+    runBenchmark(new TorusKnotGeometry(10, 3, 200, 32), 1),
+    runBenchmark(new TorusKnotGeometry(10, 3, 400, 64), 1),
+  ];
+  console.table(results);
+  return results;
+};
 
 const onDomContentsLoaded = async () => {
   const { scene, camera } = generateScene();
@@ -50,6 +118,7 @@ const onDomContentsLoaded = async () => {
   gui.add(obj, "radialSegments", 4, 128, 1).onChange(() => {
     regenerateEdges();
   });
+  gui.add({ runFullBenchmark }, "runFullBenchmark").name("Run Full Benchmark");
   const regenerateEdges = () => {
     const geometry = new TorusKnotGeometry(
       10,
