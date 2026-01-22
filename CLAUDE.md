@@ -46,12 +46,6 @@ npm run start:dev
 
 # Build everything (TypeScript, docs, demo)
 npm run build
-
-# Generate API documentation
-npm run typedocs
-
-# Run demos locally
-npm run server
 ```
 
 ## Testing
@@ -66,8 +60,8 @@ npm run server
 - TypeScript compilation target: ES2021
 - Module system: ES2022 with bundler resolution
 - Output directory: `dist/`
-- Uses Prettier with organize-imports plugin for formatting
-- Husky pre-commit hooks with lint-staged
+- Uses Biome for formatting and linting
+- DevContainer-based Git hooks for pre-commit/pre-push checks
 
 ## Demo Development
 
