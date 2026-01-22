@@ -39,10 +39,8 @@
     "@types/webxr": "^0.5.20",
     "@vitest/coverage-istanbul": "^3.0.2",
     "browser-sync": "^3.0.2",
-    "husky": "^9.0.10",
     "jsdom": "^27.0.0",
     "lil-gui": "^0.20.0",
-    "lint-staged": "^16.1.0",
     "three": "^0.178.0",
     "typedoc": "^0.28.0",
     "typescript": "^5.2.2"
@@ -50,7 +48,8 @@
   "scripts": {
     "test": "vitest --run",
     "coverage": "vitest --run --coverage",
-    "prepare": "husky",
+    "pre-commit": "biome format --write --no-errors-on-unmatched --files-ignore-unknown=true",
+    "pre-push": "biome ci . && vitest --run",
     "buildTS": "tsc",
     "start:dev": "npm run server & npm run watch:tsc & npm run watch:demo",
     "build": "npm run buildTS & npm run typedocs & npm run demo",
@@ -62,9 +61,6 @@
     "preversion": "npx @masatomakino/release-helper preversion",
     "postversion": "npx @masatomakino/release-helper postversion",
     "release": "npx @masatomakino/release-helper release"
-  },
-  "lint-staged": {
-    "*.{js,ts,css,md}": "biome format --write --no-errors-on-unmatched"
   },
   "keywords": [
     "three.js"
