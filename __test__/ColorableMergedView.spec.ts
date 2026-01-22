@@ -36,7 +36,7 @@ describe("ColorableMergedView", () => {
   test("switch geometry id generator", () => {
     const view = generateView();
     view.getGeometryID = (name: string): number => {
-      const match = name.match(/.*_(\d*)/);
+      const match = name.match(/^[^_]+_(\d+)$/);
       return Number(match?.[1]);
     };
     expect(view.getGeometryID("test_1")).toStrictEqual(1);
