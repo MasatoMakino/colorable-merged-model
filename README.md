@@ -1,6 +1,7 @@
 # colorable-merged-model
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@masatomakino/colorable-merged-model.svg?style=flat)](https://www.npmjs.com/package/@masatomakino/colorable-merged-model)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?logo=github&style=flat)](https://github.com/MasatoMakino/colorable-merged-model)
 
 A TypeScript library for Three.js that provides colorable merged geometries with both mesh bodies and edge lines. This library allows dynamic color changes on individual geometries after they have been merged, which is essential for performance optimization in Three.js applications.
