@@ -39,7 +39,7 @@ export class ColorableMergedView extends Group {
    * @param name
    */
   public getGeometryID = (name: string): number => {
-    const match = name.match(/.*_.*_(\d*)/);
+    const match = name.match(/^[^_]+_[^_]+_(\d+)$/);
     if (match == null) throw new Error(`Invalid name: ${name}`);
     return Number(match[1]);
   };
