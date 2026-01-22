@@ -25,9 +25,11 @@ This is a TypeScript library for Three.js that provides colorable merged geometr
 
 ### WebGPU Support
 
-- Located in `webgpu/` directory
+- Located in `webgpu/` directory (separate from main package)
+- Implementation in `webgpu/src/material/`
 - **ColorableMergedBodyNodeMaterial**: WebGPU node material for bodies
 - **ColorableMergedEdgeNodeMaterial**: WebGPU node material for edges
+- **IColorableMergedNodeMaterial**: Common interface for node materials
 
 ## Development Commands
 
