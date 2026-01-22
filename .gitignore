@@ -134,3 +134,6 @@ dist/
 
 # Claude Code settings
 .claude/settings.local.json
+
+# 1Password CLI directory scope config
+.op/
