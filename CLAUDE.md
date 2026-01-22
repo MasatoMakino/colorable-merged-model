@@ -31,28 +31,33 @@ This is a TypeScript library for Three.js that provides colorable merged geometr
 
 ## Development Commands
 
+**IMPORTANT**: All npm/npx commands MUST be executed via DevContainer. Do NOT run npm or npx directly on the host.
+
 ```bash
+# Start DevContainer (if not running)
+devcontainer up --workspace-folder .
+
 # Build TypeScript
-npm run buildTS
+devcontainer exec --workspace-folder . npm run buildTS
 
 # Run tests
-npm run test
+devcontainer exec --workspace-folder . npm run test
 
 # Run tests with coverage
-npm run coverage
+devcontainer exec --workspace-folder . npm run coverage
 
 # Start development server with file watching
-npm run start:dev
+devcontainer exec --workspace-folder . npm run start:dev
 
 # Build everything (TypeScript, docs, demo)
-npm run build
+devcontainer exec --workspace-folder . npm run build
 ```
 
 ## Testing
 
 - Uses Vitest with jsdom environment
 - Tests located in `__test__/` directory
-- Run single test file: `npx vitest run __test__/SpecificTest.spec.ts`
+- Run single test file: `devcontainer exec --workspace-folder . npx vitest run __test__/SpecificTest.spec.ts`
 - Coverage reports generated in `coverage/` directory
 
 ## Build System
