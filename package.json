@@ -33,7 +33,6 @@
   "devDependencies": {
     "@biomejs/biome": "2.1.4",
     "@masatomakino/gulptask-demo-page": "^0.10.0",
-    "@masatomakino/release-helper": "^0.3.2",
     "@types/color": "^4.2.0",
     "@types/three": "^0.178.0",
     "@types/webxr": "^0.5.20",
@@ -57,10 +56,7 @@
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
     "server": "browser-sync ./docs/demo -w",
     "watch:demo": "npm run demo -- -W",
-    "watch:tsc": "tsc -W --incremental",
-    "preversion": "npx @masatomakino/release-helper preversion",
-    "postversion": "npx @masatomakino/release-helper postversion",
-    "release": "npx @masatomakino/release-helper release"
+    "watch:tsc": "tsc -W --incremental"
   },
   "keywords": [
     "three.js"
