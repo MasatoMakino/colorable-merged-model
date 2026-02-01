@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
-    "@masatomakino/gulptask-demo-page": "^0.10.0",
+    "@masatomakino/gulptask-demo-page": "^0.10.5",
     "@types/color": "^4.2.0",
     "@types/three": "^0.182.0",
     "@vitest/coverage-istanbul": "^4.0.16",
