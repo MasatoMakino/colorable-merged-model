@@ -8,21 +8,10 @@
     "--cap-drop=ALL",
     "--name=${localWorkspaceFolderBasename}-npm-runner",
     "-p",
-    "3000:3000",
+    "127.0.0.1::3000",
     "-p",
-    "3001:3001"
+    "127.0.0.1::3001"
   ],
-  "forwardPorts": [3000, 3001],
-  "portsAttributes": {
-    "3000": {
-      "label": "Demo Server (browser-sync)",
-      "onAutoForward": "notify"
-    },
-    "3001": {
-      "label": "browser-sync UI",
-      "onAutoForward": "silent"
-    }
-  },
   "postCreateCommand": "npm ci",
   "postStartCommand": "npm audit --audit-level=moderate || true",
   "containerEnv": {
