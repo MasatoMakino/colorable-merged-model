@@ -9,7 +9,7 @@ describe("getGeometryID: ReDoS resistance", () => {
    * Pattern: "a_" repeated n times, then "X" (non-digit terminator)
    */
   const generateMaliciousInput = (n: number): string => {
-    return "a_".repeat(n) + "X";
+    return `${"a_".repeat(n)}X`;
   };
 
   test(
