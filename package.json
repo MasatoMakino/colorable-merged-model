@@ -53,7 +53,7 @@
     "build": "npm run buildTS & npm run typedocs & npm run demo",
     "demo": "npx @masatomakino/gulptask-demo-page --compileTarget ES2021 --compileModule es2020",
     "typedocs": "npx typedoc --out ./docs/api src/index.ts",
-    "server": "browser-sync ./docs/demo -w --port 3000",
+    "server": "browser-sync ./docs/demo -w --port 3000 --no-open",
     "watch:demo": "npm run demo -- -W",
     "watch:tsc": "tsc -W --incremental"
   },
