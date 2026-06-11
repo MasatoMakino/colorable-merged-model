@@ -137,6 +137,3 @@ dist/
 
 # 1Password CLI directory scope config
 .op/
-# FastEdgesGeometry benchmark artifacts
-benchmark/profiles/
-.profile-build/
