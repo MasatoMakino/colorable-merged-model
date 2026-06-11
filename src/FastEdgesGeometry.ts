@@ -2,9 +2,9 @@ import { BufferGeometry, Float32BufferAttribute, MathUtils } from "three";
 
 /**
  * Maximum indexCount / positionCount for which the shared scratch arena is
- * used. Above this gate, buffers are freshly allocated: the threshold sweep
- * showed speed parity there, so the gate exists to bound retained scratch
- * memory (~30MB worst case), not to win speed.
+ * used. Above this gate, buffers are freshly allocated: scratch reuse and
+ * fresh allocation perform equally there, so the gate exists to bound
+ * retained scratch memory (~30MB worst case), not to win speed.
  */
 const SCRATCH_MAX_COUNT = 262144; // 2^18
 
@@ -286,9 +286,10 @@ export class FastEdgesGeometry extends BufferGeometry {
       faceNY[face] = ny;
       faceNZ[face] = nz;
 
-      // The stored-side normal is rounded with Math.fround to reproduce the
-      // float64 x float32 dot product of previous versions bit-exactly;
-      // threshold-boundary edges are sensitive to this rounding.
+      // The stored-side normal is rounded with Math.fround at comparison
+      // time — the same rounding as keeping stored normals in a
+      // Float32Array. Threshold-boundary edges are sensitive to this
+      // float64 x float32 dot-product convention.
 
       // --- edge (i0 -> i1) ---
       {
@@ -333,7 +334,9 @@ export class FastEdgesGeometry extends BufferGeometry {
             if (s === -2) {
               if (target === -1) target = probe;
             } else if (tableKeyA[probe] === id0 && tableKeyB[probe] === id1) {
-              edgeAlive[s] = 0; // dropped by overwrite, as Map.set would do
+              // duplicate directed edge (non-manifold): last one wins,
+              // the earlier edge is never emitted
+              edgeAlive[s] = 0;
               target = probe;
               break;
             }
