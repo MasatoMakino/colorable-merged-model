@@ -4,6 +4,10 @@ import { CandidateA } from "../benchmark/candidates/CandidateA";
 import { CandidateB } from "../benchmark/candidates/CandidateB";
 import { CandidateC } from "../benchmark/candidates/CandidateC";
 import { CandidateD } from "../benchmark/candidates/CandidateD";
+import { CandidateE } from "../benchmark/candidates/CandidateE";
+import { CandidateF } from "../benchmark/candidates/CandidateF";
+import { CandidateG } from "../benchmark/candidates/CandidateG";
+import { CandidateH } from "../benchmark/candidates/CandidateH";
 import { compareEdgeSets, type EdgeSetDiff } from "../benchmark/edgeSetCompare";
 import { benchGeometries, triangleCount } from "../benchmark/geometries";
 import { FastEdgesGeometry } from "../src";
@@ -35,6 +39,11 @@ const implementations: Implementation[] = [
   { name: "CandidateA", exact: false, create: (g) => new CandidateA(g, 1) },
   { name: "CandidateB", exact: true, create: (g) => new CandidateB(g, 1) },
   { name: "CandidateC", exact: true, create: (g) => new CandidateC(g, 1) },
+  { name: "CandidateE", exact: true, create: (g) => new CandidateE(g, 1) },
+  { name: "CandidateF", exact: true, create: (g) => new CandidateF(g, 1) },
+  { name: "CandidateG", exact: true, create: (g) => new CandidateG(g, 1) },
+  // fast-math variant: threshold-boundary edges may legitimately flip
+  { name: "CandidateH", exact: false, create: (g) => new CandidateH(g, 1) },
 ];
 
 const formatDiff = (name: string, diff: EdgeSetDiff): string =>

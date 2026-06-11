@@ -48,6 +48,25 @@ export function createMergedBoxes(count: number): BufferGeometry {
   return merged;
 }
 
+/**
+ * Array of individual translated unit boxes, NOT merged.
+ * Mirrors the library's per-source code path: EdgeGeometryMerger.convert()
+ * constructs one edge geometry per added source geometry before merging.
+ */
+export function createBoxArray(count: number): BufferGeometry[] {
+  const gridSize = Math.ceil(Math.cbrt(count));
+  const geometries: BufferGeometry[] = [];
+  for (let i = 0; i < count; i++) {
+    const x = i % gridSize;
+    const y = Math.floor(i / gridSize) % gridSize;
+    const z = Math.floor(i / (gridSize * gridSize));
+    const box = new BoxGeometry(1, 1, 1);
+    box.translate(x * 2, y * 2, z * 2);
+    geometries.push(box);
+  }
+  return geometries;
+}
+
 export const benchGeometries: BenchGeometryEntry[] = [
   {
     name: "TorusKnot(10,3,200,32) ~12.8k tri",

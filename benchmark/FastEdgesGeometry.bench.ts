@@ -5,7 +5,11 @@ import { CandidateA } from "./candidates/CandidateA";
 import { CandidateB } from "./candidates/CandidateB";
 import { CandidateC } from "./candidates/CandidateC";
 import { CandidateD } from "./candidates/CandidateD";
-import { benchGeometries, triangleCount } from "./geometries";
+import { CandidateE } from "./candidates/CandidateE";
+import { CandidateF } from "./candidates/CandidateF";
+import { CandidateG } from "./candidates/CandidateG";
+import { CandidateH } from "./candidates/CandidateH";
+import { benchGeometries, createBoxArray, triangleCount } from "./geometries";
 
 /**
  * Initialization-time benchmark across the geometry staircase.
@@ -30,6 +34,10 @@ const implementations: Implementation[] = [
   { name: "CandidateA", create: (g) => new CandidateA(g, 1) },
   { name: "CandidateB", create: (g) => new CandidateB(g, 1) },
   { name: "CandidateC", create: (g) => new CandidateC(g, 1) },
+  { name: "CandidateE", create: (g) => new CandidateE(g, 1) },
+  { name: "CandidateF", create: (g) => new CandidateF(g, 1) },
+  { name: "CandidateG", create: (g) => new CandidateG(g, 1) },
+  { name: "CandidateH", create: (g) => new CandidateH(g, 1) },
 ];
 
 for (const entry of benchGeometries) {
@@ -49,6 +57,26 @@ for (const entry of benchGeometries) {
           impl.create(geometry).dispose();
         },
         options,
+      );
+    }
+  });
+}
+
+// Per-source code path (EdgeGeometryMerger.convert constructs one edge
+// geometry per source geometry before merging): measures per-construction
+// overhead such as allocation/GC, which single large constructions hide.
+{
+  const boxes = createBoxArray(1000);
+  describe("Box x1000 individual constructions (12 tri each)", () => {
+    for (const impl of implementations) {
+      bench(
+        impl.name,
+        () => {
+          for (const g of boxes) {
+            impl.create(g).dispose();
+          }
+        },
+        { warmupIterations: 2, warmupTime: 0, iterations: 10, time: 0 },
       );
     }
   });

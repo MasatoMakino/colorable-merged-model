@@ -120,3 +120,82 @@ is the effective breakdown:
 3. Threshold-boundary edges depend on the mixed-precision dot product
    convention; any reimplementation must preserve `float64 · fround(float32)`
    to remain bit-compatible with the current output.
+
+---
+
+# Round 2 — Pure-TS variants on top of Candidate B
+
+Date: 2026-06-11. Constraint: synchronous pure TS only (GPU / workers / async
+excluded by user direction). Candidate B is the new reference point; each
+round-2 candidate isolates one additional factor.
+
+| Candidate | Adds | Isolates |
+|-----------|------|----------|
+| E | full unroll of the 3-edges loop + face normals stored once per face | instruction count / scratch-array elimination |
+| F | E + interleaved table cells (stride-4 Int32) + int32 quantized coords | cache-line locality |
+| G | F + module-level grow-only scratch arena | per-construction allocation / GC |
+| H | F + sqrt-free squared-form threshold test | fast-math (output contract risk) |
+
+A new scenario was added: **Box x1000 individual constructions** — the
+library's actual code path (`EdgeGeometryMerger.convert()` constructs one edge
+geometry per source geometry; `src/merger/EdgeGeometryMerger.ts:8`), where
+per-construction overhead multiplies by model count.
+
+## Accuracy
+
+E, F, G: zero missing/extra on all 7 geometries (inherit B's exact keys).
+H: also zero on all tested geometries, but its squared-form comparison is not
+bit-compatible by construction; threshold-boundary flips remain possible on
+other inputs.
+
+## Performance (full-suite medians; isolated confirmation runs in parentheses)
+
+Speedups vs current FastEdgesGeometry:
+
+| Scenario | B | E | F | G | H |
+|----------|---|---|---|---|---|
+| TorusKnot 12.8k | 2.94x | 3.36x | 3.67x | **4.33x** | 3.26x |
+| TorusKnot 204.8k | 1.42x | **2.18x** (confirmed ~1.7x mean isolated) | 1.21x | 2.16x | 0.46x |
+| Sphere 523k | 1.35x | **1.43x** | 0.76x | 1.07x | 0.87x |
+| MergedBoxes 120k | 1.80x | **1.95x** | 1.73x | 1.70x | 1.28x |
+| TorusKnot 204.8k nonIdx | 0.63x* | **1.04x** | 1.05x | 1.08x | 0.87x |
+| MergedBoxes 120k nonIdx | 1.00x | 0.84x* | 1.11x | **1.33x** | 1.10x |
+| Box x1000 individual | 0.66x | 0.60x | 0.65x | **3.26x** (isolated: min 2.0x, mean ~1.1x) | 0.74x |
+
+(*) High run-to-run variance (rme up to 50% in the 10-implementation suite;
+GC pressure inflates and reorders mid-pack results). Medians within one suite
+run are comparable; cross-run absolute values drift.
+
+## Findings
+
+1. **Unrolling pays (E).** Removing the inner 3-edge loop, scratch arrays and
+   per-edge normal writes is worth ~1.4-1.5x over B on large indexed
+   geometries and fixes B's non-indexed weakness (weld cost amortized by a
+   leaner loop). E is the best single-construction variant overall.
+2. **Interleaved cells do not pay in V8 (F rejected).** The stride-4 cell
+   layout (one cache line per probe) was consistently <= E. The extra index
+   arithmetic and int32 range checks eat the locality gain at JS level — this
+   idea belongs in the WASM round, not in TS.
+3. **The per-source path is allocation-bound (G).** B/E/F allocate ~12 typed
+   arrays per construction and are SLOWER than current on Box x1000
+   (0.60-0.66x). The arena variant turns this into 3.3x under suite memory
+   pressure (isolated best-case min 2.0x). Cost: not thread-safe, retains
+   largest-seen buffers. Caveat: for huge geometries the arena's explicit
+   `fill(0)` of a ~64MB table region can lose to fresh zero-pages
+   (Sphere: G 1.07x < E 1.43x).
+4. **Sqrt elimination does not pay (H rejected).** The extra per-face length
+   array and branchier emit test cost more than one sqrt per face saves, and
+   it breaks bit-compatibility for threshold-boundary edges.
+
+## Round 2 recommendation
+
+- **Merged-geometry single construction (the user's stated primary
+  scenario): adopt E** — B's exactness plus unrolled loop and shared face
+  normals; 1.4-2.2x over current on 100k+ tri merged geometries, no
+  regressions.
+- **If the per-source path of EdgeGeometryMerger stays:** compose **E + G's
+  arena** (arena on E's separate-array layout, skipping F's interleaving) and
+  gate the arena reset cost: reuse scratch only below a size threshold
+  (e.g. indexCount < ~500k) and fall back to fresh allocation above it.
+- F and H are rejected with data; F's layout idea is deferred to a potential
+  WASM round.
