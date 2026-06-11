@@ -199,3 +199,87 @@ run are comparable; cross-run absolute values drift.
   (e.g. indexCount < ~500k) and fall back to fresh allocation above it.
 - F and H are rejected with data; F's layout idea is deferred to a potential
   WASM round.
+
+---
+
+# Round 3 — Threshold sweep and the production-shaped mix (CandidateMix)
+
+Date: 2026-06-11. Per user direction, the mix is kept as an **independent
+candidate** (`benchmark/candidates/CandidateMix.ts`); `src/FastEdgesGeometry.ts`
+is NOT modified.
+
+## Threshold sweep (Candidate I = E's layout + ungated arena)
+
+`benchmark/threshold.bench.ts`, raw data `benchmark/threshold-results.json`:
+
+| indexCount | E (fresh) | I (arena) | arena speedup |
+|-----------:|----------:|----------:|--------------:|
+| 36 x1000 constructions | 35.10ms | 6.78ms | **5.17x** |
+| 9.6k | 1.60ms | 1.39ms | 1.15x |
+| 38.4k | 1.77ms | 1.58ms | 1.12x |
+| 153.6k | 8.72ms | 7.56ms | 1.15x |
+| 345.6k | 22.62ms | 21.78ms | 1.04x |
+| 614.4k | 49.38ms | 49.16ms | 1.00x |
+| 1152k | 122.17ms | 98.43ms | 1.24x |
+| 1843k | 163.08ms | 168.85ms | 0.97x |
+
+Key insight: with E's separate-array layout the arena's reset cost
+(`fill(-1)` over the two table regions) never becomes a measurable penalty —
+the large-geometry slowdown seen for Candidate G in round 2 was caused by F's
+interleaved cells quadrupling the reset region, not by the arena concept.
+Above ~300k indexCount the two strategies are parity within noise, so the
+size gate exists to **bound retained scratch memory**, not to win speed.
+
+**Chosen threshold: `indexCount <= 2^18 (262,144)` and
+`positionCount <= 2^18`** — captures all measured arena gains, bounds the
+retained scratch to roughly 30MB worst case.
+
+## CandidateMix
+
+- Algorithm: Candidate E at every size (exact keys, unrolled loop, shared
+  face normals; `seed` becomes a no-op).
+- Buffers: scratch arena below the gate, fresh allocation above it.
+- Interleaved or normalized position attributes are materialized into a
+  packed array once, then share the same hot loop (removes the prototype
+  restriction of candidates D-I).
+
+Compatibility evidence (`__test__/FastEdgesCandidates.spec.ts`):
+
+- Edge-set diff vs EdgesGeometry: zero on all 7 staircase geometries.
+- **Position attribute bit-identical INCLUDING segment order** to
+  EdgesGeometry on the 7 standard geometries used by the existing
+  `FastEdgesGeometry.spec.ts` order test — drop-in replacement evidence.
+
+## Performance
+
+Full-suite medians (11 implementations, same run):
+
+| Scenario | Mix vs current |
+|----------|---------------:|
+| TorusKnot 12.8k | 3.19x |
+| TorusKnot 204.8k | 1.50x |
+| Sphere 523k | 1.26x |
+| MergedBoxes 12k | **4.23x** (fastest of all candidates) |
+| MergedBoxes 120k | 1.94x |
+| TorusKnot 204.8k nonIdx | 1.02x |
+| MergedBoxes 120k nonIdx | 1.47x |
+
+Per-source decision pair (clean two-class process, closest to a real app):
+**Mix 8.41ms mean (min 4.12) vs current 12.88ms (min 10.08) on Box x1000 —
+1.53x mean, 2.4x best-case.**
+
+Measurement caveat: in the 11-implementation suite, the Box x1000 group
+converges for ALL implementations (~11-13ms) — polymorphic IC pollution from
+running many classes in one process masks per-class differences. Dedicated
+two-class runs (the sweep and the decision pair) are the decision-relevant
+numbers for the per-source path.
+
+## Status
+
+- CandidateMix is the recommended production shape, held as an independent
+  candidate per user direction. Porting it into `src/FastEdgesGeometry.ts`
+  (preserving the public API: constructor signature, `parameters`, `copy`,
+  static `taus`/`hybridtaus`) is the remaining step when adoption is decided.
+- Sphere 523k: positionCount 263,169 narrowly exceeds the 2^18 gate, sending
+  it down the fresh path (1.26x); a per-buffer gate or a higher limit would
+  trade memory for the gap to G's 1.69x. Left as a tuning knob.

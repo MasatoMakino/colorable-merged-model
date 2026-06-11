@@ -1,4 +1,14 @@
-import { type BufferGeometry, EdgesGeometry } from "three";
+import {
+  BoxGeometry,
+  type BufferGeometry,
+  ConeGeometry,
+  CylinderGeometry,
+  EdgesGeometry,
+  RingGeometry,
+  SphereGeometry,
+  TorusGeometry,
+  TorusKnotGeometry,
+} from "three";
 import { describe, expect, it } from "vitest";
 import { CandidateA } from "../benchmark/candidates/CandidateA";
 import { CandidateB } from "../benchmark/candidates/CandidateB";
@@ -8,6 +18,7 @@ import { CandidateE } from "../benchmark/candidates/CandidateE";
 import { CandidateF } from "../benchmark/candidates/CandidateF";
 import { CandidateG } from "../benchmark/candidates/CandidateG";
 import { CandidateH } from "../benchmark/candidates/CandidateH";
+import { CandidateMix } from "../benchmark/candidates/CandidateMix";
 import { compareEdgeSets, type EdgeSetDiff } from "../benchmark/edgeSetCompare";
 import { benchGeometries, triangleCount } from "../benchmark/geometries";
 import { FastEdgesGeometry } from "../src";
@@ -44,10 +55,35 @@ const implementations: Implementation[] = [
   { name: "CandidateG", exact: true, create: (g) => new CandidateG(g, 1) },
   // fast-math variant: threshold-boundary edges may legitimately flip
   { name: "CandidateH", exact: false, create: (g) => new CandidateH(g, 1) },
+  { name: "CandidateMix", exact: true, create: (g) => new CandidateMix(g, 1) },
 ];
 
 const formatDiff = (name: string, diff: EdgeSetDiff): string =>
   `${name.padEnd(28)} GT=${diff.groundTruthCount} out=${diff.candidateCount} missing=${diff.missing} extra=${diff.extra}`;
+
+// Drop-in compatibility evidence for CandidateMix: bit-identical position
+// attribute INCLUDING segment order, matching the contract verified for the
+// current implementation in FastEdgesGeometry.spec.ts.
+describe("CandidateMix: position attribute order compatibility", () => {
+  it("matches EdgesGeometry position arrays exactly on standard geometries", () => {
+    const geometries = [
+      new TorusKnotGeometry(),
+      new TorusGeometry(),
+      new SphereGeometry(),
+      new CylinderGeometry(),
+      new ConeGeometry(),
+      new RingGeometry(),
+      new BoxGeometry(),
+    ];
+    for (const geo of geometries) {
+      const mix = new CandidateMix(geo);
+      const edges = new EdgesGeometry(geo);
+      expect(mix.attributes.position.array).toStrictEqual(
+        edges.attributes.position.array,
+      );
+    }
+  });
+});
 
 describe("FastEdges candidates: edge set accuracy vs EdgesGeometry", () => {
   for (const entry of benchGeometries) {

@@ -9,6 +9,7 @@ import { CandidateE } from "./candidates/CandidateE";
 import { CandidateF } from "./candidates/CandidateF";
 import { CandidateG } from "./candidates/CandidateG";
 import { CandidateH } from "./candidates/CandidateH";
+import { CandidateMix } from "./candidates/CandidateMix";
 import { benchGeometries, createBoxArray, triangleCount } from "./geometries";
 
 /**
@@ -38,6 +39,7 @@ const implementations: Implementation[] = [
   { name: "CandidateF", create: (g) => new CandidateF(g, 1) },
   { name: "CandidateG", create: (g) => new CandidateG(g, 1) },
   { name: "CandidateH", create: (g) => new CandidateH(g, 1) },
+  { name: "CandidateMix", create: (g) => new CandidateMix(g, 1) },
 ];
 
 for (const entry of benchGeometries) {
