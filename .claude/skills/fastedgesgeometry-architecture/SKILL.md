@@ -19,114 +19,110 @@ Standard Three.js EdgesGeometry implementation:
 
 | Aspect | Implementation |
 |--------|----------------|
-| Edge hash | String concatenation: `"x,y,z"` format (4 decimal precision) |
+| Edge identity | String concatenation: `"x,y,z"` format (4 decimal precision) — exact, collision-free |
 | Edge storage | `Object` with string keys: `"hash0_hash1"` |
 | Normal calculation | `Triangle.getNormal()` method |
 | Vertex accumulation | `Array.push()` |
 
-**Problem**: String hash generation and object key lookup are slow
+**Problem**: String key generation and object key lookup are slow
 
 ### Stage 2: FastEdgesGeometry (v0.7.3, 2024-11)
 
-Replaced string hash with numeric hash:
+Replaced string keys with 32-bit numeric hashes:
 
 | Aspect | Implementation |
 |--------|----------------|
-| Edge hash | Numeric hash via `hybridtaus()` (Tausworthe algorithm) |
+| Edge identity | Numeric hash via `hybridtaus()` (Tausworthe algorithm) — lossy, collision-prone |
 | Edge storage | `Map<number, {index0, index1, normal}>` |
 | Normal calculation | `Triangle.getNormal()` method (unchanged) |
 | Vertex accumulation | `Array.push()` (unchanged) |
 
 **Improvement**: Numeric hash speeds up edge lookup (~3-4x faster)
-**Remaining issues**: Function call overhead, object allocation, dynamic arrays
+**Trade-off introduced**: Hash collisions could corrupt edge detection; `seed` / `precisionPoints` options served as workarounds
 
 ### Stage 3: FastEdgesGeometry (v0.7.4+, 2026-01)
 
-Applied further optimizations:
+Applied micro-optimizations:
 
 | Aspect | Implementation |
 |--------|----------------|
-| Edge hash | Inline `computeHash()` with pre-transformed seed |
-| Edge storage | Parallel Typed Arrays (`Uint32Array`, `Float32Array`) |
+| Edge identity | Inline `computeHash()` with pre-transformed seed (still collision-prone) |
+| Edge storage | `Map<number, slot>` + parallel Typed Arrays |
 | Normal calculation | Direct cross product calculation |
 | Vertex accumulation | Pre-allocated `Float32Array` with index tracking |
 
 **Improvement**: Function inlining, Typed Arrays, object allocation avoidance (~30% faster)
 
-## Optimization Mapping
+### Stage 4: FastEdgesGeometry (2026-06, PR #371)
 
-### Stage 2 → Stage 3 Optimization Details
+Full rewrite with exact edge identity — eliminates the Stage 2 accuracy trade-off while getting faster:
 
-| Stage 2 (v0.7.3) | Stage 3 (v0.7.4+) | Rationale |
-|----------------|-------------------|-----------|
-| `Triangle` class with `getNormal()` | Direct cross product calculation | Avoid method call overhead and object property access |
-| `Map<hash, {index0, index1, normal}>` | Parallel Typed Arrays (`Uint32Array`, `Float32Array`) | Reduce object allocation and GC pressure |
-| `vertices.push()` dynamic array | Pre-allocated `Float32Array` with final `slice()` | Avoid array resize operations |
-| `hybridtaus()` function calls | Inline hash computation | Eliminate function call stack overhead |
-| `options?.seed` access in loop | Pre-transformed seed constant | Avoid repeated optional chaining |
-| `Triangle` object for vertex access | Direct `Vector3` variables (`_a`, `_b`, `_c`) | Eliminate object property lookup |
+| Aspect | Implementation |
+|--------|----------------|
+| Edge identity | **Exact integer pair of welded vertex ids.** A weld pre-pass maps each vertex to a canonical id by exact comparison of quantized coordinates. Hashes only pick probe start positions in open-addressing tables — they never decide identity |
+| Edge storage | Open-addressing typed-array tables (linear probing, load factor <= 0.5, `-1` empty / `-2` tombstone) + parallel slot arrays in insertion order |
+| Normal calculation | Direct cross product, stored once per face (`Float64Array`); the stored side is rounded with `Math.fround` at comparison time |
+| Hot loop | 3-edges-per-triangle loop fully unrolled with scalar locals |
+| Buffers | Module-level grow-only scratch arena when `indexCount` and `positionCount` <= 2^18; fresh allocation above (gate bounds retained memory ~30MB, speed is parity above the gate) |
+| Attribute access | Direct `.array` reads; interleaved/normalized attributes are materialized into a packed copy once |
 
-### Code Structure Mapping
+**Improvement**: collision-free output (the `seed` option became a documented no-op), 1.26x-4.2x vs Stage 3 depending on scenario, bit-identical to EdgesGeometry including segment order on standard geometries.
 
-| Operation | Three.js EdgesGeometry | FastEdges (v0.7.3) | FastEdges (v0.7.4+) |
-|-----------|------------------------|--------------------|--------------------|
-| Hash generation | `"x,y,z"` string | `hybridtaus(x,y,z)` | `computeHash(x,y,z)` inline |
-| Normal calculation | `triangle.getNormal(normal)` | `triangle.getNormal(normal)` | direct cross product |
-| Edge storage | `edgeData["hash"] = obj` | `edgeData.set(hash, obj)` | `typed arrays[slot]` |
-| Vertex accumulation | `vertices.push(...)` | `vertices.push(...)` | `vertexBuffer[writeIndex++]` |
+## Output Contract Invariants (Stage 4)
 
-### Inline Hash Function
+Violating any of these breaks bit-compatibility with EdgesGeometry / previous outputs:
 
-The `computeHash()` function (lines 94-100) is an inline expansion of `hybridtaus()`:
+1. **Dot-product precision convention**: threshold test compares `float64 (current face normal) x fround(stored normal)`. Comparing float32 x float32 (or float64 x float64) flips threshold-boundary edges (~1 in 170k edges on a 1-degree-threshold mesh).
+2. **Pairing semantics**: a directed edge `(a->b)` pairs with the latest unmatched `(b->a)`. A duplicate directed edge (non-manifold) overwrites the earlier one, which is never emitted.
+3. **Emission order**: matched edges are emitted at the stream position of the second (current) face; unmatched edges are emitted afterwards in insertion order.
+4. **Weld pass is O(positionCount)**: every vertex is welded once, including unreferenced ones (pathological geometries with positionCount >> indexCount pay extra).
+5. **Thread safety**: the shared scratch arena makes the class not thread-safe (same caveat as the Stage 3 static arrays).
 
-```typescript
-// hybridtaus() static method (preserved for public API):
-static hybridtaus(x, y, z, seed = 255) {
-  x = FastEdgesGeometry.taus(x, 13, 19, 12, 0xfffffffe);
-  y = FastEdgesGeometry.taus(y, 2, 25, 4, 0xfffffff8);
-  z = FastEdgesGeometry.taus(z, 3, 11, 17, 0xfffffff0);
-  seed = u32(seed * 1664525 + 1013904223);
-  return u32(x ^ y ^ z ^ seed);
-}
+## Legacy Public API
 
-// Inlined as computeHash() with pre-transformed seed:
-const transformedSeed = (seed * 1664525 + 1013904223) >>> 0;
-const computeHash = (x, y, z) => {
-  x = (((x & 0xfffffffe) << 13) ^ (((x << 19) ^ x) >>> 12)) >>> 0;
-  y = (((y & 0xfffffff8) << 2) ^ (((y << 25) ^ y) >>> 4)) >>> 0;
-  z = (((z & 0xfffffff0) << 3) ^ (((z << 11) ^ z) >>> 17)) >>> 0;
-  return (x ^ y ^ z ^ transformedSeed) >>> 0;
-};
-```
-
-The magic numbers (`0xfffffffe`, `0xfffffff8`, `0xfffffff0`) and bit shifts come from the Tausworthe random number generator algorithm (GPU Gems 3, Chapter 37).
+`static taus()` / `static hybridtaus()` are retained for backward compatibility but are no longer used for edge identity. The Tausworthe-style bit-mixing (magic masks `0xfffffffe` / `0xfffffff8` / `0xfffffff0`, GPU Gems 3 Ch. 37) survives inline in the weld pass purely as a probe-start scrambler.
 
 ## Performance Results
 
-Benchmark comparison (Chrome, macOS):
+Stage 4 measurements (vitest bench, DevContainer Node 24; medians; details in PR #371):
 
-| Geometry | Triangles | EdgesGeometry | FastEdges (old) | FastEdges (new) | Speedup |
-|----------|-----------|---------------|-----------------|-----------------|---------|
-| SphereGeometry(32,32) | 1,984 | 4.40ms | 1.20ms | 0.90ms | 4.9x vs original |
-| TorusKnot(200,32) | 12,800 | 28.40ms | 6.50ms | 5.00ms | 5.7x vs original |
-| TorusKnot(400,64) | 51,200 | 134.40ms | 28.70ms | 21.80ms | 6.2x vs original |
+| Scenario | vs Stage 3 | vs three.js EdgesGeometry |
+|----------|-----------:|--------------------------:|
+| Box x1000 individual constructions (EdgeGeometryMerger per-source path) | 1.53x mean / 2.4x best | ~4.6x |
+| MergedBoxes 12k / 120k tri | 4.23x / 1.94x | ~15-27x |
+| TorusKnot 204.8k tri / Sphere 523k tri | 1.50x / 1.26x | ~16-20x |
+| TorusKnot 204.8k tri non-indexed | 1.02x (parity) | ~14x |
+
+Accuracy: Stage 3 emitted 1 spurious edge on a smooth 523k-triangle sphere (hash collision, matching the birthday estimate for 32-bit hashes at ~1.57M directed edges); Stage 4 emits 0.
+
+## Measurement Archive
+
+The benchmark harness, candidates A-I/Mix, accuracy specs, threshold sweep, and the full RESULTS.md exist only in the history of PR #371 (merge commit `be262e8`):
+
+- `021f9d3` — round 1: harness, candidates A-D, first quantification of the collision error
+- `d418f62` — round 2: candidates E-H (rejected with data: interleaved table cells, sqrt-free threshold test)
+- `c7cb9e1` — round 3: threshold sweep, production-shaped CandidateMix
+- `8f1669d` — removal of the scaffolding from the tree
+
+Measurement caveat learned: microbenchmarks running many implementation classes in one process converge due to polymorphic IC pollution — use dedicated two-class runs for adoption decisions.
 
 ## Optimization Principles Applied
 
-1. **Inline function calls** - Eliminate call stack overhead in hot loops
-2. **Pre-allocate fixed arrays** - Replace dynamic `push()` with typed array indexing
-3. **Avoid high-level abstractions** - Use primitives instead of objects/classes
-4. **Pre-compute constants** - Move invariant calculations outside loops
+1. **Never let hashes decide identity** - Hash only picks the probe start; identity is exact comparison (collision-free at hash-level speed)
+2. **Inline and unroll hot loops** - Eliminate call stack overhead and scratch-array indexing
+3. **Pre-allocate fixed arrays** - Replace dynamic structures (`Map`, `push()`) with typed-array tables and index tracking
+4. **Reuse buffers below a size gate** - Allocation dominates small repeated constructions; explicit resets dominate huge ones
 
 ## Trade-offs
 
-- **Readability**: Code is more complex and harder to understand
-- **Maintainability**: Changes require understanding the optimization mapping
+- **Readability**: Code is long and repetitive (unrolled edge blocks); changes must be applied to all three blocks consistently
+- **Maintainability**: Changes require understanding the Output Contract Invariants above
+- **Memory**: The scratch arena retains the largest-seen buffers (bounded ~30MB by the 2^18 gate)
 - **Justification**: Edge geometry generation directly impacts user experience (frame drops during scene initialization)
 
 ## Future Optimization Considerations
 
-If further optimization is needed:
-- WebGPU Compute Shader (parallel processing on GPU)
-- Web Workers (limited benefit due to data transfer overhead)
-- Only practical for geometries with 100k+ triangles
+If further optimization is needed (1M+ triangles or sub-50ms requirements):
+- WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history — sequential typed-array passes, designed for portability)
+- WebGPU Compute Shader; pays off only if the `webgpu/` render path can consume results without readback
+- Web Workers were evaluated and rejected (startup + copy overhead offsets gains); a SharedArrayBuffer pool would impose COOP/COEP on library users
