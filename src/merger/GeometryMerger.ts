@@ -21,6 +21,7 @@ export class GeometryMerger<
   readonly object3D: ColorableMergedBody | ColorableMergedEdge;
   readonly option: Option;
   readonly geometries: BufferGeometry[] = [];
+  private isSourceReleased = false;
 
   constructor(
     object3D: ColorableMergedBody | ColorableMergedEdge,
@@ -30,11 +31,28 @@ export class GeometryMerger<
     this.option = option;
   }
 
+  /**
+   * Release the merger's references to the geometries accumulated by
+   * {@link add}. Call this after the final {@link merge}; subsequent
+   * {@link add} and {@link merge} calls throw.
+   *
+   * Ownership contract: geometries passed to {@link add} are handed over to the
+   * merger, and BodyGeometryMerger mutates them in place. They are never
+   * rendered after {@link merge}, so the merger holds no GPU resource for them
+   * and this method does not call `dispose()`; disposing the originals, and any
+   * memory still reachable from the caller, remains the caller's responsibility.
+   */
+  public clearSourceGeometries(): void {
+    this.geometries.length = 0;
+    this.isSourceReleased = true;
+  }
+
   public async add(
     geometry: BufferGeometry,
     colorMap: TweenableColorMap,
     index: number,
   ) {
+    this.assertSourceAvailable();
     const convertedGeometry = await this.convert(geometry);
     const uniformIndex = colorMap.getUniformIndex(index);
 
@@ -53,7 +71,21 @@ export class GeometryMerger<
     return geometry;
   }
 
+  /**
+   * merge() removes object3D from its parent when geometries is empty.
+   * Without this guard, a second merge() after the release would silently take
+   * that branch and detach an already merged object.
+   */
+  private assertSourceAvailable(): void {
+    if (this.isSourceReleased) {
+      throw new Error(
+        "GeometryMerger: source geometries were released by clearSourceGeometries(); add()/merge() are no longer allowed",
+      );
+    }
+  }
+
   async merge(): Promise<void> {
+    this.assertSourceAvailable();
     if (this.geometries.length === 0) {
       this.object3D.parent?.remove(this.object3D);
       return;

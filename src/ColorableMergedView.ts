@@ -66,4 +66,15 @@ export class ColorableMergedView extends Group {
       this.edge?.geometryMerger.merge(),
     ]);
   }
+
+  /**
+   * Release the pre-merge geometries held by the body and edge mergers.
+   *
+   * See GeometryMerger.clearSourceGeometries for the ownership contract and
+   * for the restrictions that apply after the release.
+   */
+  public clearSourceGeometries(): void {
+    this.body?.geometryMerger.clearSourceGeometries();
+    this.edge?.geometryMerger.clearSourceGeometries();
+  }
 }
