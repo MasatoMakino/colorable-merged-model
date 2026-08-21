@@ -82,6 +82,28 @@ describe("ColorableMergedView", () => {
     expect(view.edge).toBeUndefined();
   });
 
+  test("clearSourceGeometries() releases the pre-merge geometries of both the body and the edge merger, so neither keeps a duplicate of the merged data", async () => {
+    const view = generateView();
+    const bodyMap = new TweenableColorMap("colors");
+    const edgeMap = new TweenableColorMap("colors");
+    await view.body?.geometryMerger.add(
+      new BoxGeometry(1, 1, 1, 1, 1, 1),
+      bodyMap,
+      1,
+    );
+    await view.edge?.geometryMerger.add(
+      new BoxGeometry(1, 1, 1, 1, 1, 1),
+      edgeMap,
+      1,
+    );
+    await view.merge();
+
+    view.clearSourceGeometries();
+
+    expect(view.body?.geometryMerger.geometries.length).toStrictEqual(0);
+    expect(view.edge?.geometryMerger.geometries.length).toStrictEqual(0);
+  });
+
   test("should not have parent elements when no geometries are added", async () => {
     const view = generateView();
     await view.merge();

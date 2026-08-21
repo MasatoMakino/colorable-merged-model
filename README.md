@@ -142,6 +142,7 @@ const view = new ColorableMergedView({
 **Key Methods:**
 
 - `merge(): Promise<void>` - Merges all added geometries
+- `clearSourceGeometries(): void` - Releases the pre-merge geometries held by the body and edge mergers
 - `getGeometryID(name: string): number` - Extracts geometry ID from name (customizable)
 
 **Properties:**
@@ -275,6 +276,23 @@ colorMap.changeColor([0, 1, 0, 1], geometryId, { duration: 2000 });
 ```
 
 For detailed information about available events and event handling, please refer to the [@masatomakino/tweenable-color documentation](https://github.com/MasatoMakino/tweenable-color).
+
+### Releasing Source Geometries
+
+After merging, each `GeometryMerger` still holds every geometry that was passed to `add()`, which keeps a full duplicate of the merged data alive. Call `clearSourceGeometries()` once the final `merge()` is done to drop those references:
+
+```typescript
+await view.merge();
+view.clearSourceGeometries();
+```
+
+Ownership contract:
+
+- Geometries passed to `add()` are handed over to the merger. `BodyGeometryMerger` mutates them in place, so do not reuse them elsewhere.
+- `clearSourceGeometries()` only drops the merger's references. Memory that is still reachable from your own code - a retained `gltf.scene`, for example - is not freed.
+- `clearSourceGeometries()` does not call `dispose()`. The pre-merge geometries are not rendered after `merge()`, so disposing the originals stays your responsibility.
+- After the release, `add()` and `merge()` throw. Add and merge everything before calling it.
+- `ColorableMergedView.clearSourceGeometries()` forwards the call to both the body and the edge merger.
 
 ## Performance Considerations
 
