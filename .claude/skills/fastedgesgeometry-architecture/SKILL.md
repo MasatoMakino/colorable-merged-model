@@ -132,6 +132,10 @@ If further optimization is needed (1M+ triangles or sub-50ms requirements):
   - Routing works with bit-identical output. A threshold of about 256 triangles keeps tiny geometries off the pool: 1,000 boxes take 20 ms against 67 ms for the pool only
   - The main thread used as a compute resource gains no more than one extra worker, and only when the workers are saturated. A high threshold blocks the main thread: 64k triangles took 387 ms on the 78-mesh dataset
   - Cold worker startup and refill of a busy pool both need main-thread turns. Slice the main-thread share and prewarm the pool
+- Source-level tuning of the AssemblyScript port, measured in commit `d65182f` (same report). Findings:
+  - A hash-table capacity factor of 1.5 instead of 2 gives most of the gain: -6% cold on the main thread and -9% in the pool on the 78-mesh dataset, with smaller tables. Input whose edges never match (disconnected triangles) runs about 20% slower at the higher load
+  - `src/FastEdgesGeometry.ts` uses the same factor of 2, so the lever may apply to the JS path. It is not measured
+  - A 24-byte slot record (endpoints, f32 normal, alive flag) adds a small gain, within noise in Chrome. Hoisting pointer globals, 12-byte table cells, and weld coordinate records gave nothing or regressed
 - Splitting one large geometry across workers is the only route past the largest-mesh critical path. It is not prototyped
 - WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history). It breaks emission-order invariant 3 unless a pass restores the order
 - WebGPU Compute Shader; pays off only if the `webgpu/` render path can consume results without readback
