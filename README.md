@@ -135,6 +135,7 @@ const view = new ColorableMergedView({
     color: [number, number, number, number]; // RGBA values (0-1)
     edgeDetail?: number; // Default: 7
     useFastEdgesGeometry?: boolean;
+    tableCapacityFactor?: 1.5 | 2; // Default: 2. FastEdgesGeometry only
   };
 });
 ```

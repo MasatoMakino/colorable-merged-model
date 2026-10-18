@@ -467,4 +467,82 @@ describe("FastEdgesGeometry", () => {
       expect(edges.attributes.position.array.length).toBeGreaterThan(0);
     });
   });
+
+  describe("tableCapacityFactor option", () => {
+    const createTriangleSoup = (triangleCount: number) => {
+      // Disconnected triangles: no edge pairs, so every key stays in the table
+      const vertices: number[] = [];
+      for (let t = 0; t < triangleCount; t++) {
+        const x = t * 2;
+        vertices.push(x, 0, 0, x + 1, 0, 0, x, 1, 0);
+      }
+      const geo = new BufferGeometry();
+      geo.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+      return geo;
+    };
+
+    // The factor only resizes the tables, which moves probe start positions.
+    // Identity comparison is exact, so the output must not depend on it.
+    it("produces identical output for 1.5 and 2 because table size only moves probe starts", () => {
+      // Each size makes 1.5 and 2 round to different power-of-two capacities
+      // for the edge table, the weld table, or both.
+      const geometries: BufferGeometry[] = [
+        new BoxGeometry(),
+        new TorusKnotGeometry(1, 0.4, 64, 12),
+        new TorusKnotGeometry(1, 0.4, 64, 12).toNonIndexed(),
+        new SphereGeometry(1, 64, 32),
+        createTriangleSoup(1500),
+        // Above the scratch-arena gate (indexCount > 2^18)
+        new TorusKnotGeometry(1, 0.4, 700, 64),
+      ];
+      for (const geo of geometries) {
+        const reference = new FastEdgesGeometry(geo, 1, {
+          tableCapacityFactor: 2,
+        });
+        const compact = new FastEdgesGeometry(geo, 1, {
+          tableCapacityFactor: 1.5,
+        });
+        expect(compact.attributes.position.array).toStrictEqual(
+          reference.attributes.position.array,
+        );
+      }
+    });
+
+    it("defaults to 2 so that existing callers keep the table size", () => {
+      const geo = new TorusKnotGeometry();
+      const byDefault = new FastEdgesGeometry(geo);
+      const explicit = new FastEdgesGeometry(geo, 1, {
+        tableCapacityFactor: 2,
+      });
+      expect(byDefault.attributes.position.array).toStrictEqual(
+        explicit.attributes.position.array,
+      );
+    });
+
+    // Discard condition: library owner decision (2026-10-18). The allowed set
+    // is limited to the measured factors 1.5 and 2, and a factor at or below 1
+    // can stall linear probing. If the owner allows other measured values,
+    // extend the set.
+    it.each([
+      1,
+      0,
+      3,
+      Number.NaN,
+      "2",
+    ])("throws a RangeError for %s because only measured factors are allowed", (factor) => {
+      const geo = new BoxGeometry();
+      expect(
+        () =>
+          new FastEdgesGeometry(geo, 1, {
+            tableCapacityFactor: factor as never,
+          }),
+      ).toThrow(RangeError);
+      expect(
+        () =>
+          new FastEdgesGeometry(null, 1, {
+            tableCapacityFactor: factor as never,
+          }),
+      ).toThrow(RangeError);
+    });
+  });
 });
