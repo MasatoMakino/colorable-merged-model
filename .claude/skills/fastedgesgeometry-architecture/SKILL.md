@@ -128,6 +128,10 @@ If further optimization is needed (1M+ triangles or sub-50ms requirements):
   - One worker per mesh is slower than JS (422 ms) because startup dominates. Wall time stops falling at 2 workers when the largest mesh is the critical path
   - For 1,000 small geometries, the pool is 6-10x slower than JS. Integration needs a size gate
   - The cold penalty comes from first-touch of linear memory, not WASM tier-up. Pre-touching memory during asset loading removes it at about 139 MB per worker
+- Size-threshold hybrid of the main thread and the pool, measured in commit `4a094be` (`HybridEdgeBuilder`, same report). Findings:
+  - Routing works with bit-identical output. A threshold of about 256 triangles keeps tiny geometries off the pool: 1,000 boxes take 20 ms against 67 ms for the pool only
+  - The main thread used as a compute resource gains no more than one extra worker, and only when the workers are saturated. A high threshold blocks the main thread: 64k triangles took 387 ms on the 78-mesh dataset
+  - Cold worker startup and refill of a busy pool both need main-thread turns. Slice the main-thread share and prewarm the pool
 - Splitting one large geometry across workers is the only route past the largest-mesh critical path. It is not prototyped
 - WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history). It breaks emission-order invariant 3 unless a pass restores the order
 - WebGPU Compute Shader; pays off only if the `webgpu/` render path can consume results without readback
