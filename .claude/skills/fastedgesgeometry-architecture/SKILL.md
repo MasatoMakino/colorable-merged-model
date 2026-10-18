@@ -123,6 +123,11 @@ Measurement caveat learned: microbenchmarks running many implementation classes 
 ## Future Optimization Considerations
 
 If further optimization is needed (1M+ triangles or sub-50ms requirements):
-- WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history — sequential typed-array passes, designed for portability)
+- WASM worker pool, measured in commit `af076dd` (`benchmark/wasm/RESULTS.md` in that commit). Each worker owns one AssemblyScript instance, so it needs no SharedArrayBuffer or COOP/COEP. Findings:
+  - On a 78-mesh dataset, 2 workers cut cold wall time from 351 ms to 219 ms and main-thread time to about 30 ms
+  - One worker per mesh is slower than JS (422 ms) because startup dominates. Wall time stops falling at 2 workers when the largest mesh is the critical path
+  - For 1,000 small geometries, the pool is 6-10x slower than JS. Integration needs a size gate
+  - The cold penalty comes from first-touch of linear memory, not WASM tier-up. Pre-touching memory during asset loading removes it at about 139 MB per worker
+- Splitting one large geometry across workers is the only route past the largest-mesh critical path. It is not prototyped
+- WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history). It breaks emission-order invariant 3 unless a pass restores the order
 - WebGPU Compute Shader; pays off only if the `webgpu/` render path can consume results without readback
-- Web Workers were evaluated and rejected (startup + copy overhead offsets gains); a SharedArrayBuffer pool would impose COOP/COEP on library users
