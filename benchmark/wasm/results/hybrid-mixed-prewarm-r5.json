@@ -1,0 +1,2442 @@
+[
+  {
+    "round": 0,
+    "cond": "impl=H&thr=0",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 137,
+    "prewarmMs": 17.300000190734863,
+    "runs": [
+      {
+        "wallMs": 211.79999995231628,
+        "mainThreadMs": 31.70000147819519,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.900000095367432,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.8999998569488525,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.600000000000023
+      },
+      {
+        "wallMs": 140.90000009536743,
+        "mainThreadMs": 26.700000762939453,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.900000095367432,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5999999046325684,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.399999999999977
+      }
+    ]
+  },
+  {
+    "round": 0,
+    "cond": "impl=H&thr=4096",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 143.59999990463257,
+    "prewarmMs": 12,
+    "runs": [
+      {
+        "wallMs": 178.70000004768372,
+        "mainThreadMs": 80.69999742507935,
+        "sumCopyIn": 0,
+        "sumCompute": 61.5,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.0999999046325684,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 61.59999990463257,
+          "mainComputeMs": 61.5
+        },
+        "segments": 23256,
+        "longTaskMax": 68,
+        "longTaskSum": 68,
+        "maxFrameGap": 50.69999999999993
+      },
+      {
+        "wallMs": 118,
+        "mainThreadMs": 40.799999952316284,
+        "sumCopyIn": 0,
+        "sumCompute": 19.200000286102295,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.0999999046325684,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 19.5,
+          "mainComputeMs": 19.200000286102295
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.5
+      }
+    ]
+  },
+  {
+    "round": 0,
+    "cond": "impl=H&thr=16384",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 143.89999985694885,
+    "prewarmMs": 11.600000143051147,
+    "runs": [
+      {
+        "wallMs": 186.79999995231628,
+        "mainThreadMs": 109.29999995231628,
+        "sumCopyIn": 0,
+        "sumCompute": 97.29999995231628,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.1000001430511475,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 97.59999990463257,
+          "mainComputeMs": 97.29999995231628
+        },
+        "segments": 23256,
+        "longTaskMax": 104,
+        "longTaskSum": 104,
+        "maxFrameGap": 98.80000000000001
+      },
+      {
+        "wallMs": 110.19999980926514,
+        "mainThreadMs": 61.00000023841858,
+        "sumCopyIn": 0,
+        "sumCompute": 49.10000014305115,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.1000001430511475,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 49.200000047683716,
+          "mainComputeMs": 49.10000014305115
+        },
+        "segments": 23256,
+        "longTaskMax": 55,
+        "longTaskSum": 55,
+        "maxFrameGap": 34.89999999999998
+      }
+    ]
+  },
+  {
+    "round": 0,
+    "cond": "impl=H&thr=16384&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 131.10000014305115,
+    "prewarmMs": 11.399999856948853,
+    "runs": [
+      {
+        "wallMs": 200.40000009536743,
+        "mainThreadMs": 115.1000006198883,
+        "sumCopyIn": 0,
+        "sumCompute": 103.00000023841858,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 10.900000095367432,
+          "mainComputeMs": 103.00000023841858
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.300000000000068
+      },
+      {
+        "wallMs": 111.60000014305115,
+        "mainThreadMs": 64.30000042915344,
+        "sumCopyIn": 0,
+        "sumCompute": 48.60000014305115,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 8.5,
+          "mainComputeMs": 48.60000014305115
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.600000000000023
+      }
+    ]
+  },
+  {
+    "round": 0,
+    "cond": "impl=H&thr=0&workers=3",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workers": "3",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 133.79999995231628,
+    "prewarmMs": 16.5,
+    "runs": [
+      {
+        "wallMs": 158.39999985694885,
+        "mainThreadMs": 19.500001907348633,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.5,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.6999998092651367,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.200000000000045
+      },
+      {
+        "wallMs": 110.69999980926514,
+        "mainThreadMs": 24.700002193450928,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.5,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.39999985694885254,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.199999999999932
+      }
+    ]
+  },
+  {
+    "round": 0,
+    "cond": "impl=H&thr=4096&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 132.20000004768372,
+    "prewarmMs": 12,
+    "runs": [
+      {
+        "wallMs": 175.20000004768372,
+        "mainThreadMs": 75.80000066757202,
+        "sumCopyIn": 0,
+        "sumCompute": 55.5,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 10,
+          "mainComputeMs": 55.5
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.90000000000009
+      },
+      {
+        "wallMs": 107.60000014305115,
+        "mainThreadMs": 33.29999828338623,
+        "sumCopyIn": 0,
+        "sumCompute": 17.00000023841858,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 8.200000047683716,
+          "mainComputeMs": 17.00000023841858
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.600000000000023
+      }
+    ]
+  },
+  {
+    "round": 0,
+    "cond": "impl=D&workers=2",
+    "params": {
+      "impl": "D",
+      "workers": "2",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 127.90000009536743,
+    "prewarmMs": 9.200000047683716,
+    "runs": [
+      {
+        "wallMs": 188.89999985694885,
+        "mainThreadMs": 23.499998807907104,
+        "sumCopyIn": 8.299999713897705,
+        "sumCompute": 217.9000005722046,
+        "sumCopyOut": 0.2999999523162842,
+        "sumPostMs": 10.299998998641968,
+        "sumTransitMs": 24.393310546875,
+        "maxTaskCompute": 173.29999995231628,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.30000000000001
+      },
+      {
+        "wallMs": 128.70000004768372,
+        "mainThreadMs": 24.499997854232788,
+        "sumCopyIn": 1.8000001907348633,
+        "sumCompute": 166.00000071525574,
+        "sumCopyOut": 0.39999985694885254,
+        "sumPostMs": 10.999999046325684,
+        "sumTransitMs": 24.995849609375,
+        "maxTaskCompute": 120.90000009536743,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.700000000000045
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=H&thr=4096",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 135.79999995231628,
+    "prewarmMs": 11.099999904632568,
+    "runs": [
+      {
+        "wallMs": 200.20000004768372,
+        "mainThreadMs": 76.50000023841858,
+        "sumCopyIn": 0,
+        "sumCompute": 58.30000019073486,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 58.5,
+          "mainComputeMs": 58.30000019073486
+        },
+        "segments": 23256,
+        "longTaskMax": 65,
+        "longTaskSum": 65,
+        "maxFrameGap": 49.599999999999966
+      },
+      {
+        "wallMs": 131.90000009536743,
+        "mainThreadMs": 37.5,
+        "sumCopyIn": 0,
+        "sumCompute": 17.399999856948853,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 17.399999856948853,
+          "mainComputeMs": 17.399999856948853
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.199999999999932
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=H&thr=16384",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 132.5,
+    "prewarmMs": 15,
+    "runs": [
+      {
+        "wallMs": 196,
+        "mainThreadMs": 112.30000019073486,
+        "sumCopyIn": 0,
+        "sumCompute": 99.5,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.299999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 99.5,
+          "mainComputeMs": 99.5
+        },
+        "segments": 23256,
+        "longTaskMax": 106,
+        "longTaskSum": 106,
+        "maxFrameGap": 83.89999999999998
+      },
+      {
+        "wallMs": 132.5,
+        "mainThreadMs": 63.00000023841858,
+        "sumCopyIn": 0,
+        "sumCompute": 51,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.299999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 51,
+          "mainComputeMs": 51
+        },
+        "segments": 23256,
+        "longTaskMax": 57,
+        "longTaskSum": 57,
+        "maxFrameGap": 31.899999999999977
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=H&thr=16384&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 137.70000004768372,
+    "prewarmMs": 12,
+    "runs": [
+      {
+        "wallMs": 195.20000004768372,
+        "mainThreadMs": 115,
+        "sumCopyIn": 0,
+        "sumCompute": 102.7000002861023,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 11.100000143051147,
+          "mainComputeMs": 102.7000002861023
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.200000000000045
+      },
+      {
+        "wallMs": 109.60000014305115,
+        "mainThreadMs": 63.100000858306885,
+        "sumCopyIn": 0,
+        "sumCompute": 50.200000286102295,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 8.5,
+          "mainComputeMs": 50.200000286102295
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=H&thr=0&workers=3",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workers": "3",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 144,
+    "prewarmMs": 14,
+    "runs": [
+      {
+        "wallMs": 157.70000004768372,
+        "mainThreadMs": 19.8000009059906,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.7000000476837158,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.400000000000034
+      },
+      {
+        "wallMs": 113.29999995231628,
+        "mainThreadMs": 24.19999885559082,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.6000001430511475,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.300000000000068
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=H&thr=4096&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 134.20000004768372,
+    "prewarmMs": 11.699999809265137,
+    "runs": [
+      {
+        "wallMs": 180.29999995231628,
+        "mainThreadMs": 80.5,
+        "sumCopyIn": 0,
+        "sumCompute": 58.799999952316284,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.1000001430511475,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 9.5,
+          "mainComputeMs": 58.799999952316284
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18
+      },
+      {
+        "wallMs": 103.30000019073486,
+        "mainThreadMs": 31.200000286102295,
+        "sumCopyIn": 0,
+        "sumCompute": 12.100000143051147,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.1000001430511475,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 8,
+          "mainComputeMs": 12.100000143051147
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.100000000000023
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=D&workers=2",
+    "params": {
+      "impl": "D",
+      "workers": "2",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 132.10000014305115,
+    "prewarmMs": 12.5,
+    "runs": [
+      {
+        "wallMs": 180.70000004768372,
+        "mainThreadMs": 22.6999990940094,
+        "sumCopyIn": 8.099999189376831,
+        "sumCompute": 209.5000011920929,
+        "sumCopyOut": 0.7000000476837158,
+        "sumPostMs": 10.299999237060547,
+        "sumTransitMs": 14.998046875,
+        "maxTaskCompute": 165.20000004768372,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.90000000000009
+      },
+      {
+        "wallMs": 121.29999995231628,
+        "mainThreadMs": 21.899998426437378,
+        "sumCopyIn": 2.299999952316284,
+        "sumCompute": 155.1000006198883,
+        "sumCopyOut": 0.5000002384185791,
+        "sumPostMs": 10.099999189376831,
+        "sumTransitMs": 13.500244140625,
+        "maxTaskCompute": 113.29999995231628,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.200000000000045
+      }
+    ]
+  },
+  {
+    "round": 1,
+    "cond": "impl=H&thr=0",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 136.40000009536743,
+    "prewarmMs": 11.599999904632568,
+    "runs": [
+      {
+        "wallMs": 184.19999980926514,
+        "mainThreadMs": 19.800000429153442,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.6999998092651367,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.399999999999977
+      },
+      {
+        "wallMs": 125.79999995231628,
+        "mainThreadMs": 19.5,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.5
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=H&thr=16384",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 132.79999995231628,
+    "prewarmMs": 13,
+    "runs": [
+      {
+        "wallMs": 192.20000004768372,
+        "mainThreadMs": 112.69999957084656,
+        "sumCopyIn": 0,
+        "sumCompute": 98.89999961853027,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 99.09999990463257,
+          "mainComputeMs": 98.89999961853027
+        },
+        "segments": 23256,
+        "longTaskMax": 107,
+        "longTaskSum": 107,
+        "maxFrameGap": 84.99999999999994
+      },
+      {
+        "wallMs": 129.5,
+        "mainThreadMs": 60.39999985694885,
+        "sumCopyIn": 0,
+        "sumCompute": 48.49999952316284,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 48.69999980926514,
+          "mainComputeMs": 48.49999952316284
+        },
+        "segments": 23256,
+        "longTaskMax": 55,
+        "longTaskSum": 55,
+        "maxFrameGap": 32.69999999999993
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=H&thr=16384&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 134.79999995231628,
+    "prewarmMs": 11.899999856948853,
+    "runs": [
+      {
+        "wallMs": 196.59999990463257,
+        "mainThreadMs": 114.20000004768372,
+        "sumCopyIn": 0,
+        "sumCompute": 101.20000004768372,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.200000047683716,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 11.900000095367432,
+          "mainComputeMs": 101.20000004768372
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.30000000000001
+      },
+      {
+        "wallMs": 110.20000004768372,
+        "mainThreadMs": 62.09999966621399,
+        "sumCopyIn": 0,
+        "sumCompute": 49.09999966621399,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.200000047683716,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 8.5,
+          "mainComputeMs": 49.09999966621399
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.200000000000045
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=H&thr=0&workers=3",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workers": "3",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 137.79999995231628,
+    "prewarmMs": 16.299999952316284,
+    "runs": [
+      {
+        "wallMs": 157.30000019073486,
+        "mainThreadMs": 23.899999141693115,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.8000001907348633,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.7000000476837158,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.600000000000023
+      },
+      {
+        "wallMs": 101.90000009536743,
+        "mainThreadMs": 19.799999952316284,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.8000001907348633,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.700000000000045
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=H&thr=4096&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 129.79999995231628,
+    "prewarmMs": 11.899999856948853,
+    "runs": [
+      {
+        "wallMs": 170.39999985694885,
+        "mainThreadMs": 71.69999957084656,
+        "sumCopyIn": 0,
+        "sumCompute": 53,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.0999999046325684,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 11.300000190734863,
+          "mainComputeMs": 53
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18
+      },
+      {
+        "wallMs": 115.59999990463257,
+        "mainThreadMs": 42.90000128746033,
+        "sumCopyIn": 0,
+        "sumCompute": 19.200000047683716,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.0999999046325684,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 8.200000047683716,
+          "mainComputeMs": 19.200000047683716
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.200000000000045
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=D&workers=2",
+    "params": {
+      "impl": "D",
+      "workers": "2",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 137.5,
+    "prewarmMs": 9.799999952316284,
+    "runs": [
+      {
+        "wallMs": 187.70000004768372,
+        "mainThreadMs": 22.800000190734863,
+        "sumCopyIn": 8.599999904632568,
+        "sumCompute": 218.099999666214,
+        "sumCopyOut": 0.5,
+        "sumPostMs": 10.40000033378601,
+        "sumTransitMs": 15.2158203125,
+        "maxTaskCompute": 171.70000004768372,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.09999990463256836,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.100000000000023
+      },
+      {
+        "wallMs": 126.90000009536743,
+        "mainThreadMs": 23.10000228881836,
+        "sumCopyIn": 2.299999237060547,
+        "sumCompute": 160.99999928474426,
+        "sumCopyOut": 1.000000238418579,
+        "sumPostMs": 10.500000715255737,
+        "sumTransitMs": 14.514892578125,
+        "maxTaskCompute": 118.5,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.09999990463256836,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.100000000000023
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=H&thr=0",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 131.69999980926514,
+    "prewarmMs": 15.5,
+    "runs": [
+      {
+        "wallMs": 183.5,
+        "mainThreadMs": 21.299999952316284,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.5,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.7000000476837158,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.09999999999991
+      },
+      {
+        "wallMs": 123.20000004768372,
+        "mainThreadMs": 19.399998903274536,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.5,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.600000000000023
+      }
+    ]
+  },
+  {
+    "round": 2,
+    "cond": "impl=H&thr=4096",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 133.20000004768372,
+    "prewarmMs": 14,
+    "runs": [
+      {
+        "wallMs": 191.59999990463257,
+        "mainThreadMs": 77.30000162124634,
+        "sumCopyIn": 0,
+        "sumCompute": 58.30000019073486,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.0999999046325684,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 58.700000047683716,
+          "mainComputeMs": 58.30000019073486
+        },
+        "segments": 23256,
+        "longTaskMax": 65,
+        "longTaskSum": 65,
+        "maxFrameGap": 48.69999999999999
+      },
+      {
+        "wallMs": 132.09999990463257,
+        "mainThreadMs": 35.69999980926514,
+        "sumCopyIn": 0,
+        "sumCompute": 16.800000190734863,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.0999999046325684,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 17.100000143051147,
+          "mainComputeMs": 16.800000190734863
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.300000000000068
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=H&thr=16384&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 129.79999995231628,
+    "prewarmMs": 11.5,
+    "runs": [
+      {
+        "wallMs": 198,
+        "mainThreadMs": 115.29999995231628,
+        "sumCopyIn": 0,
+        "sumCompute": 102.10000085830688,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 9.300000190734863,
+          "mainComputeMs": 102.10000085830688
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.300000000000068
+      },
+      {
+        "wallMs": 108,
+        "mainThreadMs": 63.59999942779541,
+        "sumCopyIn": 0,
+        "sumCompute": 50.89999985694885,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 8.299999952316284,
+          "mainComputeMs": 50.89999985694885
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.199999999999932
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=H&thr=0&workers=3",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workers": "3",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 132.09999990463257,
+    "prewarmMs": 21,
+    "runs": [
+      {
+        "wallMs": 161.20000004768372,
+        "mainThreadMs": 23.200000762939453,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 5.599999904632568,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 1,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.90000000000009
+      },
+      {
+        "wallMs": 112.5,
+        "mainThreadMs": 22.999998569488525,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 5.599999904632568,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.40000000000009
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=H&thr=4096&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 133.29999995231628,
+    "prewarmMs": 11.5,
+    "runs": [
+      {
+        "wallMs": 161.69999980926514,
+        "mainThreadMs": 71.20000171661377,
+        "sumCopyIn": 0,
+        "sumCompute": 53.30000019073486,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 10,
+          "mainComputeMs": 53.30000019073486
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.200000000000045
+      },
+      {
+        "wallMs": 113,
+        "mainThreadMs": 37.30000019073486,
+        "sumCopyIn": 0,
+        "sumCompute": 17.40000009536743,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 8.299999952316284,
+          "mainComputeMs": 17.40000009536743
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.59999999999991
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=D&workers=2",
+    "params": {
+      "impl": "D",
+      "workers": "2",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 135,
+    "prewarmMs": 9.299999952316284,
+    "runs": [
+      {
+        "wallMs": 181.39999985694885,
+        "mainThreadMs": 23.499997854232788,
+        "sumCopyIn": 6.5,
+        "sumCompute": 211.7000024318695,
+        "sumCopyOut": 0.6000003814697266,
+        "sumPostMs": 10.69999885559082,
+        "sumTransitMs": 22.899658203125,
+        "maxTaskCompute": 167.5,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.400000000000034
+      },
+      {
+        "wallMs": 131.09999990463257,
+        "mainThreadMs": 29.000000715255737,
+        "sumCopyIn": 1.799999713897705,
+        "sumCompute": 165.5000011920929,
+        "sumCopyOut": 0.6999995708465576,
+        "sumPostMs": 13.600000381469727,
+        "sumTransitMs": 26.698974609375,
+        "maxTaskCompute": 123,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.700000000000045
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=H&thr=0",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 133.70000004768372,
+    "prewarmMs": 12.900000095367432,
+    "runs": [
+      {
+        "wallMs": 183.20000004768372,
+        "mainThreadMs": 26.900002241134644,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.299999952316284,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.8000001907348633,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.400000000000034
+      },
+      {
+        "wallMs": 128.79999995231628,
+        "mainThreadMs": 24.29999828338623,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 4.299999952316284,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.39999985694885254,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.399999999999977
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=H&thr=4096",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 135.10000014305115,
+    "prewarmMs": 11.400000095367432,
+    "runs": [
+      {
+        "wallMs": 200.29999995231628,
+        "mainThreadMs": 75.00000238418579,
+        "sumCopyIn": 0,
+        "sumCompute": 54.10000014305115,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 54.10000014305115,
+          "mainComputeMs": 54.10000014305115
+        },
+        "segments": 23256,
+        "longTaskMax": 61,
+        "longTaskSum": 61,
+        "maxFrameGap": 32.10000000000002
+      },
+      {
+        "wallMs": 129.10000014305115,
+        "mainThreadMs": 38.69999933242798,
+        "sumCopyIn": 0,
+        "sumCompute": 18.5,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 18.5,
+          "mainComputeMs": 18.5
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.899999999999977
+      }
+    ]
+  },
+  {
+    "round": 3,
+    "cond": "impl=H&thr=16384",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 134.20000004768372,
+    "prewarmMs": 11,
+    "runs": [
+      {
+        "wallMs": 196.20000004768372,
+        "mainThreadMs": 110.2000002861023,
+        "sumCopyIn": 0,
+        "sumCompute": 97.90000009536743,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 98.09999990463257,
+          "mainComputeMs": 97.90000009536743
+        },
+        "segments": 23256,
+        "longTaskMax": 105,
+        "longTaskSum": 105,
+        "maxFrameGap": 84.19999999999999
+      },
+      {
+        "wallMs": 127.59999990463257,
+        "mainThreadMs": 60.50000023841858,
+        "sumCopyIn": 0,
+        "sumCompute": 47.80000019073486,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 47.90000009536743,
+          "mainComputeMs": 47.80000019073486
+        },
+        "segments": 23256,
+        "longTaskMax": 54,
+        "longTaskSum": 54,
+        "maxFrameGap": 33.89999999999998
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=H&thr=0&workers=3",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workers": "3",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 135,
+    "prewarmMs": 21.100000143051147,
+    "runs": [
+      {
+        "wallMs": 162.70000004768372,
+        "mainThreadMs": 25.300000429153442,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 6.400000095367432,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.7000000476837158,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.100000000000023
+      },
+      {
+        "wallMs": 107.70000004768372,
+        "mainThreadMs": 22.000001430511475,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 146472960,
+        "workersSpawned": 3,
+        "startupMs": 0,
+        "maxWorkerInitMs": 6.400000095367432,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 17.90000000000009
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=H&thr=4096&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 141.29999995231628,
+    "prewarmMs": 12.5,
+    "runs": [
+      {
+        "wallMs": 173.79999995231628,
+        "mainThreadMs": 69.50000023841858,
+        "sumCopyIn": 0,
+        "sumCompute": 47.299999713897705,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.3999998569488525,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 9.199999809265137,
+          "mainComputeMs": 47.299999713897705
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.399999999999977
+      },
+      {
+        "wallMs": 109.89999985694885,
+        "mainThreadMs": 38.099998474121094,
+        "sumCopyIn": 0,
+        "sumCompute": 14.799999952316284,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.3999998569488525,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 8.099999904632568,
+          "mainComputeMs": 14.799999952316284
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=D&workers=2",
+    "params": {
+      "impl": "D",
+      "workers": "2",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 132.70000004768372,
+    "prewarmMs": 9.5,
+    "runs": [
+      {
+        "wallMs": 181.80000019073486,
+        "mainThreadMs": 24.299997568130493,
+        "sumCopyIn": 6.799999952316284,
+        "sumCompute": 211.50000095367432,
+        "sumCopyOut": 0.8000001907348633,
+        "sumPostMs": 10.899998664855957,
+        "sumTransitMs": 14.489990234375,
+        "maxTaskCompute": 167.59999990463257,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.200000000000045
+      },
+      {
+        "wallMs": 127.59999990463257,
+        "mainThreadMs": 25.199999570846558,
+        "sumCopyIn": 1.6999998092651367,
+        "sumCompute": 159.60000014305115,
+        "sumCopyOut": 0.2999999523162842,
+        "sumPostMs": 11.799999475479126,
+        "sumTransitMs": 15.289794921875,
+        "maxTaskCompute": 119.40000009536743,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 0.10000014305114746,
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.100000000000023
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=H&thr=0",
+    "params": {
+      "impl": "H",
+      "thr": "0",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 133.80000019073486,
+    "prewarmMs": 11.799999952316284,
+    "runs": [
+      {
+        "wallMs": 179.19999980926514,
+        "mainThreadMs": 23.100000858306885,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.6999998092651367,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18
+      },
+      {
+        "wallMs": 132.59999990463257,
+        "mainThreadMs": 25.700002193450928,
+        "sumCopyIn": 0,
+        "sumCompute": 0,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.799999952316284,
+        "hybrid": {
+          "mainTasks": 0,
+          "workerTasks": 101,
+          "maxSyncMs": 0.5,
+          "mainComputeMs": 0
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=H&thr=4096",
+    "params": {
+      "impl": "H",
+      "thr": "4096",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 143.79999995231628,
+    "prewarmMs": 12.200000047683716,
+    "runs": [
+      {
+        "wallMs": 193.79999995231628,
+        "mainThreadMs": 74.99999809265137,
+        "sumCopyIn": 0,
+        "sumCompute": 51.90000009536743,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 51.90000009536743,
+          "mainComputeMs": 51.90000009536743
+        },
+        "segments": 23256,
+        "longTaskMax": 60,
+        "longTaskSum": 60,
+        "maxFrameGap": 50.60000000000002
+      },
+      {
+        "wallMs": 126.29999995231628,
+        "mainThreadMs": 33.299999475479126,
+        "sumCopyIn": 0,
+        "sumCompute": 12.099999904632568,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 144244736,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3,
+        "hybrid": {
+          "mainTasks": 44,
+          "workerTasks": 57,
+          "maxSyncMs": 12.200000047683716,
+          "mainComputeMs": 12.099999904632568
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.40000000000009
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=H&thr=16384",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 130.39999985694885,
+    "prewarmMs": 12.5,
+    "runs": [
+      {
+        "wallMs": 203.79999995231628,
+        "mainThreadMs": 120.40000009536743,
+        "sumCopyIn": 0,
+        "sumCompute": 108,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.5,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 108.09999990463257,
+          "mainComputeMs": 108
+        },
+        "segments": 23256,
+        "longTaskMax": 115,
+        "longTaskSum": 115,
+        "maxFrameGap": 82.79999999999995
+      },
+      {
+        "wallMs": 127.89999985694885,
+        "mainThreadMs": 60.700000047683716,
+        "sumCopyIn": 0,
+        "sumCompute": 47.700000047683716,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 3.5,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 47.700000047683716,
+          "mainComputeMs": 47.700000047683716
+        },
+        "segments": 23256,
+        "longTaskMax": 54,
+        "longTaskSum": 54,
+        "maxFrameGap": 32.09999999999991
+      }
+    ]
+  },
+  {
+    "round": 4,
+    "cond": "impl=H&thr=16384&mode=sliced",
+    "params": {
+      "impl": "H",
+      "thr": "16384",
+      "mode": "sliced",
+      "workload": "mixed",
+      "warmRuns": "1",
+      "start": "prewarm"
+    },
+    "hc": 6,
+    "taskInfo": {
+      "count": 101,
+      "triangles": 993928,
+      "maxTriangles": 523264
+    },
+    "loadMs": 138.59999990463257,
+    "prewarmMs": 11.799999952316284,
+    "runs": [
+      {
+        "wallMs": 187.10000014305115,
+        "mainThreadMs": 112.1000006198883,
+        "sumCopyIn": 0,
+        "sumCompute": 99.50000047683716,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 11.799999952316284,
+          "mainComputeMs": 99.50000047683716
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.600000000000023
+      },
+      {
+        "wallMs": 130.29999995231628,
+        "mainThreadMs": 63.5,
+        "sumCopyIn": 0,
+        "sumCompute": 49.50000023841858,
+        "sumCopyOut": 0,
+        "sumPostMs": 0,
+        "sumTransitMs": 0,
+        "maxTaskCompute": 0,
+        "peakMemoryBytes": 142016512,
+        "totalMemoryBytes": 142016512,
+        "workersSpawned": 2,
+        "startupMs": 0,
+        "maxWorkerInitMs": 2.9000000953674316,
+        "hybrid": {
+          "mainTasks": 100,
+          "workerTasks": 1,
+          "maxSyncMs": 8.799999952316284,
+          "mainComputeMs": 49.50000023841858
+        },
+        "segments": 23256,
+        "longTaskMax": 0,
+        "longTaskSum": 0,
+        "maxFrameGap": 18.5
+      }
+    ]
+  }
+]
