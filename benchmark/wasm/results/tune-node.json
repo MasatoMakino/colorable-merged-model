@@ -1,0 +1,402 @@
+{
+  "v1": [
+    {
+      "variant": "v0.wasm",
+      "workload": "sphere",
+      "coldCompute": 134.93,
+      "coldCopyIn": 2.88,
+      "warmCompute": 118.37,
+      "memMB": 135
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 86.9,
+      "coldCopyIn": 3.72,
+      "warmCompute": 74.33,
+      "memMB": 134
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 43.71,
+      "coldCopyIn": 0.92,
+      "warmCompute": 36.97,
+      "memMB": 58
+    },
+    {
+      "variant": "v1.wasm",
+      "workload": "sphere",
+      "coldCompute": 131.39,
+      "coldCopyIn": 2.84,
+      "warmCompute": 118.85,
+      "memMB": 135
+    },
+    {
+      "variant": "v1.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 86.79,
+      "coldCopyIn": 3.81,
+      "warmCompute": 72.86,
+      "memMB": 134
+    },
+    {
+      "variant": "v1.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 45.05,
+      "coldCopyIn": 0.89,
+      "warmCompute": 37.41,
+      "memMB": 58
+    }
+  ],
+  "v2": [
+    {
+      "variant": "v0.wasm",
+      "workload": "sphere",
+      "coldCompute": 136.65,
+      "coldCopyIn": 2.87,
+      "warmCompute": 120.26,
+      "memMB": 135
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 89.16,
+      "coldCopyIn": 4.01,
+      "warmCompute": 75.41,
+      "memMB": 134
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 43.25,
+      "coldCopyIn": 0.95,
+      "warmCompute": 38.36,
+      "memMB": 58
+    },
+    {
+      "variant": "v2.wasm",
+      "workload": "sphere",
+      "coldCompute": 131.45,
+      "coldCopyIn": 2.99,
+      "warmCompute": 115.77,
+      "memMB": 129
+    },
+    {
+      "variant": "v2.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 89.66,
+      "coldCopyIn": 3.84,
+      "warmCompute": 72.91,
+      "memMB": 130
+    },
+    {
+      "variant": "v2.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 42.41,
+      "coldCopyIn": 0.94,
+      "warmCompute": 38.89,
+      "memMB": 55
+    }
+  ],
+  "v3": [
+    {
+      "variant": "v0.wasm",
+      "workload": "sphere",
+      "coldCompute": 128.58,
+      "coldCopyIn": 2.78,
+      "warmCompute": 119.44,
+      "memMB": 135
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 88.66,
+      "coldCopyIn": 3.91,
+      "warmCompute": 73.13,
+      "memMB": 134
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 41.95,
+      "coldCopyIn": 0.92,
+      "warmCompute": 37.71,
+      "memMB": 58
+    },
+    {
+      "variant": "v3.wasm",
+      "workload": "sphere",
+      "coldCompute": 138.46,
+      "coldCopyIn": 2.86,
+      "warmCompute": 122.73,
+      "memMB": 135
+    },
+    {
+      "variant": "v3.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 84.2,
+      "coldCopyIn": 3.87,
+      "warmCompute": 71,
+      "memMB": 134
+    },
+    {
+      "variant": "v3.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 43.4,
+      "coldCopyIn": 0.91,
+      "warmCompute": 35.8,
+      "memMB": 58
+    }
+  ],
+  "v4": [
+    {
+      "variant": "v0.wasm",
+      "workload": "sphere",
+      "coldCompute": 130.32,
+      "coldCopyIn": 2.82,
+      "warmCompute": 122.13,
+      "memMB": 135
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 87.79,
+      "coldCopyIn": 3.96,
+      "warmCompute": 76.32,
+      "memMB": 134
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 45.37,
+      "coldCopyIn": 0.91,
+      "warmCompute": 37.57,
+      "memMB": 58
+    },
+    {
+      "variant": "v4.wasm",
+      "workload": "sphere",
+      "coldCompute": 123.17,
+      "coldCopyIn": 2.92,
+      "warmCompute": 110.61,
+      "memMB": 140
+    },
+    {
+      "variant": "v4.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 87.95,
+      "coldCopyIn": 3.58,
+      "warmCompute": 73.59,
+      "memMB": 137
+    },
+    {
+      "variant": "v4.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 44.96,
+      "coldCopyIn": 0.92,
+      "warmCompute": 36.44,
+      "memMB": 59
+    }
+  ],
+  "v5": [
+    {
+      "variant": "v0.wasm",
+      "workload": "sphere",
+      "coldCompute": 129,
+      "coldCopyIn": 2.87,
+      "warmCompute": 118.67,
+      "memMB": 135
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 87.15,
+      "coldCopyIn": 3.85,
+      "warmCompute": 72,
+      "memMB": 134
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 42.65,
+      "coldCopyIn": 0.92,
+      "warmCompute": 38.66,
+      "memMB": 58
+    },
+    {
+      "variant": "v5.wasm",
+      "workload": "sphere",
+      "coldCompute": 131.68,
+      "coldCopyIn": 3.01,
+      "warmCompute": 116.28,
+      "memMB": 135
+    },
+    {
+      "variant": "v5.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 87.07,
+      "coldCopyIn": 4.33,
+      "warmCompute": 72.51,
+      "memMB": 134
+    },
+    {
+      "variant": "v5.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 43.06,
+      "coldCopyIn": 0.96,
+      "warmCompute": 36.79,
+      "memMB": 58
+    }
+  ],
+  "v6": [
+    {
+      "variant": "v4.wasm",
+      "workload": "sphere",
+      "coldCompute": 120.33,
+      "coldCopyIn": 2.66,
+      "warmCompute": 109.08,
+      "memMB": 140
+    },
+    {
+      "variant": "v4.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 84.06,
+      "coldCopyIn": 4.24,
+      "warmCompute": 71.8,
+      "memMB": 137
+    },
+    {
+      "variant": "v4.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 43.33,
+      "coldCopyIn": 0.87,
+      "warmCompute": 36.38,
+      "memMB": 59
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "sphere",
+      "coldCompute": 117.29,
+      "coldCopyIn": 3.04,
+      "warmCompute": 103.87,
+      "memMB": 138
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 78.7,
+      "coldCopyIn": 3.62,
+      "warmCompute": 65.57,
+      "memMB": 113
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 36.15,
+      "coldCopyIn": 0.89,
+      "warmCompute": 28.83,
+      "memMB": 47
+    }
+  ],
+  "v7": [
+    {
+      "variant": "v0.wasm",
+      "workload": "sphere",
+      "coldCompute": 135.07,
+      "coldCopyIn": 2.87,
+      "warmCompute": 118.46,
+      "memMB": 135
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 90.17,
+      "coldCopyIn": 3.76,
+      "warmCompute": 74.94,
+      "memMB": 134
+    },
+    {
+      "variant": "v0.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 44.88,
+      "coldCopyIn": 0.93,
+      "warmCompute": 38.5,
+      "memMB": 58
+    },
+    {
+      "variant": "v7.wasm",
+      "workload": "sphere",
+      "coldCompute": 131.76,
+      "coldCopyIn": 2.88,
+      "warmCompute": 119.3,
+      "memMB": 133
+    },
+    {
+      "variant": "v7.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 81.1,
+      "coldCopyIn": 4.3,
+      "warmCompute": 67.69,
+      "memMB": 110
+    },
+    {
+      "variant": "v7.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 38.46,
+      "coldCopyIn": 0.94,
+      "warmCompute": 30.19,
+      "memMB": 46
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "sphere",
+      "coldCompute": 125.64,
+      "coldCopyIn": 3.32,
+      "warmCompute": 110.09,
+      "memMB": 138
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "boxes30k",
+      "coldCompute": 80.2,
+      "coldCopyIn": 4.27,
+      "warmCompute": 66.41,
+      "memMB": 113
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "torusKnot",
+      "coldCompute": 34.97,
+      "coldCopyIn": 0.9,
+      "warmCompute": 34.36,
+      "memMB": 47
+    }
+  ],
+  "soup": [
+    {
+      "variant": "v0.wasm",
+      "workload": "soup466k",
+      "coldCompute": 281.17,
+      "coldCopyIn": 5.64,
+      "warmCompute": 253,
+      "memMB": 177
+    },
+    {
+      "variant": "v6.wasm",
+      "workload": "soup466k",
+      "coldCompute": 328.72,
+      "coldCopyIn": 5.25,
+      "warmCompute": 305.93,
+      "memMB": 149
+    },
+    {
+      "variant": "v7.wasm",
+      "workload": "soup466k",
+      "coldCompute": 335.85,
+      "coldCopyIn": 5.54,
+      "warmCompute": 308.86,
+      "memMB": 145
+    }
+  ]
+}

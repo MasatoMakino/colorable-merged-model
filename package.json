@@ -37,6 +37,7 @@
     "@types/color": "^4.2.0",
     "@types/three": "^0.183.0",
     "@vitest/coverage-istanbul": "^4.0.16",
+    "assemblyscript": "^0.28.20",
     "browser-sync": "^3.0.2",
     "jsdom": "^27.0.0",
     "lil-gui": "^0.21.0",

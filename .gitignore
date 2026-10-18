@@ -137,3 +137,6 @@ dist/
 
 # 1Password CLI directory scope config
 .op/
+
+# WASM benchmark build output
+benchmark/wasm/build/
