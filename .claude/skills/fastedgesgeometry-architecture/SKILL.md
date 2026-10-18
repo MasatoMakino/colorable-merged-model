@@ -60,7 +60,7 @@ Full rewrite with exact edge identity — eliminates the Stage 2 accuracy trade-
 | Aspect | Implementation |
 |--------|----------------|
 | Edge identity | **Exact integer pair of welded vertex ids.** A weld pre-pass maps each vertex to a canonical id by exact comparison of quantized coordinates. Hashes only pick probe start positions in open-addressing tables — they never decide identity |
-| Edge storage | Open-addressing typed-array tables (linear probing, load factor <= 0.5, `-1` empty / `-2` tombstone) + parallel slot arrays in insertion order |
+| Edge storage | Open-addressing typed-array tables (linear probing, load factor <= 0.5 at the default `tableCapacityFactor` of 2 and <= 0.67 at 1.5, `-1` empty / `-2` tombstone) + parallel slot arrays in insertion order |
 | Normal calculation | Direct cross product, stored once per face (`Float64Array`); the stored side is rounded with `Math.fround` at comparison time |
 | Hot loop | 3-edges-per-triangle loop fully unrolled with scalar locals |
 | Buffers | Module-level grow-only scratch arena when `indexCount` and `positionCount` <= 2^18; fresh allocation above (gate bounds retained memory ~30MB, speed is parity above the gate) |
@@ -77,6 +77,7 @@ Violating any of these breaks bit-compatibility with EdgesGeometry / previous ou
 3. **Emission order**: matched edges are emitted at the stream position of the second (current) face; unmatched edges are emitted afterwards in insertion order.
 4. **Weld pass is O(positionCount)**: every vertex is welded once, including unreferenced ones (pathological geometries with positionCount >> indexCount pay extra).
 5. **Thread safety**: the shared scratch arena makes the class not thread-safe (same caveat as the Stage 3 static arrays).
+6. **Capacity factor independence**: `options.tableCapacityFactor` (1.5 or 2) changes only the table sizes, which move probe start positions. Identity comparison is exact, so the output must stay bit-identical across factors. A factor at or below 1 can fill a table and stall probing, so the option accepts only the measured values.
 
 ## Legacy Public API
 
@@ -123,6 +124,20 @@ Measurement caveat learned: microbenchmarks running many implementation classes 
 ## Future Optimization Considerations
 
 If further optimization is needed (1M+ triangles or sub-50ms requirements):
-- WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history — sequential typed-array passes, designed for portability)
+- WASM worker pool, measured in commit `af076dd` (`benchmark/wasm/RESULTS.md` in that commit). Each worker owns one AssemblyScript instance, so it needs no SharedArrayBuffer or COOP/COEP. Findings:
+  - On a 78-mesh dataset, 2 workers cut cold wall time from 351 ms to 219 ms and main-thread time to about 30 ms
+  - One worker per mesh is slower than JS (422 ms) because startup dominates. Wall time stops falling at 2 workers when the largest mesh is the critical path
+  - For 1,000 small geometries, the pool is 6-10x slower than JS. Integration needs a size gate
+  - The cold penalty comes from first-touch of linear memory, not WASM tier-up. Pre-touching memory during asset loading removes it at about 139 MB per worker
+- Size-threshold hybrid of the main thread and the pool, measured in commit `4a094be` (`HybridEdgeBuilder`, same report). Findings:
+  - Routing works with bit-identical output. A threshold of about 256 triangles keeps tiny geometries off the pool: 1,000 boxes take 20 ms against 67 ms for the pool only
+  - The main thread used as a compute resource gains no more than one extra worker, and only when the workers are saturated. A high threshold blocks the main thread: 64k triangles took 387 ms on the 78-mesh dataset
+  - Cold worker startup and refill of a busy pool both need main-thread turns. Slice the main-thread share and prewarm the pool
+- Source-level tuning of the AssemblyScript port, measured in commit `d65182f` (same report). Findings:
+  - A hash-table capacity factor of 1.5 instead of 2 gives most of the gain: -6% cold on the main thread and -9% in the pool on the 78-mesh dataset, with smaller tables. Input whose edges never match (disconnected triangles) runs about 20% slower at the higher load
+  - The factor is a caller choice, not a fixed value: `src/FastEdgesGeometry.ts` takes it as `options.tableCapacityFactor`, default 2, and `ColorableMergedEdgeParam` passes it through. Commit `db0e5a2` makes it a `prepare()` argument of the WASM port too and is the latest restore point of the full scaffolding
+  - On the JS path in Node (same commit, `factorNode.mjs`), 1.5 is -12% cold / -14% warm on 30,000 merged boxes and -19% / -6% on the TorusKnot at 0.25 degrees. The sphere stays within noise, and disconnected triangles are +13% / +19%
+  - A 24-byte slot record (endpoints, f32 normal, alive flag) adds about 5% on the main thread and nothing measurable in the pool. Hoisting pointer globals, 12-byte table cells, and weld coordinate records gave nothing or regressed
+- Splitting one large geometry across workers is the only route past the largest-mesh critical path. It is not prototyped
+- WASM SIMD port of the sort-based pairing layout (Candidate C in the PR #371 history). It breaks emission-order invariant 3 unless a pass restores the order
 - WebGPU Compute Shader; pays off only if the `webgpu/` render path can consume results without readback
-- Web Workers were evaluated and rejected (startup + copy overhead offsets gains); a SharedArrayBuffer pool would impose COOP/COEP on library users

@@ -135,9 +135,12 @@ const view = new ColorableMergedView({
     color: [number, number, number, number]; // RGBA values (0-1)
     edgeDetail?: number; // Default: 7
     useFastEdgesGeometry?: boolean;
+    tableCapacityFactor?: 1.5 | 2; // Default: 2. FastEdgesGeometry only
   };
 });
 ```
+
+`tableCapacityFactor` sets the hash-table size of FastEdgesGeometry and does not change the output. Use 1.5 for meshes whose faces share edges. It uses smaller tables and is often faster on them. Keep 2 for input whose edges rarely pair, such as disconnected triangles.
 
 **Key Methods:**
 

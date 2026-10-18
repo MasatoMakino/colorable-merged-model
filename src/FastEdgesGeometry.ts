@@ -1,4 +1,11 @@
 import { BufferGeometry, Float32BufferAttribute, MathUtils } from "three";
+import {
+  assertTableCapacityFactor,
+  DEFAULT_TABLE_CAPACITY_FACTOR,
+  type TableCapacityFactor,
+} from "./TableCapacityFactor.js";
+
+export type { TableCapacityFactor } from "./TableCapacityFactor.js";
 
 /**
  * Maximum indexCount / positionCount for which the shared scratch arena is
@@ -45,6 +52,7 @@ let sVertexBuffer = new Float32Array(0);
  * @param options - Optional parameters.
  * @param options.seed - Deprecated, no-op. Edge identity no longer depends on hash values, so the collision-workaround seed has no effect.
  * @param options.precisionPoints - The number of decimal places used to quantize vertex coordinates for welding. Defaults to 6.
+ * @param options.tableCapacityFactor - The ratio of hash-table capacity to stored keys, 1.5 or 2. Defaults to 2. See the constructor for the trade-off.
  */
 export class FastEdgesGeometry extends BufferGeometry {
   readonly type = "EdgesGeometry";
@@ -58,13 +66,26 @@ export class FastEdgesGeometry extends BufferGeometry {
    * @param options - Optional parameters.
    * @param options.seed - Deprecated, no-op. Kept for API compatibility.
    * @param options.precisionPoints - The number of decimal places used to quantize vertex coordinates for welding. Defaults to 6.
+   * @param options.tableCapacityFactor - The ratio of hash-table capacity to stored keys, 1.5 or 2. Defaults to 2.
+   *   The factor never changes the output. 1.5 uses smaller tables at a higher load.
+   *   On meshes whose faces share edges, 1.5 is often faster. On input whose edges rarely pair,
+   *   for example disconnected triangles, the higher load lengthens probes. There, 1.5 is slower.
+   * @throws RangeError if `options.tableCapacityFactor` is neither 1.5 nor 2.
    */
   constructor(
     geometry: BufferGeometry | null = null,
     thresholdAngle = 1,
-    options?: { seed?: number; precisionPoints?: number },
+    options?: {
+      seed?: number;
+      precisionPoints?: number;
+      tableCapacityFactor?: TableCapacityFactor;
+    },
   ) {
     super();
+
+    const tableCapacityFactor =
+      options?.tableCapacityFactor ?? DEFAULT_TABLE_CAPACITY_FACTOR;
+    assertTableCapacityFactor(tableCapacityFactor);
 
     this.parameters = {
       geometry: geometry,
@@ -104,12 +125,13 @@ export class FastEdgesGeometry extends BufferGeometry {
 
     // --- Acquire working buffers (arena below the gate, fresh above) ------
     let weldCapacity = 16;
-    while (weldCapacity < positionCount * 2) weldCapacity <<= 1;
+    while (weldCapacity < positionCount * tableCapacityFactor)
+      weldCapacity <<= 1;
     const weldMask = weldCapacity - 1;
 
     const maxEdges = indexCount;
     let capacity = 16;
-    while (capacity < maxEdges * 2) capacity <<= 1;
+    while (capacity < maxEdges * tableCapacityFactor) capacity <<= 1;
     const mask = capacity - 1;
 
     const faceCount = (indexCount / 3) | 0;
