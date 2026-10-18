@@ -137,7 +137,7 @@ Prewarm finishes inside the loading window, but the reservation competes with Dr
 - `sliced` yields every 8 ms.
 - `immediate` (control) runs each small task on arrival.
 
-The hybrid pool dispatches directly and compiles the module in each worker, so a dispatch never waits for the main thread. Every mode is bit-identical to `src` on the real and mixed workloads.
+The hybrid pool dispatches directly and compiles the module in each worker, so the first dispatch to each worker is posted synchronously. Later dispatches to a busy pool happen when a result arrives, which needs a main-thread turn. Every mode is bit-identical to `src` on the real and mixed workloads.
 
 Before measuring, the break-even size was estimated at 110-250 triangles per task. The estimate divides 60-100 us of per-task pool overhead by 0.4-0.55 us per triangle on the main thread. Two objectives were fixed: (i) minimum wall time, and (ii) no synchronous main-thread stretch above 8 ms.
 
@@ -159,6 +159,8 @@ Cold medians in ms (5 rounds, 2 workers unless noted). "Max sync" is the longest
 | Real | Hybrid, threshold 16k, sliced | 227 | 68 | 13.7 | 70 / 8 |
 | Real | Hybrid, threshold 64k, batch | 387 | 189 | 157 | 77 / 1 |
 | Real | Hybrid, threshold 16k, 1 worker | 287 | 70 | 27.1 | 70 / 8 |
+| Real | Hybrid, threshold 1024, immediate (control) | 207 | 53 | 13.6 | 59 / 19 |
+| Real | Hybrid, threshold 16k, immediate (control) | 235 | 73 | 43.1 | 70 / 8 |
 | Mixed | A JS main | 308 | 308 | 308 | 101 / 0 |
 | Mixed | Pool only, 2 workers | 193 | 27 | 0.8 | 0 / 101 |
 | Mixed | Pool only, 3 workers | 170 | 27 | 0.8 | 0 / 101 |
@@ -166,6 +168,8 @@ Cold medians in ms (5 rounds, 2 workers unless noted). "Max sync" is the longest
 | Mixed | Hybrid, threshold 4096, sliced | 211 | 78 | 10.5 | 44 / 57 |
 | Mixed | Hybrid, threshold 16k, batch | 284 | 110 | 94 | 100 / 1 |
 | Mixed | Hybrid, threshold 16k, sliced | 220 | 108 | 10.0 | 100 / 1 |
+| Mixed | Hybrid, threshold 4096, immediate (control) | 224 | 76 | 64.6 | 44 / 57 |
+| Mixed | Hybrid, threshold 16k, immediate (control) | 282 | 107 | 102 | 100 / 1 |
 
 The same mixed conditions with a prewarmed pool:
 
@@ -180,11 +184,12 @@ The same mixed conditions with a prewarmed pool:
 
 Findings:
 
-- **Tiny geometries.** The hybrid recovers most of the loss of the pool. It takes 20 ms against 67 ms for the pool and 11 ms for plain JS. The remaining 10 ms is the cost of 1,000 promises and the batch tick.
+- **Tiny geometries.** The hybrid recovers most of the loss of the pool. It takes 20 ms against 67 ms for the pool and 11 ms for plain JS. The main-thread counters account for 11.9 ms of the 20.4 ms. The remaining time is unaccounted main-thread overhead, likely promise handling, and is not measured.
 - **Real dataset.** Thresholds of 64-16k triangles give 197-230 ms, close to the pool only (214 ms). Most meshes are tiny: 46 of 78 have 256 triangles or fewer, but they hold only 3,500 triangles in total. A threshold of 64k sends seven meshes of 16k-64k triangles to the main thread and takes 387 ms, slower than plain JS.
-- **Cold workers wait for the main thread.** In the mixed workload, a batch of about 94 ms on the main thread delays cold worker startup by the same amount (284 ms against 193 ms). Slicing brings it back to 220 ms. With a prewarmed pool, the batch penalty disappears (196 ms). The prediction "no batch penalty after prewarm" held, so worker startup needs main-thread turns.
+- **Cold workers wait for the main thread.** In the mixed workload, a batch of about 94 ms on the main thread delays cold worker startup by the same amount (284 ms against 193 ms). Slicing brings it back to 220 ms. With a prewarmed pool, the batch penalty disappears (196 ms). The prediction "no batch penalty after prewarm" held, so worker startup needs main-thread turns. Refill of a busy pool also needs a main-thread turn, so a long batch can starve the workers in warm runs too.
 - **The main thread as an extra worker.** Hybrid wall time beats the pool only when the workers are saturated, which occurred only in warm runs (110 ms against 129 ms). A third worker gives the same gain (111 ms) without blocking the main thread. When the workers have spare capacity, moving work to the main thread does not shorten the critical path.
 - **Break-even.** 12-triangle tasks are faster on the main thread. 2k-8k-triangle tasks are faster in the pool. The 110-250 estimate lies between, and the real dataset is insensitive to thresholds between 64 and 256 (197-202 ms). The data does not pin the break-even more precisely.
+- **Large-first posting is insurance, not a cold-path gain.** The `immediate` control runs small tasks on arrival without the batch tick. On the real dataset at threshold 1024, the control is faster cold (207 ms against 226 ms), and batch is faster warm (115 ms against 173 ms). In GLB order, the largest mesh arrives after many small ones, so the control delays it. In the mixed workload, the sphere arrives first, so arrival order is already large-first. There, the control is faster in both runs (224 ms against 244 ms cold, 106 ms against 122 ms warm). Batch mode carries 15-20 ms of overhead over the control in the mixed workload, and this overhead is not isolated.
 - **Objective (ii).** On the real dataset, batch mode stays within 8 ms up to a threshold of 256 (6.9 ms). Sliced mode cannot split one task, so one 16k-64k-triangle mesh on the main thread can exceed the budget alone.
 
 ## Recommendation
