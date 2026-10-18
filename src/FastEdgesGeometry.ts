@@ -68,7 +68,8 @@ export class FastEdgesGeometry extends BufferGeometry {
    * @param options.precisionPoints - The number of decimal places used to quantize vertex coordinates for welding. Defaults to 6.
    * @param options.tableCapacityFactor - The ratio of hash-table capacity to stored keys, 1.5 or 2. Defaults to 2.
    *   The factor never changes the output. 1.5 uses smaller tables at a higher load.
-   *   The higher load lengthens probes when edges rarely pair, for example disconnected triangles.
+   *   On meshes whose faces share edges, 1.5 is often faster. On input whose edges rarely pair,
+   *   for example disconnected triangles, the higher load lengthens probes and 1.5 is slower.
    * @throws RangeError if `options.tableCapacityFactor` is neither 1.5 nor 2.
    */
   constructor(
